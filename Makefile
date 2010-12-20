@@ -15,7 +15,8 @@ AR	= $(CROSS_TOOLS)-ar
 OBJCOPY	= $(CROSS_TOOLS)-objcopy
 OBJDUMP	= $(CROSS_TOOLS)-objdump
 
-RM	= rm
+RM	= rm -f
+RM_R	= rm -fr
 MV	= mv
 CP	= mv
 
@@ -62,11 +63,11 @@ ROM_NAME_RAM = nandloader_ram
 .PHONY : all rom_img rom_img_ram
 all : rom_img rom_img_ram
 
-rom_img: boot_img main_img
+rom_img: boot_img main_img $(BIN_DIR) $(TFTPBOOT)
 	cat $(OBJ_DIR)/$(BOOT_NAME).img $(OBJ_DIR)/$(EXEC_NAME).img > $(BIN_DIR)/$(ROM_NAME).img
 	cp $(BIN_DIR)/$(ROM_NAME).img $(TFTPBOOT)
 
-boot_img: $(BOOT_OBJS)
+boot_img: $(BOOT_OBJS) $(OBJ_DIR)
 	$(LD) $(ENDIAN_FG) $(LD_FLAG) $(LIB_PATH) -e _nand_reset -Ttext $(LOADER_OFFSET) \
 			 	-Map $(OBJ_DIR)/$(BOOT_NAME).map -o $(OBJ_DIR)/$(BOOT_NAME).elf	\
 				$(BOOT_OBJS) $(LIBS)
@@ -74,7 +75,7 @@ boot_img: $(BOOT_OBJS)
 	$(OBJCOPY) -I binary -O binary --pad-to 0x1000  $(OBJ_DIR)/$(BOOT_NAME).bin \
 				$(OBJ_DIR)/$(BOOT_NAME).img
 
-main_img: $(EXEC_OBJS)
+main_img: $(EXEC_OBJS) $(OBJ_DIR)
 	$(LD) $(ENDIAN_FG) $(LD_FLAG) $(LIB_PATH) -e _ldrinit -Ttext $(RUNTIME_OFFSET) \
 			-Map $(OBJ_DIR)/$(EXEC_NAME).map -o $(OBJ_DIR)/$(EXEC_NAME).elf \
 			$(EXEC_OBJS) $(LIBS)
@@ -82,10 +83,11 @@ main_img: $(EXEC_OBJS)
 	$(CP) $(OBJ_DIR)/$(EXEC_NAME).bin $(OBJ_DIR)/$(EXEC_NAME).img
 
 
-rom_img_ram: boot_img_ram main_img_ram
+rom_img_ram: boot_img_ram main_img_ram $(BIN_DIR)
 	cat $(OBJ_DIR)/$(BOOT_NAME_RAM).img $(OBJ_DIR)/$(EXEC_NAME_RAM).img > $(BIN_DIR)/$(ROM_NAME_RAM).img
+	cp  $(BIN_DIR)/$(ROM_NAME_RAM).img $(TFTPBOOT)
 
-boot_img_ram: $(BOOT_OBJS_RAM)
+boot_img_ram: $(BOOT_OBJS_RAM) $(OBJ_DIR)
 	$(LD) $(ENDIAN_FG) $(LD_FLAG) $(LIB_PATH) -e _nand_reset -Ttext $(LOADER_OFFSET) \
 			 	-Map $(OBJ_DIR)/$(BOOT_NAME_RAM).map -o $(OBJ_DIR)/$(BOOT_NAME_RAM).elf	\
 				$(BOOT_OBJS_RAM) $(LIBS)
@@ -93,7 +95,7 @@ boot_img_ram: $(BOOT_OBJS_RAM)
 	$(OBJCOPY) -I binary -O binary --pad-to 0x1000  $(OBJ_DIR)/$(BOOT_NAME_RAM).bin \
 				$(OBJ_DIR)/$(BOOT_NAME_RAM).img
 
-main_img_ram: $(EXEC_OBJS_RAM)
+main_img_ram: $(EXEC_OBJS_RAM) $(OBJ_DIR)
 	$(LD) $(ENDIAN_FG) $(LD_FLAG) $(LIB_PATH) -e _ldrinit -Ttext $(RUNTIME_OFFSET) \
 			-Map $(OBJ_DIR)/$(EXEC_NAME_RAM).map -o $(OBJ_DIR)/$(EXEC_NAME_RAM).elf \
 			$(EXEC_OBJS_RAM) $(LIBS)
@@ -101,14 +103,26 @@ main_img_ram: $(EXEC_OBJS_RAM)
 	$(CP) $(OBJ_DIR)/$(EXEC_NAME_RAM).bin $(OBJ_DIR)/$(EXEC_NAME_RAM).img
 
 
-$(OBJ_DIR)/%.o : $(SRC_DIR)/%.c
+$(OBJ_DIR) :
+	@echo "> Creating directory $@"
+	@mkdir -p $(OBJ_DIR)
+
+$(BIN_DIR) :
+	@echo "> Creating directory $@"
+	@mkdir -p $(BIN_DIR)
+
+$(TFTPBOOT) :
+	@echo "> Creating directory $@"
+	@mkdir -p $(TFTPBOOT)
+
+$(OBJ_DIR)/%.o : $(SRC_DIR)/%.c $(OBJ_DIR)
 	$(CC) $(CC_FLAG) $(INCLUDE_DIR) $(CPU_FLAG) $(EXT_DEF) $(EXTRA_DEFINE) -c $< -o $@
 
-$(OBJ_DIR)/%.o : $(SRC_DIR)/%.S
+$(OBJ_DIR)/%.o : $(SRC_DIR)/%.S $(OBJ_DIR)
 	$(CC) $(CC_FLAG) $(INCLUDE_DIR) $(CPU_FLAG) $(EXT_DEF) $(EXTRA_DEFINE) -c $< -o $@
 
 
 .PHONY : clean
 clean:
-	@$(RM) $(OBJ_DIR)/* $(BIN_DIR)/*
+	@$(RM_R) $(OBJ_DIR) $(BIN_DIR)
 
