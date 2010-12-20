@@ -11,3 +11,7 @@ void Set_Board_Version (void);
 void Set_Mac (void);
 void Set_If_config (void);
 int check_ip (unsigned long, int);
+
+void PrintBspParam (void);
+int set_boot_param (void);
+
