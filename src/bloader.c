@@ -46,10 +46,10 @@ static void print_tftpc_menu (void)
 {
 	buart_print ("\n\rTFTP Client Menu");
 	buart_print ("\n\r===============================");
-	buart_print ("\n\r [B]: Update bootloader");
-	buart_print ("\n\r [S]: Update system");
-	buart_print ("\n\r [A]: Update all");
 	buart_print ("\n\r [P]: Set parameters");
+	buart_print ("\n\r [S]: Update system");
+	buart_print ("\n\r [B]: Update bootloader");
+	//buart_print ("\n\r [A]: Update all");
 	buart_print ("\n\r [X]: exit");
 	buart_print ("\n\rEnter your option:");
 }
@@ -75,11 +75,13 @@ void tftp_client_menu (void)
 				tftpc_download (TFTP_LOAD_LINUX);
 				break;
 
+#if 0 // too dangerous and useless
 			case 'A':
 			case 'a':
 				tftpc_download (TFTP_LOAD_BOOTLOADER);
 				tftpc_download (TFTP_LOAD_LINUX);
 				break;
+#endif
 
 			case 'P':
 			case 'p':
