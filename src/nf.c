@@ -45,7 +45,7 @@ int nf_read (UINT8 *dst, UINT8 *src, UINT32 len)
 	buart_print (", len = 0x");
 	ultoa (len, buf);
 	buart_print (buf);*/
-	
+
 	nand_read (dst, src, len);
 	return 0;
 }

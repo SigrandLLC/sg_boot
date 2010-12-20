@@ -45,7 +45,7 @@ int tftp_send_rrq (UINT32 servip, char *filename)
 	*opCode = htons (RRQ);
 	temp += 2;
 
-	// remote file name 
+	// remote file name
 	fileNameLen = strlen (filename);
 	strncpy (temp, filename, fileNameLen);
 	temp += fileNameLen;
@@ -139,7 +139,7 @@ UINT32 tftpc (char *buf, int buf_size, int mode)
 		buart_print ("\n\rTFTP Server IP or Filename Error.");
 		return;
 	}
-	
+
 	gw_ip = gwip;
 	transmit_flag = TFTP_START;
 	total_len = 0;

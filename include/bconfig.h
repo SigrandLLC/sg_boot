@@ -9,7 +9,7 @@ extern "C" {
 
 #define BOOT_COLD               2
 
-//#define _runCode                HWPF_POST_START     
+//#define _runCode                HWPF_POST_START
 
 
 #endif /* _BCONFIG_H_ */

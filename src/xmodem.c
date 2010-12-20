@@ -3,7 +3,7 @@
 ;    Project : Common plateform
 ;    Creator : Sumei Chung
 ;    File    : xmodem.C
-;    Abstract: 
+;    Abstract:
 ;
 ;*****************************************************************************/
 #include "xmodem.h"

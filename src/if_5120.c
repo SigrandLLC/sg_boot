@@ -3,7 +3,7 @@
 ;    Project : ADM5120
 ;    Creator : David Weng
 ;    File    : if_5120.c
-;    Abstract: 
+;    Abstract:
 ;
 ;*****************************************************************************/
 #include <ctype.h>
@@ -16,7 +16,7 @@
 
 
 /********************  Some Constants *****************/
-#define NUM_TX_H_DESC		0	// Number of the Transmitting descriptors of high priority 
+#define NUM_TX_H_DESC		0	// Number of the Transmitting descriptors of high priority
 #define NUM_TX_L_DESC		16	// Number of the Transmitting descriptors of low priority
 #define NUM_RX_H_DESC		0	// Number of the Receiving descriptors of high priority
 #define NUM_RX_L_DESC		32	// Number of the Receiving descriptors of low priority
@@ -28,7 +28,7 @@
 #define PKT_BUFFER_SIZE		1792	// Size of the packet buffer.
 // This number should be a multiply of CACHE_LINE_SIZE.
 
-#define PKT_BUFFER_ALIGN	(ADM5120_CACHE_LINE_SIZE - 1)	 
+#define PKT_BUFFER_ALIGN	(ADM5120_CACHE_LINE_SIZE - 1)
 
 #define DEF_CTRL_FLAG		(PKT_HARDWARE_CRC | SW_ONEBUF_PER_DESC)
 
@@ -466,11 +466,11 @@ void SendPacketsL (PDRV_PACKET_DESC Pkt)
 {
 	UINT32 link_change, link_status;
 	int i=0;
-	
+
 	buart_print("+P");
-	
+
 	link_status = ADM5120_SW_REG(PHY_st_REG) & PORT_LINK_MASK;
-	
+
 	// Flip PORT_MII_LINK_DOWN bit.
 	link_status ^= PORT_MII_LINKFAIL;
 	link_change = link_status ^ ifp->link_status;
@@ -483,12 +483,12 @@ void SendPacketsL (PDRV_PACKET_DESC Pkt)
 			if(link_status & (1 << i))
 				buart_put('u');
 			else
-				buart_put('d');				
+				buart_put('d');
 		}
 		link_change>>=1;
 		i++;
 	}
-	
+
 }
  */
 
@@ -581,7 +581,7 @@ int if5120_init (void)
 		ADM5120_SW_REG (CPUp_conf_REG) = CPU_PORT_DEFAULT | SW_PADING_CRC;
 
 	// Daniel fix
-	// Disable all port, enable MC, BP and FC 
+	// Disable all port, enable MC, BP and FC
 	ADM5120_SW_REG (Port_conf0_REG) = SW_DISABLE_PORT_MASK | SW_EN_MC_MASK |
 		SW_EN_BP_MASK | SW_EN_FC_MASK;
 
@@ -743,9 +743,9 @@ void Am5120Isr (int intLev)
 	ifp->IntStatus = IntReg | RxFull;
 
 	// If the rx H/L descriptor is still full, mask  its interrupt temporarily.
-	// If it is not masked, the interrupt will be asserted immediately after 
+	// If it is not masked, the interrupt will be asserted immediately after
 	// the switch's IRQ being re-enabled. This will block the system from doing
-	// anything other than servicing the switch's ISR/DSR routine. However, the 
+	// anything other than servicing the switch's ISR/DSR routine. However, the
 	// ISR/DSR is waiting the system to return some of its buffers for receiving.
 	// A dead lock situation is entered.
 	IntMask = ~ifp->IntMask | RxFull;

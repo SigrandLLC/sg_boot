@@ -292,7 +292,7 @@ void store_vlan2port ()
 	UINT32 vlanGrp = 0xff;
 	UINT32 vlan_val = 0, macnum = 0;
 	UINT8 mac[8] = {0};
-	
+
 	bsp_GetMacBase (mac, &macnum);
 
 	vlan_val |= 1;

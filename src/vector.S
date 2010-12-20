@@ -42,11 +42,11 @@ VECTOR(TLBrefill_except, unknown)
 	/*
 	 *	The exception is not handled here.
 	 */
-	
+
 1:
 	b		1b
 	nop									/* Branch delay slot */
-	
+
 .set at
 .set reorder
 VECTOR_END(TLBrefill_except)
@@ -61,13 +61,13 @@ VECTOR(general_except, unknown)
 .set noat
 1:
 	b		1b
-	nop	
+	nop
 .set at
 .set reorder
 VECTOR_END(general_except)
 
 	/*
-	 *  Interrupt exception handler. 
+	 *  Interrupt exception handler.
 	 *  This will be installed at 0x80000200
 	 */
 VECTOR(int_except, unknown)
@@ -78,7 +78,7 @@ VECTOR(int_except, unknown)
 	sw		v0, FRAME_V0_REG(sp)				//#3
 	sw		v1, FRAME_V1_REG(sp)				//#4
 	mflo	v0						//#5	// Get Hi
-	mfhi	v1						//#6	// Get Lo 
+	mfhi	v1						//#6	// Get Lo
 	sw		a0, FRAME_A0_REG(sp)				//#7
 	sw		a1, FRAME_A1_REG(sp)				//#8
 	sw		a2, FRAME_A2_REG(sp)				//#9
@@ -100,14 +100,14 @@ VECTOR(int_except, unknown)
 	sw		ra, FRAME_RA_REG(sp)			//#25
 	sw		v0, FRAME_LO_REG(sp)			//#26
 	sw		v1, FRAME_HI_REG(sp)			//#27
-	sw		a0, FRAME_SR_REG(sp)			
+	sw		a0, FRAME_SR_REG(sp)
 	sw		a2, FRAME_EPC_REG(sp)			//#28
 	mtc0	zero, CP0_STATUS_REG	// Clear interrupt, EXL
 	la		ra, _C_LABEL(except_ret)	// return address
-	/*	Call C interrupt handler  */	
+	/*	Call C interrupt handler  */
 	j		_C_LABEL(int_hdl)
 	subu	sp, sp, VEC_STACK_FRAME		// Branch delay slot
-	
+
 .set at
 .set reorder
 VECTOR_END(int_except)
@@ -117,8 +117,8 @@ VECTOR(dbg_except, unknown)
 	/*
 	 *  !!!!  Not implemented yet   !!!!
 	 */
-	
-	/*	Not reached */	
+
+	/*	Not reached */
 2:
 	b		2b
 	nop									/* Branch delay slot */
@@ -141,7 +141,7 @@ LEAF(except_ret)
 	mtlo	v0
 	mthi	v1
 	mtc0	a1, CP0_EPC_REG
-	
+
 	lw		AT, FRAME_AT_REG(sp)
 	lw		v0, FRAME_V0_REG(sp)
 	lw		v1, FRAME_V1_REG(sp)
@@ -162,7 +162,7 @@ LEAF(except_ret)
 
 	lw		gp, FRAME_GP_REG(sp)
 	lw		ra, FRAME_RA_REG(sp)
-	
+
 	// Restore sp
 	addu	sp, sp, FRAME_SIZE
 	// return

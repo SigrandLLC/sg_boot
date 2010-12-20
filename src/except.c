@@ -3,7 +3,7 @@
 ;    Project : ADM5120
 ;    Creator : David Weng
 ;    File    : except.c
-;    Abstract: 
+;    Abstract:
 ;
 ;*****************************************************************************/
 
@@ -82,7 +82,7 @@ void gexcept_hdl (UINT32 status_reg, UINT32 cause_reg, UINT32 epc_reg)
 		int_hdl (status_reg, cause_reg);
 	} else
 	{
-		// Panic !!!	
+		// Panic !!!
 		while (1);
 	}
 
@@ -146,7 +146,7 @@ void install_exception (void)
 	icache_invalidate_block (MIPS_INTERRUPT_VECTOR, len);
 #endif
 
-#endif		
+#endif
 
 	// Clear BEV, all IM bis in status reg and ENABLE interrupt
 	status_val = mips_cp0_status_read () | CP0_STATUS_IE_BIT;
@@ -192,7 +192,7 @@ int mips_int_disconnect (int intnum)
 	if (!(mips_int_tab[intnum].flags & MIPS_INT_REGISTERD))
 		goto _exit;
 
-	// Remove the interrupt handler		
+	// Remove the interrupt handler
 	mips_int_tab[intnum].flags = MIPS_INT_UNREGISTERD;
 	mips_int_tab[intnum].hdl = NULL;
 

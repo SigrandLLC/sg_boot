@@ -87,7 +87,7 @@ int bsp_SetMac (UINT8 *mac, int macnum)
 
 	cfg->macmagic = MAC_MAGIC;
 
-	// have to use memcpy here. 
+	// have to use memcpy here.
 	memcpy (cfg->mac, mac, 6);
 	cfg->mac[7] = cfg->mac[8] = 0;
 	cfg->macnum = macnum;
@@ -110,7 +110,7 @@ int bsp_SetMac (UINT8 *mac, int macnum)
 
 	if (i == 2) return ERROR;
 
-	// have to use memcpy here. 
+	// have to use memcpy here.
 	memcpy (cfg->mac, mac, 6);
 
 	return 0;
@@ -124,7 +124,7 @@ int bsp_GetMacBase (UINT8 *buf, int *macnum)
 
 	if (cfg->macmagic != MAC_MAGIC) return -1;
 
-	// have to use memcpy here. 
+	// have to use memcpy here.
 	memcpy (buf, cfg->mac, 6);
 
 	*macnum = (int) cfg->macnum;

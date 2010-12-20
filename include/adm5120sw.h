@@ -1,12 +1,12 @@
 /*
  *	ADM5120 ethernet switch driver
- *	
+ *
  *	Based on original ADMTEK 2.4.18 driver, copyright ADMtek Inc.
  *	daniel@admtek.com.tw
- *	
+ *
  *	Port to 2.4.31 kernel and modified to able to load as module
  *	by Joco, rjoco77@kezdionline.ro
- *	
+ *
  *	This program is free software; you can redistribute it and/or modify
  *	it under the terms of the GNU General Public License as published by
  *	the Free Software Foundation; either version 2, or (at your option)
@@ -19,7 +19,7 @@
  *
  *	You should have received a copy of the GNU General Public License
  *	along with this program; if not, write to the Free Software
- *	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.	
+ *	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
 #ifndef __ADM5120SW_H__

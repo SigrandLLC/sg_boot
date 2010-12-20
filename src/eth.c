@@ -3,7 +3,7 @@
 ;    Project : Am5120
 ;    Creator : David Weng
 ;    File    : eth.c
-;    Abstract: 
+;    Abstract:
 ;
 ;*****************************************************************************/
 #include <ctype.h>

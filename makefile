@@ -25,7 +25,7 @@ LIB_PATH = -L. -L./lib/el
 EDIR = el
 
 CC_FLAG 		= $(ENDIAN_FG) -Wcomment -O2
-CPU_FLAG		= -mips32 
+CPU_FLAG		= -mips32
 INCLUDE_DIR = -I. -I./include
 
 OBJ_DIR = ./build
@@ -54,7 +54,7 @@ EXEC_OBJS = $(OBJ_DIR)/nand_ldrinit.o $(OBJ_DIR)/bloader.o $(OBJ_DIR)/linuxld.o\
 
 EXEC_NAME_RAM = nand_bootmain_ram
 EXEC_OBJS_RAM = $(EXEC_OBJS)
-			
+
 ROM_NAME = nandloader
 ROM_NAME_RAM = nandloader_ram
 

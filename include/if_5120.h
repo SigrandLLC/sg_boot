@@ -3,10 +3,10 @@
 ;    Project : ADM5120
 ;    Creator : David Weng
 ;    File    : if_5120.h
-;    Abstract: 
+;    Abstract:
 ;
 ;Modification History:
-; 
+;
 ;
 ;*****************************************************************************/
 

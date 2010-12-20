@@ -1,6 +1,6 @@
-# 
-# Generated Makefile - do not edit! 
-# 
+#
+# Generated Makefile - do not edit!
+#
 # Edit the Makefile in the project folder instead (../Makefile). Each target
 # has a pre- and a post- target defined where you can add customization code.
 #
@@ -31,7 +31,7 @@ DEFAULTCONF=Default
 CONF=${DEFAULTCONF}
 
 # All Configurations
-ALLCONFS=Default 
+ALLCONFS=Default
 
 
 # build
@@ -46,7 +46,7 @@ ALLCONFS=Default
 	"${MAKE}" -f nbproject/Makefile-${CONF}.mk QMAKE=${QMAKE} SUBPROJECTS=${SUBPROJECTS} .clean-conf
 
 
-# clobber 
+# clobber
 .clobber-impl: .clobber-pre .depcheck-impl
 	@#echo "=> Running $@..."
 	for CONF in ${ALLCONFS}; \
@@ -54,7 +54,7 @@ ALLCONFS=Default
 	    "${MAKE}" -f nbproject/Makefile-$${CONF}.mk QMAKE=${QMAKE} SUBPROJECTS=${SUBPROJECTS} .clean-conf; \
 	done
 
-# all 
+# all
 .all-impl: .all-pre .depcheck-impl
 	@#echo "=> Running $@..."
 	for CONF in ${ALLCONFS}; \
