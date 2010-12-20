@@ -1,3 +1,7 @@
+# Set V=something for verbose building messages
+#V = 1
+v = $(if $(V),,@)
+
 BYTE_ORDER = LITTLE_ENDIAN
 FLASH_TYPE = NAND_FLASH
 
@@ -15,10 +19,12 @@ AR	= $(CROSS_TOOLS)-ar
 OBJCOPY	= $(CROSS_TOOLS)-objcopy
 OBJDUMP	= $(CROSS_TOOLS)-objdump
 
-RM	= rm -f
-RM_R	= rm -fr
-MV	= mv
-CP	= mv
+RM	= rm $(if $(V),-v) -f
+RM_R	= rm $(if $(V),-v) -fr
+MV	= mv $(if $(V),-v)
+CP	= mv $(if $(V),-v)
+MKDIR   = mkdir $(if $(V),-v)
+MKDIR_P = mkdir $(if $(V),-v) -p
 
 CCBYTE_ORDER = little-endian
 ENDIAN_FG = -EL
@@ -64,65 +70,76 @@ ROM_NAME_RAM = nandloader_ram
 all : rom_img rom_img_ram
 
 rom_img: boot_img main_img $(BIN_DIR) $(TFTPBOOT)
-	cat $(OBJ_DIR)/$(BOOT_NAME).img $(OBJ_DIR)/$(EXEC_NAME).img > $(BIN_DIR)/$(ROM_NAME).img
-	cp $(BIN_DIR)/$(ROM_NAME).img $(TFTPBOOT)
+	@echo "> Constructing $@"
+	$(v)cat $(OBJ_DIR)/$(BOOT_NAME).img $(OBJ_DIR)/$(EXEC_NAME).img > $(BIN_DIR)/$(ROM_NAME).img
+	@echo "> Copying $@ to $(TFTPBOOT)"
+	$(v)cp  $(BIN_DIR)/$(ROM_NAME).img $(TFTPBOOT)
 
 boot_img: $(BOOT_OBJS) $(OBJ_DIR)
-	$(LD) $(ENDIAN_FG) $(LD_FLAG) $(LIB_PATH) -e _nand_reset -Ttext $(LOADER_OFFSET) \
+	@echo "> Linking $@"
+	$(v)$(LD) $(ENDIAN_FG) $(LD_FLAG) $(LIB_PATH) -e _nand_reset -Ttext $(LOADER_OFFSET) \
 			 	-Map $(OBJ_DIR)/$(BOOT_NAME).map -o $(OBJ_DIR)/$(BOOT_NAME).elf	\
 				$(BOOT_OBJS) $(LIBS)
-	$(OBJCOPY) -O binary $(OBJ_DIR)/$(BOOT_NAME).elf  $(OBJ_DIR)/$(BOOT_NAME).bin
-	$(OBJCOPY) -I binary -O binary --pad-to 0x1000  $(OBJ_DIR)/$(BOOT_NAME).bin \
+	$(v)$(OBJCOPY) -O binary $(OBJ_DIR)/$(BOOT_NAME).elf  $(OBJ_DIR)/$(BOOT_NAME).bin
+	$(v)$(OBJCOPY) -I binary -O binary --pad-to 0x1000  $(OBJ_DIR)/$(BOOT_NAME).bin \
 				$(OBJ_DIR)/$(BOOT_NAME).img
 
 main_img: $(EXEC_OBJS) $(OBJ_DIR)
-	$(LD) $(ENDIAN_FG) $(LD_FLAG) $(LIB_PATH) -e _ldrinit -Ttext $(RUNTIME_OFFSET) \
+	@echo "> Linking $@"
+	$(v)$(LD) $(ENDIAN_FG) $(LD_FLAG) $(LIB_PATH) -e _ldrinit -Ttext $(RUNTIME_OFFSET) \
 			-Map $(OBJ_DIR)/$(EXEC_NAME).map -o $(OBJ_DIR)/$(EXEC_NAME).elf \
 			$(EXEC_OBJS) $(LIBS)
-	$(OBJCOPY) -O binary $(OBJ_DIR)/$(EXEC_NAME).elf  $(OBJ_DIR)/$(EXEC_NAME).bin
-	$(CP) $(OBJ_DIR)/$(EXEC_NAME).bin $(OBJ_DIR)/$(EXEC_NAME).img
+	$(v)$(OBJCOPY) -O binary $(OBJ_DIR)/$(EXEC_NAME).elf  $(OBJ_DIR)/$(EXEC_NAME).bin
+	$(v)$(CP) $(OBJ_DIR)/$(EXEC_NAME).bin $(OBJ_DIR)/$(EXEC_NAME).img
 
 
 rom_img_ram: boot_img_ram main_img_ram $(BIN_DIR)
-	cat $(OBJ_DIR)/$(BOOT_NAME_RAM).img $(OBJ_DIR)/$(EXEC_NAME_RAM).img > $(BIN_DIR)/$(ROM_NAME_RAM).img
-	cp  $(BIN_DIR)/$(ROM_NAME_RAM).img $(TFTPBOOT)
+	@echo "> Constructing $@"
+	$(v)cat $(OBJ_DIR)/$(BOOT_NAME_RAM).img $(OBJ_DIR)/$(EXEC_NAME_RAM).img > $(BIN_DIR)/$(ROM_NAME_RAM).img
+	@echo "> Copying $@ to $(TFTPBOOT)"
+	$(v)cp  $(BIN_DIR)/$(ROM_NAME_RAM).img $(TFTPBOOT)
 
 boot_img_ram: $(BOOT_OBJS_RAM) $(OBJ_DIR)
-	$(LD) $(ENDIAN_FG) $(LD_FLAG) $(LIB_PATH) -e _nand_reset -Ttext $(LOADER_OFFSET) \
+	@echo "> Linking $@"
+	$(v)$(LD) $(ENDIAN_FG) $(LD_FLAG) $(LIB_PATH) -e _nand_reset -Ttext $(LOADER_OFFSET) \
 			 	-Map $(OBJ_DIR)/$(BOOT_NAME_RAM).map -o $(OBJ_DIR)/$(BOOT_NAME_RAM).elf	\
 				$(BOOT_OBJS_RAM) $(LIBS)
-	$(OBJCOPY) -O binary $(OBJ_DIR)/$(BOOT_NAME_RAM).elf  $(OBJ_DIR)/$(BOOT_NAME_RAM).bin
-	$(OBJCOPY) -I binary -O binary --pad-to 0x1000  $(OBJ_DIR)/$(BOOT_NAME_RAM).bin \
+	$(v)$(OBJCOPY) -O binary $(OBJ_DIR)/$(BOOT_NAME_RAM).elf  $(OBJ_DIR)/$(BOOT_NAME_RAM).bin
+	$(v)$(OBJCOPY) -I binary -O binary --pad-to 0x1000  $(OBJ_DIR)/$(BOOT_NAME_RAM).bin \
 				$(OBJ_DIR)/$(BOOT_NAME_RAM).img
 
 main_img_ram: $(EXEC_OBJS_RAM) $(OBJ_DIR)
-	$(LD) $(ENDIAN_FG) $(LD_FLAG) $(LIB_PATH) -e _ldrinit -Ttext $(RUNTIME_OFFSET) \
+	@echo "> Linking $@"
+	$(v)$(LD) $(ENDIAN_FG) $(LD_FLAG) $(LIB_PATH) -e _ldrinit -Ttext $(RUNTIME_OFFSET) \
 			-Map $(OBJ_DIR)/$(EXEC_NAME_RAM).map -o $(OBJ_DIR)/$(EXEC_NAME_RAM).elf \
 			$(EXEC_OBJS_RAM) $(LIBS)
-	$(OBJCOPY) -O binary $(OBJ_DIR)/$(EXEC_NAME_RAM).elf  $(OBJ_DIR)/$(EXEC_NAME_RAM).bin
-	$(CP) $(OBJ_DIR)/$(EXEC_NAME_RAM).bin $(OBJ_DIR)/$(EXEC_NAME_RAM).img
+	$(v)$(OBJCOPY) -O binary $(OBJ_DIR)/$(EXEC_NAME_RAM).elf  $(OBJ_DIR)/$(EXEC_NAME_RAM).bin
+	$(v)$(CP) $(OBJ_DIR)/$(EXEC_NAME_RAM).bin $(OBJ_DIR)/$(EXEC_NAME_RAM).img
 
 
 $(OBJ_DIR) :
 	@echo "> Creating directory $@"
-	@mkdir -p $(OBJ_DIR)
+	$(v)mkdir -p $(OBJ_DIR)
 
 $(BIN_DIR) :
 	@echo "> Creating directory $@"
-	@mkdir -p $(BIN_DIR)
+	$(v)mkdir -p $(BIN_DIR)
 
 $(TFTPBOOT) :
 	@echo "> Creating directory $@"
-	@mkdir -p $(TFTPBOOT)
+	$(v)mkdir -p $(TFTPBOOT)
 
 $(OBJ_DIR)/%.o : $(SRC_DIR)/%.c $(OBJ_DIR)
-	$(CC) $(CC_FLAG) $(INCLUDE_DIR) $(CPU_FLAG) $(EXT_DEF) $(EXTRA_DEFINE) -c $< -o $@
+	@echo "> Compiling $< to $@"
+	$(v)$(CC) $(CC_FLAG) $(INCLUDE_DIR) $(CPU_FLAG) $(EXT_DEF) $(EXTRA_DEFINE) -c $< -o $@
 
 $(OBJ_DIR)/%.o : $(SRC_DIR)/%.S $(OBJ_DIR)
-	$(CC) $(CC_FLAG) $(INCLUDE_DIR) $(CPU_FLAG) $(EXT_DEF) $(EXTRA_DEFINE) -c $< -o $@
+	@echo "> Compiling $< to $@"
+	$(v)$(CC) $(CC_FLAG) $(INCLUDE_DIR) $(CPU_FLAG) $(EXT_DEF) $(EXTRA_DEFINE) -c $< -o $@
 
 
 .PHONY : clean
 clean:
-	@$(RM_R) $(OBJ_DIR) $(BIN_DIR)
+	@echo "> Cleaning $(OBJ_DIR) $(BIN_DIR)"
+	$(v)$(RM_R) $(OBJ_DIR) $(BIN_DIR)
 
