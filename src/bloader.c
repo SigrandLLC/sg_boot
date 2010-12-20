@@ -30,7 +30,7 @@ extern void _icache_sync_all (void);
 static void print_menu ()
 {
 	buart_print ("\n\r"
-		"\n\rSigrand SG17 router:"
+		"\n\rADM5120 based router:"
 		"\n\r=================================="
 		"\n\rBootloader Menu"
 		"\n\r [1] Xmodem download"
