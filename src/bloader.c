@@ -227,7 +227,7 @@ void c_entry (void)
 	buart_print ("\n\rBoot System: ");
 	buart_print (BOOT_SYSTEM);
 	buart_print (version_string);
-	buart_print ("\n\r\n\rPress any key to enter boot menu..");
+	buart_print ("\n\r\n\rPress any key to enter boot menu or 'q' to boot OS immediately...");
 	buart_print ("\n\r");
 
 	// wait BOOT_DELAY second before boot
@@ -247,8 +247,16 @@ void c_entry (void)
 			buart_put (countdown + '0');
 			tick1 = UpTime ();
 		}
-		if (buart_get (0) > 0)
+		c = buart_get (0);
+		if (c > 0)
+		{
+			if (c == 'q' || c == 'Q')
+			{
+				boot_linux ();
+				break;
+			}
 			break;
+		}
 	}
 
 	// Read the Network configuration data.
