@@ -211,7 +211,7 @@ void c_entry (void)
 	bt_name[8] = hexdigit[i & 0xf];
 	buart_print (bt_name);
 	buart_print ("\n\r");
-	buart_print ("\n\rCopyleft");
+	//buart_print ("\n\rCopyleft");
 	buart_print ("\n\rCPU: Infineon ");
 	buart_print (CPU_NO);
 	buart_put ('-');
