@@ -327,9 +327,9 @@ void print_tftpc_param (void)
 		buart_print ("\n\rGateway IP: ");
 		IpAddrToStr (cfg->tftp_param.gw_ip, str);
 		buart_print (str);
-		buart_print ("\n\rRemote bootloader name: ");
+		buart_print ("\n\rRemote bootloader file name: ");
 		buart_print (cfg->tftp_param.bootloader_name);
-		buart_print ("\n\rRemote linux name: ");
+		buart_print ("\n\rRemote Linux file name: ");
 		buart_print (cfg->tftp_param.linux_name);
 		buart_print ("\n\r");
 	}
@@ -403,11 +403,11 @@ gwip_again:
 		cfg->tftp_param.gw_ip = gwip;
 	} else
 	{
-		buart_print ("Gateway IP unchanged..\n\r");
+		buart_print ("Gateway IP unchanged.\n\r");
 	}
 loadername_again:
 	buf[0] = 0;
-	buart_print ("Enter Remote bootloader_name : ");
+	buart_print ("Enter Remote bootloader file name: ");
 	ReadLine (buf, BOOT_LINE_SIZE);
 	if (buf[0] != 0)
 	{
@@ -418,11 +418,11 @@ loadername_again:
 		}
 		strcpy (cfg->tftp_param.bootloader_name, buf);
 	} else
-		buart_print ("Bootloader name unchanged.\n\r");
+		buart_print ("Bootloader file name unchanged.\n\r");
 
 linuxname_again:
 	buf[0] = 0;
-	buart_print ("Enter Remote linux_name : ");
+	buart_print ("Enter Remote Linux file name: ");
 	ReadLine (buf, BOOT_LINE_SIZE);
 	if (buf[0] != 0)
 	{
@@ -433,7 +433,7 @@ linuxname_again:
 		}
 		strcpy (cfg->tftp_param.linux_name, buf);
 	} else
-		buart_print ("Linux name unchanged.\n\r");
+		buart_print ("Linux file name unchanged.\n\r");
 
 	cfg->tftpmagic = TFTPMAGIC;
 
@@ -479,5 +479,4 @@ int check_ip (UINT32 ipcheck, int flag)
 
 	return 0;
 }
-
 
