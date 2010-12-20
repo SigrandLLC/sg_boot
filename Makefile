@@ -73,7 +73,7 @@ rom_img: boot_img main_img $(BIN_DIR) $(TFTPBOOT)
 	@echo "> Constructing $@"
 	$(v)cat $(OBJ_DIR)/$(BOOT_NAME).img $(OBJ_DIR)/$(EXEC_NAME).img > $(BIN_DIR)/$(ROM_NAME).img
 	@echo "> Copying $@ to $(TFTPBOOT)"
-	$(v)cp  $(BIN_DIR)/$(ROM_NAME).img $(TFTPBOOT)
+	$(v)$(CP) $(BIN_DIR)/$(ROM_NAME).img $(TFTPBOOT)
 
 boot_img: $(BOOT_OBJS) $(OBJ_DIR)
 	@echo "> Linking $@"
@@ -97,7 +97,7 @@ rom_img_ram: boot_img_ram main_img_ram $(BIN_DIR)
 	@echo "> Constructing $@"
 	$(v)cat $(OBJ_DIR)/$(BOOT_NAME_RAM).img $(OBJ_DIR)/$(EXEC_NAME_RAM).img > $(BIN_DIR)/$(ROM_NAME_RAM).img
 	@echo "> Copying $@ to $(TFTPBOOT)"
-	$(v)cp  $(BIN_DIR)/$(ROM_NAME_RAM).img $(TFTPBOOT)
+	$(v)$(CP) $(BIN_DIR)/$(ROM_NAME_RAM).img $(TFTPBOOT)
 
 boot_img_ram: $(BOOT_OBJS_RAM) $(OBJ_DIR)
 	@echo "> Linking $@"
@@ -119,15 +119,15 @@ main_img_ram: $(EXEC_OBJS_RAM) $(OBJ_DIR)
 
 $(OBJ_DIR) :
 	@echo "> Creating directory $@"
-	$(v)mkdir -p $(OBJ_DIR)
+	$(v)$(MKDIR_P) $(OBJ_DIR)
 
 $(BIN_DIR) :
 	@echo "> Creating directory $@"
-	$(v)mkdir -p $(BIN_DIR)
+	$(v)$(MKDIR_P) $(BIN_DIR)
 
 $(TFTPBOOT) :
 	@echo "> Creating directory $@"
-	$(v)mkdir -p $(TFTPBOOT)
+	$(v)$(MKDIR_P) $(TFTPBOOT)
 
 $(OBJ_DIR)/%.o : $(SRC_DIR)/%.c $(OBJ_DIR)
 	@echo "> Compiling $< to $@"
