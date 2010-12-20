@@ -11,7 +11,7 @@ FLASH_TYPE = NAND_FLASH
 LOADER_OFFSET = 0x80800000
 RUNTIME_OFFSET = 0x80801000
 
-CROSS_TOOLS = /work/mipsisa32-elf-old/bin/mipsisa32-elf
+CROSS_TOOLS = $(HOME)/gnutools/mipsisa32-elf/bin/mipsisa32-elf
 AS	= $(CROSS_TOOLS)-as
 CC	= $(CROSS_TOOLS)-gcc
 LD	= $(CROSS_TOOLS)-ld
@@ -42,7 +42,7 @@ INCLUDE_DIR	= -I. -I./include
 OBJ_DIR = ./build
 BIN_DIR = ./bin
 SRC_DIR = ./src
-TFTPBOOT = /media/tftpboot/b
+TFTPBOOT = $(HOME)/tftpboot
 
 LD_FLAG = -X -N
 LIBS = -lz -lc -lgcc -lnosys
