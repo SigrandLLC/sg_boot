@@ -229,13 +229,13 @@ void Set_TFTP_IP (void)
 	char buf[BOOT_LINE_SIZE + 1];
 	if (cfg->tftploipmagic == TFTPLOIPMAGIC)
 	{
-		buart_print ("\n\rIP address for this board: ");
+		buart_print ("\n\rIP address: ");
 		IpAddrToStr (cfg->tftp_param.local_ip, str);
 		buart_print (str);
 	}
 loip_again:
 	buf[0] = 0;
-	buart_print ("\n\rEnter new IP address for this board: ");
+	buart_print ("\n\rEnter new IP address: ");
 	ReadLine (buf, BOOT_LINE_SIZE);
 	if (buf[0] != 0)
 	{
@@ -312,7 +312,7 @@ void PrintBspParam (void)
 		ipstr[0] = 0;
 	} else
 		IpAddrToStr (tftpip, ipstr);
-	buart_print ("\n\rIP address of this board: ");
+	buart_print ("\n\rIP address: ");
 	buart_print (ipstr);
 }
 
