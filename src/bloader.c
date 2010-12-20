@@ -11,6 +11,7 @@
 #include <param.h>
 #include <bsp_cfg.h>
 #include <dslam.h>
+#include <menu.h>
 
 #define VERSION "1.3"
 
@@ -26,21 +27,6 @@ void *_heap_h;
 extern void _icache_sync_all (void);
 
 
-// This routine prints the main menu
-static void print_menu ()
-{
-	buart_print ("\n\r"
-		"\n\rADM5120 based router:"
-		"\n\r=================================="
-		"\n\rBootloader Menu"
-		"\n\r [1] Xmodem download"
-		"\n\r [2] TFTP download"
-		"\n\r [3] Print boot params"
-		"\n\r [4] Set boot params"
-		"\n\r [5] Flash operations"
-		"\n\r [6] Reset\n"
-		"\n\rPlease enter your number: ");
-}
 
 static void print_tftpc_menu (void)
 {
@@ -193,6 +179,38 @@ void flash_client_menu (void)
 	}
 
 }
+
+
+//+ main menu
+static void reset(void)
+{
+	ADM5120_SW_REG (SftRest_REG) = SOFTWARE_RESET;
+}
+
+static menu_entry_t main_menu[] =
+{
+	{ .key0 = '1', .line = "Xmodem download"  , .func_void = xmodem_client_menu },
+	{ .key0 = '2', .line = "TFTP download"    , .func_void = tftp_client_menu },
+	{ .key0 = '3', .line = "Print boot params", .func_void = PrintBspParam },
+	{ .key0 = '4', .line = "Set boot params"  , .func_void = (func_void_t)set_boot_param },
+	{ .key0 = '5', .line = "Flash operations" , .func_void = flash_client_menu },
+	{ .key0 = '6', .line = "Reset"            , .func_void = reset },
+	{ .line = NULL }
+};
+
+// This routine prints the main menu
+static void print_menu ()
+{
+	buart_print ("\n\r"
+		"\n\rADM5120 based router:"
+		"\n\r=================================="
+		"\n\rBootloader Menu");
+
+        menu_print(main_menu);
+
+	buart_print ("\n\rPlease enter your number: ");
+}
+//- main menu
 
 // This routine is the C entry pointer of the loader
 
@@ -362,41 +380,7 @@ void c_entry (void)
 	while (1)
 	{
 		print_menu ();
-
-		c = buart_getchar ();
-
-		buart_put (c);
-
-		switch (c)
-		{
-			case '1':
-				xmodem_client_menu ();
-				break;
-
-			case '2':
-				tftp_client_menu ();
-				break;
-
-			case '3':
-				PrintBspParam ();
-				break;
-
-			case '4':
-				set_boot_param ();
-				break;
-
-			case '5':
-				flash_client_menu ();
-				break;
-
-			case '6':
-				ADM5120_SW_REG (SftRest_REG) = SOFTWARE_RESET;
-				break;
-
-			default:
-				break;
-		}
+                menu_call(main_menu);
 	}
 }
-
 
