@@ -144,7 +144,7 @@ static void print_flash_menu (void)
 	buart_print ("\n\r===============================");
 	buart_print ("\n\r [P]: Print existent bad blocks");
 	buart_print ("\n\r [E]: Erase entire flash");
-	buart_print ("\n\r [A]: Erase entire flash and scan/mark for bad blocks");
+	buart_print ("\n\r [A]: Erase entire flash, scan for bad blocks, and mark them");
 	buart_print ("\n\r [C]: Create bad blocks");
 	buart_print ("\n\r [X]: Exit");
 	buart_print ("\n\rEnter your option:");
