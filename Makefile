@@ -63,7 +63,7 @@ EXEC_OBJS = $(OBJ_DIR)/nand_ldrinit.o $(OBJ_DIR)/bloader.o $(OBJ_DIR)/linuxld.o\
 		$(OBJ_DIR)/if_5120.o $(OBJ_DIR)/memlib.o\
 		$(OBJ_DIR)/uartdrv.o $(OBJ_DIR)/tftp.o $(OBJ_DIR)/eth.o\
 		$(OBJ_DIR)/skbuff.o $(OBJ_DIR)/arp.o $(OBJ_DIR)/ip.o\
-		$(OBJ_DIR)/udp.o $(OBJ_DIR)/param.o $(OBJ_DIR)/nf.o
+		$(OBJ_DIR)/udp.o $(OBJ_DIR)/param.o $(OBJ_DIR)/nf.o $(OBJ_DIR)/menu.o
 
 EXEC_NAME_RAM = nand_bootmain_ram
 EXEC_OBJS_RAM = $(EXEC_OBJS)
