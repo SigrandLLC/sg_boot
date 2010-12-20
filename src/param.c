@@ -214,11 +214,11 @@ num_again:
 			memcpy (mactmp, cfg->mac, 6);
 			ProgramMac (0, mactmp); // Change current MAC addr.
 			eth_reinit (mactmp);
-			buart_print ("\n\rMac address updated successfully.");
+			buart_print ("\n\rMAC address updated successfully.");
 		}
 	} else
 	{
-		buart_print ("\n\rMac address unchanged.");
+		buart_print ("\n\rMAC address unchanged.");
 	}
 }
 
@@ -290,18 +290,18 @@ void PrintBspParam (void)
 	/* Print Mac address */
 	if (bsp_GetMacBase (buf, &macnum) != 0)
 	{
-		buart_print ("\n\rMac address:");
+		buart_print ("\n\rMAC address: ");
 #ifndef NO_NUMBER_OF_MACS
-		buart_print ("\n\rNumber of Mac addresses: 0");
+		buart_print ("\n\rNumber of MAC addresses: 0");
 #endif
 	} else
 	{
 		mactostr (buf, mactmp);
 		mactmp[17] = '\0';
-		buart_print ("\n\rMac address:");
+		buart_print ("\n\rMAC address: ");
 		buart_print (mactmp);
 #ifndef NO_NUMBER_OF_MACS
-		buart_print ("\n\rNumber of Mac addresses:");
+		buart_print ("\n\rNumber of MAC addresses: ");
 		buart_put (macnum + '0');
 #endif
 	}
@@ -312,7 +312,7 @@ void PrintBspParam (void)
 		ipstr[0] = 0;
 	} else
 		IpAddrToStr (tftpip, ipstr);
-	buart_print ("\n\rIP address of this board:");
+	buart_print ("\n\rIP address of this board: ");
 	buart_print (ipstr);
 }
 

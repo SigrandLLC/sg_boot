@@ -600,7 +600,7 @@ int if5120_init (void)
 		for (i = 0; i < 2000; i++);
 	}
 
-	// Program Vlan0 Mac address
+	// Program Vlan0 MAC address
 	bsp_GetMacBase (MacAddr, &eth_num);
 	ProgramMac (VLAN0, MacAddr);
 

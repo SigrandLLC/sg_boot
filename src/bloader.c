@@ -39,7 +39,7 @@ static void print_menu ()
 		"\n\r [4] Set boot params"
 		"\n\r [5] Flash operations"
 		"\n\r [6] Reset\n"
-		"\n\rPlease enter your number:");
+		"\n\rPlease enter your number: ");
 }
 
 static void print_tftpc_menu (void)
@@ -51,7 +51,7 @@ static void print_tftpc_menu (void)
 	buart_print ("\n\r [B]: Update bootloader");
 	//buart_print ("\n\r [A]: Update all");
 	buart_print ("\n\r [X]: exit");
-	buart_print ("\n\rEnter your option:");
+	buart_print ("\n\rEnter your option: ");
 }
 
 void tftp_client_menu (void)
@@ -106,7 +106,7 @@ static void print_xmodem_menu (void)
 	buart_print ("\n\r [B]: Update bootloader");
 	buart_print ("\n\r [S]: Update system");
 	buart_print ("\n\r [X]: Exit");
-	buart_print ("\n\rEnter your option:");
+	buart_print ("\n\rEnter your option: ");
 }
 
 void xmodem_client_menu (void)
@@ -149,7 +149,7 @@ static void print_flash_menu (void)
 	buart_print ("\n\r [A]: Erase entire flash, scan for bad blocks, and mark them");
 	buart_print ("\n\r [C]: Create bad blocks");
 	buart_print ("\n\r [X]: Exit");
-	buart_print ("\n\rEnter your option:");
+	buart_print ("\n\rEnter your option: ");
 }
 
 void flash_client_menu (void)
@@ -318,7 +318,7 @@ void c_entry (void)
 
 	// Карта памяти
 	/*char buf[10] = {0};
-	buart_print ("\n\rMemory map:");
+	buart_print ("\n\rMemory map: ");
 	buart_print ("\n\r EXCEP:     0x");
 	ultoa (LINUXLD_SDRAM_START, buf);
 	buart_print (buf);
