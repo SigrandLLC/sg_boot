@@ -152,9 +152,11 @@ void Set_Mac (void)
 		mactmp[17] = '\0';
 		buart_print ("\n\rCurrent mac addres: ");
 		buart_print (mactmp);
+#ifndef NO_NUMBER_OF_MACS
 		buart_print ("\n\r");
 		buart_print ("Number of mac address: ");
 		buart_put (macnum + '0');
+#endif
 	}
 
 mac_again:
@@ -176,6 +178,7 @@ mac_again:
 	}
 
 num_again:
+#ifndef NO_NUMBER_OF_MACS
 	buart_print ("Enter new number of mac address (between 1-8): ");
 	newmacnum = buart_getchar ();
 	buart_put (newmacnum);
@@ -192,6 +195,9 @@ num_again:
 		macnum = newmacnum;
 		flags |= FLAG_MAC_NUM_MODIFIED;
 	}
+#else
+	macnum = 1;
+#endif
 
 	if ((flags & FLAG_MAC_MODIFIED) || ((flags & FLAG_OLD_MAC_VALID) && (flags & FLAG_MAC_NUM_MODIFIED)))
 	{
@@ -285,15 +291,19 @@ void PrintBspParam (void)
 	if (bsp_GetMacBase (buf, &macnum) != 0)
 	{
 		buart_print ("\n\rMac address:");
+#ifndef NO_NUMBER_OF_MACS
 		buart_print ("\n\rNumber of Mac addresses: 0");
+#endif
 	} else
 	{
 		mactostr (buf, mactmp);
 		mactmp[17] = '\0';
 		buart_print ("\n\rMac address:");
 		buart_print (mactmp);
+#ifndef NO_NUMBER_OF_MACS
 		buart_print ("\n\rNumber of Mac addresses:");
 		buart_put (macnum + '0');
+#endif
 	}
 
 	/* Print IP for TFTP Download */
