@@ -363,7 +363,7 @@ int set_tftpc_param (void)
 
 servip_again:
 	buf[0] = 0;
-	buart_print ("\n\r\n\rPlease Enter TFTP Server IP : ");
+	buart_print ("\n\r\n\rEnter TFTP Server IP: ");
 	ReadLine (buf, BOOT_LINE_SIZE);
 	if (buf[0] != 0)
 	{
@@ -381,11 +381,11 @@ servip_again:
 		cfg->tftp_param.server_ip = servip;
 	} else
 	{
-		buart_print ("Server IP unchanged..\n\r");
+		buart_print ("Server IP unchanged.\n\r");
 	}
 gwip_again:
 	buf[0] = 0;
-	buart_print ("\n\rPlease enter gateway IP : ");
+	buart_print ("\n\rEnter gateway IP: ");
 	ReadLine (buf, BOOT_LINE_SIZE);
 	if (buf[0] != 0)
 	{
@@ -395,11 +395,12 @@ gwip_again:
 			goto gwip_again;
 		}
 
-		if (check_ip (gwip, HOST_IP_FLAG))
-		{
-			buart_print ("Invalid IP address.\n\r");
-			goto gwip_again;
-		}
+		if (gwip != 0) // 0.0.0.0 is correct gateway address
+			if (check_ip (gwip, HOST_IP_FLAG))
+			{
+				buart_print ("Invalid IP address.\n\r");
+				goto gwip_again;
+			}
 		cfg->tftp_param.gw_ip = gwip;
 	} else
 	{
