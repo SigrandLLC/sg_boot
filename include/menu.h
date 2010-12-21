@@ -10,7 +10,7 @@ typedef void (*func_void_t)(void);
 typedef struct
 {
 	const char *line;
-	char key0, key1;
+	char key;
 
 	func_void_t func_void;
 

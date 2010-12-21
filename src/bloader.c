@@ -189,13 +189,13 @@ static void reset(void)
 
 static menu_entry_t main_menu[] =
 {
-	{ .key0 = '1', .line = "Xmodem download"  , .func_void = xmodem_client_menu },
-	{ .key0 = '2', .line = "TFTP download"    , .func_void = tftp_client_menu },
-	{ .key0 = '3', .line = "Print boot params", .func_void = PrintBspParam },
-	{ .key0 = '4', .line = "Set boot params"  , .func_void = (func_void_t)set_boot_param },
-	{ .key0 = '5', .line = "Flash operations" , .func_void = flash_client_menu },
-	{ .key0 = '6', .line = "Reset"            , .func_void = reset },
-	{ .line = NULL }
+	{ .key = '1', .line = "Xmodem download"  , .func_void = xmodem_client_menu },
+	{ .key = '2', .line = "TFTP download"    , .func_void = tftp_client_menu },
+	{ .key = '3', .line = "Print boot params", .func_void = PrintBspParam },
+	{ .key = '4', .line = "Set boot params"  , .func_void = (func_void_t)set_boot_param },
+	{ .key = '5', .line = "Flash operations" , .func_void = flash_client_menu },
+	{ .key = '6', .line = "Reset"            , .func_void = reset },
+	{ .key = '\0' }
 };
 
 // This routine prints the main menu
