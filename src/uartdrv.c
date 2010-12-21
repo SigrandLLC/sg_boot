@@ -11,6 +11,7 @@
 #include <buart.h>
 #include <uartdrv.h>
 #include <timer.h>
+#include <string.h> // strncpy
 
 #include <bconfig.h>
 

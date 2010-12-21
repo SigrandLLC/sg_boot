@@ -8,12 +8,12 @@
 ;*****************************************************************************/
 
 #include <ctype.h>
+#include <string.h> // memcpy
 #include <mips.h>
 #include <mips4kc.h>
 #include <adm5120.h>
 #include <except.h>
-
-#include <ctype.h>
+#include <cachelib.h>
 
 #define MIPS_INT_UNREGISTERD	0
 #define MIPS_INT_REGISTERD		1
@@ -111,7 +111,7 @@ void install_exception (void)
 		addr += 0x10;
 	}
 #else
-	icache_invalidate_block (MIPS_TLBRIFLL_VECTOR, len);
+	icache_invalidate_block ((void*)MIPS_TLBRIFLL_VECTOR, len);
 #endif
 
 #endif
@@ -128,7 +128,7 @@ void install_exception (void)
 		addr += 0x10;
 	}
 #else
-	icache_invalidate_block (MIPS_GENERAL_VECTOR, len);
+	icache_invalidate_block ((void*)MIPS_GENERAL_VECTOR, len);
 #endif
 #endif
 
@@ -143,7 +143,7 @@ void install_exception (void)
 		addr += 0x10;
 	}
 #else
-	icache_invalidate_block (MIPS_INTERRUPT_VECTOR, len);
+	icache_invalidate_block ((void*)MIPS_INTERRUPT_VECTOR, len);
 #endif
 
 #endif

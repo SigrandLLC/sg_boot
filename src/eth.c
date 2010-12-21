@@ -7,6 +7,7 @@
 ;
 ;*****************************************************************************/
 #include <ctype.h>
+#include <string.h> // memcpy
 #include <irqlib.h>
 #include <memlib.h>
 #include <eth.h>

@@ -1,4 +1,5 @@
 #include <ctype.h>
+#include <string.h> // memset
 #include <mips.h>
 #include <mips4kc.h>
 #include <adm5120.h>

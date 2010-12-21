@@ -7,6 +7,7 @@
 ;
 ;*****************************************************************************/
 #include <ctype.h>
+#include <stdlib.h> // rand
 #include <adm5120.h>
 #include <irqlib.h>
 #include <mips4kc.h>

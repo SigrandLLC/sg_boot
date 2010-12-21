@@ -1,5 +1,6 @@
 #include <tftp.h>
 #include <ctype.h>
+#include <string.h> // strlen strncpy memcpy
 #include <skbuff.h>
 #include <eth.h>
 #include <arp.h>

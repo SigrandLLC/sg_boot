@@ -1,4 +1,5 @@
 #include <ctype.h>
+#include <string.h> // strlen strcpy memcpy
 #include <param.h>
 #include <utils.h>
 #include <memlib.h>

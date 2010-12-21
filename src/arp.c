@@ -1,4 +1,5 @@
 #include <ctype.h>
+#include <string.h> // memset memcpy
 #include <skbuff.h>
 #include <eth.h>
 #include <arp.h>

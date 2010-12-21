@@ -1,4 +1,5 @@
 #include <ctype.h>
+#include <string.h> // memset
 #include <skbuff.h>
 
 //static struct sk_buff skbuff[2];
