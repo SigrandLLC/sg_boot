@@ -32,6 +32,7 @@ extern void _icache_sync_all (void);
 
 
 
+//+ tftp menu
 #if 0 // too dangerous and useless
 void tftpc_download_all(void)
 {
@@ -39,6 +40,7 @@ void tftpc_download_all(void)
 	tftpc_download (TFTP_LOAD_LINUX);
 }
 #endif
+
 static menu_entry_t tftpc_menu[] =
 {
 	{ .key = 'P', .line = "Set parameters"   , .func_void = (menu_func_void_t)set_tftpc_param },
@@ -48,13 +50,16 @@ static menu_entry_t tftpc_menu[] =
 	{ .key = 'X', .line = "Exit"             , .func_int  = menu_exit },
 	{ .key = '\0' }
 };
+
 void tftp_client_menu (void)
 {
 	//print_tftpc_param (); FIXME: print at start of each menu loop
 	menu_do_all("TFTP Client Menu", tftpc_menu);
 }
+//- tftp menu
 
 
+//+ xmodem menu
 extern int update_bootloader ();
 extern int xmodem_download (void);
 
@@ -70,60 +75,32 @@ void xmodem_client_menu (void)
 {
 	menu_do_all("Xmodem Client Menu", xmodem_menu);
 }
+//+ xmodem menu
 
-static void print_flash_menu (void)
+
+//+ flash menu
+static void flash_erase_all_scan_bad(void)
 {
-	buart_print ("\n\rFlash Client Menu");
-	buart_print ("\n\r===============================");
-	buart_print ("\n\r [P]: Print existent bad blocks");
-	buart_print ("\n\r [E]: Erase entire flash");
-	buart_print ("\n\r [A]: Erase entire flash, scan for bad blocks, and mark them");
-	buart_print ("\n\r [C]: Create bad blocks");
-	buart_print ("\n\r [X]: Exit");
-	buart_print ("\n\rEnter your option: ");
+	flash_erase_all ();
+	find_bad_blocks ();
 }
+
+static menu_entry_t flash_menu[] =
+{
+	{ .key = 'P', .line = "Print existent bad blocks", .func_void = check_for_bad },
+	{ .key = 'C', .line = "Create bad blocks"        , .func_void = create_bad_blocks },
+	{ .key = 'E', .line = "Erase entire flash"       , .func_void = flash_erase_all },
+	{ .key = 'A', .line = "Erase entire flash, scan for bad blocks, and mark them"
+							 , .func_void = flash_erase_all_scan_bad },
+	{ .key = 'X', .line = "Exit"                     , .func_int  = menu_exit },
+	{ .key = '\0' }
+};
 
 void flash_client_menu (void)
 {
-	char key;
-	while (1)
-	{
-		print_flash_menu ();
-		key = buart_getchar ();
-		buart_put (key);
-		switch (key)
-		{
-			case 'P':
-			case 'p':
-				check_for_bad ();
-				break;
-
-			case 'E':
-			case 'e':
-				flash_erase_all ();
-				break;
-
-			case 'A':
-			case 'a':
-				flash_erase_all ();
-				find_bad_blocks ();
-				break;
-
-			case 'C':
-			case 'c':
-				create_bad_blocks ();
-				break;
-
-			case 'X':
-			case 'x':
-				return;
-
-			default:
-				break;
-		}
-	}
-
+	menu_do_all("Flash Client Menu", flash_menu);
 }
+//- flash menu
 
 
 //+ main menu
@@ -143,6 +120,7 @@ static menu_entry_t main_menu[] =
 	{ .key = '\0' }
 };
 //- main menu
+
 
 // This routine is the C entry pointer of the loader
 void c_entry (void)
