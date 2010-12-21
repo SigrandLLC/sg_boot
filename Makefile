@@ -41,6 +41,8 @@ CC_FLAG 	= $(ENDIAN_FG) -Wcomment -O2 -Wall
 CPU_FLAG	= -mips32
 INCLUDE_DIR	= -I. -I./include
 
+ALL_C_FLAGS	= $(CC_FLAG) $(INCLUDE_DIR) $(CPU_FLAG) $(EXT_DEF) $(EXTRA_DEFINE)
+
 OBJ_DIR = ./build
 BIN_DIR = ./bin
 SRC_DIR = ./src
@@ -69,6 +71,10 @@ EXEC_OBJS = $(addprefix $(OBJ_DIR)/,$(exec_objs))
 
 EXEC_NAME_RAM = nand_bootmain_ram
 EXEC_OBJS_RAM = $(EXEC_OBJS)
+
+
+ALL_OBJS = $(BOOT_OBJS) $(BOOT_OBJS_RAM) $(EXEC_OBJS)
+
 
 ROM_NAME = nandloader
 RAM_NAME = nandloader_ram
@@ -136,32 +142,57 @@ $(MAIN_RAM_IMG) : $(EXEC_OBJS_RAM) $(OBJ_DIR_STAMP)
 	$(v)$(OBJCOPY) -O binary $(OBJ_DIR)/$(EXEC_NAME_RAM).elf $@
 
 
-$(OBJ_DIR_STAMP) :
+%/.dir :
 	@echo "> Creating directory $@"
 	$(v)$(MKDIR_P)        $(dir $@)
 	$(v)touch                   $@
 
-$(BIN_DIR_STAMP) :
-	@echo "> Creating directory $@"
-	$(v)$(MKDIR_P)        $(dir $@)
-	$(v)touch                   $@
 
-$(TFTPBOOT_STAMP) :
-	@echo "> Creating directory $@"
-	$(v)$(MKDIR_P)        $(dir $@)
-	$(v)touch                   $@
 
 $(OBJ_DIR)/%.o : $(SRC_DIR)/%.c $(OBJ_DIR_STAMP)
 	@echo "> Compiling $< to $@"
-	$(v)$(CC) $(CC_FLAG) $(INCLUDE_DIR) $(CPU_FLAG) $(EXT_DEF) $(EXTRA_DEFINE) -c $< -o $@
+	$(v)$(CC) $(ALL_C_FLAGS)  -c $< -o $@
 
 $(OBJ_DIR)/%.o : $(SRC_DIR)/%.S $(OBJ_DIR_STAMP)
 	@echo "> Compiling $< to $@"
-	$(v)$(CC) $(CC_FLAG) $(INCLUDE_DIR) $(CPU_FLAG) $(EXT_DEF) $(EXTRA_DEFINE) -c $< -o $@
+	$(v)$(CC) $(ALL_C_FLAGS) -c $< -o $@
 
 
 .PHONY : clean
 clean:
 	@echo "> Cleaning $(OBJ_DIR) $(BIN_DIR)"
 	$(v)$(RM_R)       $(OBJ_DIR) $(BIN_DIR)
+
+
+#+ dependencies generation
+deps = $(patsubst %.o,%.dep,$(ALL_OBJS))
+#$(warning deps: $(deps))
+
+dep_gen_cmd_tail = -M $(ALL_C_FLAGS) -w $< > $@.tmp.dep \
+	&& sed '\''s!$(subst .,\.,$*.o) *:!$(patsubst %.dep,%.o,$@) $(patsubst %.dep,%.lo,$@) $@ $(patsubst %.dep,%.s,$@):!g'\'' \
+	   < $@.tmp.dep > $@.tmp2.dep \
+	&& $(MV) $@.tmp2.dep $@ && $(RM) $@.tmp.dep; } \
+	|| $(RM) $@ $@.tmp.dep $@.tmp.dep
+
+  c_deps_gen_cmd = $(SHELL) -ec '{ $(CC)  -D__GENDEPS__ $(dep_gen_cmd_tail)'
+
+
+$(OBJ_DIR)/%.o: $(OBJ_DIR)/%.dep
+
+$(OBJ_DIR)/%.dep: $(SRC_DIR)/%.c $(OBJ_DIR_STAMP)
+	@echo "> Generating dependencies for $<"; \
+		$(c_deps_gen_cmd)
+
+ifeq "$(deps)" ""
+  DONT_INCLUDE_DEPS = defined
+endif
+
+ifneq "$(filter %clean dist% none,$(MAKECMDGOALS))" ""
+  DONT_INCLUDE_DEPS = defined
+endif
+
+ifndef DONT_INCLUDE_DEPS
+  -include $(deps)
+endif
+#- dependencies generation
 
