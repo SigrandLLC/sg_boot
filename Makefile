@@ -1,3 +1,15 @@
+# Don't define any builtin rules and variables.
+MAKEFLAGS := $(MAKEFLAGS)R
+
+# Delete default suffixes
+.SUFFIXES:
+
+# Delete default rules
+.DEFAULT:
+
+#.DEFAULT:
+#	$(error no rules for target $@)
+
 # Set V=something for verbose building messages
 #V = 1
 v = $(if $(V),,@)
