@@ -32,6 +32,11 @@ extern void _icache_sync_all (void);
 
 
 
+static void reset(void)
+{
+	ADM5120_SW_REG (SftRest_REG) = SOFTWARE_RESET;
+}
+
 //+ tftp menu
 #if 0 // too dangerous and useless
 void tftpc_download_all(void)
@@ -48,6 +53,7 @@ static menu_entry_t tftpc_menu[] =
 	{ .key = 'B', .line = "Update Bootloader", .func_int  = tftpc_download, .int_data = TFTP_LOAD_BOOTLOADER },
 //	{ .key = 'A', .line = "Update All"       , .func_void = tftpc_download_all },
 	{ .key = 'X', .line = "Exit"             , .func_int  = menu_exit },
+	{ .key = 'R', .line = "Reset"            , .func_void = reset },
 	{ .key = '\0' }
 };
 
@@ -68,6 +74,7 @@ static menu_entry_t xmodem_menu[] =
 	{ .key = 'B', .line = "Update bootloader", .func_void = (menu_func_void_t)update_bootloader },
 	{ .key = 'S', .line = "Update system"    , .func_void = (menu_func_void_t)xmodem_download },
 	{ .key = 'X', .line = "Exit"             , .func_int  = menu_exit },
+	{ .key = 'R', .line = "Reset"            , .func_void = reset },
 	{ .key = '\0' }
 };
 
@@ -93,6 +100,7 @@ static menu_entry_t flash_menu[] =
 	{ .key = 'A', .line = "Erase entire flash, scan for bad blocks, and mark them"
 							 , .func_void = flash_erase_all_scan_bad },
 	{ .key = 'X', .line = "Exit"                     , .func_int  = menu_exit },
+	{ .key = 'R', .line = "Reset"                    , .func_void = reset },
 	{ .key = '\0' }
 };
 
@@ -104,11 +112,6 @@ void flash_client_menu (void)
 
 
 //+ main menu
-static void reset(void)
-{
-	ADM5120_SW_REG (SftRest_REG) = SOFTWARE_RESET;
-}
-
 static menu_entry_t main_menu[] =
 {
 	{ .key = '1', .line = "Xmodem download"  , .func_void = xmodem_client_menu },
