@@ -35,7 +35,7 @@ int tftp_send_ack (int block)
 	return 0;
 }
 
-int tftp_send_rrq (UINT32 servip, char *filename)
+int tftp_send_rrq (UINT32 servip, const char *filename)
 {
 	struct sk_buff skb;
 	char *temp;
