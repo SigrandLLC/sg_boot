@@ -18,7 +18,7 @@ void menu_print(const menu_entry_t *menu)
 	}
 }
 
-int menu_call(const menu_entry_t *menu)
+menu_rc_t menu_call(const menu_entry_t *menu)
 {
 	char c = buart_getchar ();
 	buart_put (c);
@@ -32,10 +32,21 @@ int menu_call(const menu_entry_t *menu)
 				menu->func_void();
 
 			if (menu->func_int != NULL)
-				menu->func_int(menu->int_data);
+			{
+				menu_rc_t rc = menu->func_int(menu->int_data);
+                                return rc;
+			}
+
+                        return MENU_DONE;
 		}
 	}
 
-	return -1;
+	return MENU_KEY_NOT_FOUND;
+}
+
+menu_rc_t menu_exit (int data)
+{
+        (void)data;
+        return MENU_EXIT;
 }
 
