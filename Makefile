@@ -107,7 +107,7 @@ install : rom_img_install ram_img_install
 
 
 rom_img_install : $(BOOT_IMG) $(MAIN_IMG) $(ROM_IMG) $(TFTPBOOT_STAMP)
-	@echo "> Copying $@ to $(TFTPBOOT)"
+	@echo "> Copying $(ROM_IMG) to $(TFTPBOOT)"
 	$(v)$(CP) $(ROM_IMG) $(TFTPBOOT)
 
 $(ROM_IMG) : $(BOOT_IMG) $(MAIN_IMG) $(BIN_DIR_STAMP)
@@ -131,7 +131,7 @@ $(MAIN_IMG) : $(EXEC_OBJS) $(OBJ_DIR_STAMP)
 
 
 ram_img_install : $(BOOT_RAM_IMG) $(MAIN_RAM_IMG) $(RAM_IMG) $(TFTPBOOT_STAMP)
-	@echo "> Copying $@ to $(TFTPBOOT)"
+	@echo "> Copying $(RAM_IMG) to $(TFTPBOOT)"
 	$(v)$(CP) $(RAM_IMG) $(TFTPBOOT)
 
 $(RAM_IMG) : $(BOOT_RAM_IMG) $(MAIN_RAM_IMG) $(BIN_DIR_STAMP)
