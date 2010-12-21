@@ -17,6 +17,7 @@
 #include <ctype.h>
 #include <mips.h>
 #include <mips4kc.h>
+#include <nand.h>
 #include "ftl-port.h"	//porting by ProChao, 10/8/2003
 
 void nand_calculate_ecc (const u_char *, u_char *);

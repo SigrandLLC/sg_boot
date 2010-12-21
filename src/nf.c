@@ -1,4 +1,6 @@
 #include <ctype.h>
+#include <nf.h>
+#include <nand.h>
 
 // флаг wp работает совсем не так, как я ожидал, он защищает всю флешку, а не
 // определённые сектора, но написанный функционал я оставлю, он никому не мешает
@@ -18,8 +20,8 @@ int nf_erase (UINT8 *addr, UINT32 len, UINT8 wp)
 
 int nf_write (UINT8 *dst, UINT8 *src, UINT32 len, UINT8 wp)
 {
-	char buf[10] = {0};
-	/*buart_print ("\n\rnf_write call: dst = 0x");
+	/*char buf[10] = {0};
+	buart_print ("\n\rnf_write call: dst = 0x");
 	ultoa (dst, buf);
 	buart_print (buf);
 	buart_print (", len = 0x");
@@ -38,8 +40,8 @@ int nf_write_boot (UINT8 *dst, UINT8 *src, UINT32 len)
 
 int nf_read (UINT8 *dst, UINT8 *src, UINT32 len)
 {
-	char buf[10] = {0};
-	/*buart_print ("\n\rnf_read call: src = 0x");
+	/*char buf[10] = {0};
+	buart_print ("\n\rnf_read call: src = 0x");
 	ultoa (src, buf);
 	buart_print (buf);
 	buart_print (", len = 0x");

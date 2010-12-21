@@ -33,6 +33,9 @@ typedef struct _IRQ_OBJ_
 
 
 /* exported functions */
+
+int sys_irq_init (void);
+
 // extern int disable_int(void);
 // extern void restore_int(int);
 

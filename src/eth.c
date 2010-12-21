@@ -10,14 +10,15 @@
 #include <irqlib.h>
 #include <memlib.h>
 #include <eth.h>
+#include <arp.h>
 #include <skbuff.h>
 #include <if_5120.h>
+#include <param.h>
+#include <utils.h>
+#include <except.h>
 
 #define DEF_BRG_CTRL_FLAG			0x00
 
-
-// Imported Function
-extern void panic (void);
 
 #ifdef DBG_OUT_SUPPORT
 extern void DbgUartPutStr (const char *);
@@ -85,7 +86,7 @@ int eth_reinit (void)
 
 int eth_send (struct sk_buff *skb, unsigned char *dest_addr, unsigned short proto)
 {
-	int s, i;
+	int i;
 	UINT8 *buf;
 	PDRV_PACKET_DESC Pkt;
 	struct ethhdr *eth_hdr;
@@ -113,13 +114,14 @@ int eth_send (struct sk_buff *skb, unsigned char *dest_addr, unsigned short prot
 	}
 
 	SendPacketsL (Pkt);
+	return 0;
 }
 
 int eth_rcv (struct sk_buff *skb)
 {
 	static int rxcount = 0;
 	PDRV_PACKET_DESC Pkt;
-	UINT32 srcport, srcvlan;
+	UINT32 srcport;
 	UINT8 *buf;
 	int irq_state;
 

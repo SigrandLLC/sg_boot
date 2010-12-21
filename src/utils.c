@@ -1,4 +1,5 @@
 #include <ctype.h>
+#include <utils.h>
 
 unsigned short ntohs (unsigned short s)
 {
@@ -139,7 +140,7 @@ void IpAddrToStr (UINT32 tmp_ip, char *str)
 	char s[3];
 	for (i = 0; i < 4; i++)
 	{
-		tmp = (int) (tmp_ip >> 32 - (i + 1)*8) & 0x000000ff;
+		tmp = (int) (tmp_ip >> (32 - (i + 1)*8)) & 0x000000ff;
 		while (1)
 		{
 			remainder = tmp % 10;

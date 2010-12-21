@@ -15,6 +15,8 @@
 #include <mips4kc.h>
 #include <adm5120.h>
 #include <linuxld.h>
+#include <utils.h>
+#include <buart.h>
 #include "nand.h"
 #include "ftl-port.h"	//porting by ProChao, 10/8/2003
 
@@ -93,6 +95,7 @@ static void nand_hwcontrol (int cmd)
 	}
 }
 
+#if 0 // unused
 static UINT8 nand_read_byte (void)
 {
 	return *base; // readb( base);
@@ -103,6 +106,7 @@ static void nand_write_byte (UINT8 byte)
 	*base = byte;
 	//writeb( byte, base);
 }
+#endif
 
 static void nand_select_chip (int chip)
 {
@@ -119,6 +123,7 @@ static void nand_select_chip (int chip)
 	}
 }
 
+#if 0 // unused
 // send command to the NAND device
 
 static void nand_command (unsigned command, int column, int page_addr)
@@ -194,6 +199,7 @@ static void nand_command (unsigned command, int column, int page_addr)
 			for (j = 0; j < 1000; j++);
 	}
 }
+#endif // nand_command unused3
 
 // при выбранном кристалле читает одну страницу в буфер
 // при oob == 1 читает ещё и OOB
@@ -429,7 +435,7 @@ static int
 nand_read_ecc (loff_t from, size_t len, size_t * retlen, u_char * buf,
 	struct nand_oobinfo *oobsel)
 {
-	int j, col, page, eccmode, *oob_config;
+	int j, page, eccmode, *oob_config;
 	int read = 0, ecc_status = 0, ecc_failed = 0;
 	u_char ecc_calc[6], ecc_code[6];
 
@@ -628,7 +634,7 @@ static int nand_write_ecc (loff_t to, size_t len, size_t * retlen, const u_char 
 		/* Increment page address */
 		page++;
 	}
-out:
+//out:
 	// clear the WP
 	/*// *(base + NAND_CLR_WP_REG) = 1;
 	// De-select the NAND device
@@ -744,7 +750,7 @@ void nand_write_boot (UINT8 *dst, UINT8 *src, UINT32 len)
 // всех блоков после форматирования. Если хоть один бит в блоке = 0,
 // значит блок плохой, и его следует пометить таковым.
 
-void scan_bad_blocks ()
+void scan_bad_blocks (void)
 {
 	UINT32 j, src, page, block, bad = 0;
 	// *(base + NAND_SET_WP_REG) = 1;

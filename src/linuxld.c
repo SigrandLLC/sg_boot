@@ -12,6 +12,7 @@
 #include <hw_profile.h>
 #include <bconfig.h>
 #include <nand.h>
+#include <nf.h>
 #include <img_header.h>
 #include <xmodem.h>
 #include <uartdrv.h>
@@ -19,6 +20,8 @@
 #include <zlib.h>
 #include <linuxld.h>
 #include <memlib.h>
+#include <tftp.h>
+#include <timer.h>
 
 /* linux boot defined */
 #define LINUX_ENTRY_POINT		LINUXLD_KERNEL_START - 0xa0000000 + 0x800006d8
@@ -45,8 +48,8 @@ char *fail = "FAIL";
 
 int ungzip (Byte * compr);
 extern void _icache_sync_all (void);
-void jump_up_map ();
-void jump_low_map ();
+void jump_up_map (void);
+void jump_low_map (void);
 
 void flash_erase_all (void)
 {
@@ -61,7 +64,7 @@ void check_for_bad (void)
 	check_bad_block ();
 }
 
-void find_bad_blocks ()
+void find_bad_blocks (void)
 {
 	buart_print ("\n\rScaning flash.......\n\r");
 	scan_bad_blocks ();
@@ -73,7 +76,7 @@ void create_bad_blocks (void)
 	bad_block ();
 }
 
-int update_bootloader ()
+int update_bootloader (void)
 {
 	void *flash = (void *) LINUXLD_NANDFLASH_LOADER_START;
 	char *image = (char *) LINUXLD_DOWNLOAD_START;
@@ -113,7 +116,7 @@ ok:
 int tftpc_download (int mode)
 {
 	void *flash;
-	char *image, lenstr[9];
+	char *image/*, lenstr[9]*/;
 	UINT32 len, image_size;
 
 	switch (mode)
@@ -220,14 +223,14 @@ int xmodem_download (void)
 
 fail:
 	buart_print (fail);
-	rc = -1;
+	return -1;
 }
 
 // linux boot function
 
-void boot_linux ()
+void boot_linux (void)
 {
-	int status, x;
+	int status;
 	void (*funcptr)(void);
 	buart_print ("\n\rBooting Linux... ");
 
@@ -248,6 +251,7 @@ void boot_linux ()
 	DisableTimer ();
 
 	/*char buf[10] = {0}, *kbuf = (char *) LINUXLD_KERNEL_START;
+	int x;
 	for (x = 0; x < 0x1000; x++)
 	{
 		if (x % 16 == 0) buart_print ("\n\r");
@@ -286,7 +290,8 @@ int ungzip (unsigned char *zimg)
 
 	if ((gzflags & EXTRA_FIELD) != 0)
 	{ /* skip the extra field */
-		i = (*zimg++) + (*zimg++) << 8;
+		i =  (*zimg++);
+		i += (*zimg++) << 8;
 		while ((i-- != 0) && (*zimg++) != Z_EOF);
 	}
 

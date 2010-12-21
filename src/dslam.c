@@ -2,6 +2,7 @@
 #include <adm5120.h>
 #include <mips4kc.h>
 #include <adm5120sw.h>
+#include <param.h>
 
 struct dslam_env
 {
@@ -290,7 +291,8 @@ int ProgramVlanMac (int vlan, char *Mac, int clear)
 void store_vlan2port ()
 {
 	UINT32 vlanGrp = 0xff;
-	UINT32 vlan_val = 0, macnum = 0;
+	UINT32 vlan_val = 0;
+	int macnum = 0;
 	UINT8 mac[8] = {0};
 
 	bsp_GetMacBase (mac, &macnum);

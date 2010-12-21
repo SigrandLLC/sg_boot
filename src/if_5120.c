@@ -13,6 +13,10 @@
 #include <cachelib.h>
 #include <memlib.h>
 #include <if_5120.h>
+#include <eth.h>
+#include <except.h>
+#include <param.h>
+#include <buart.h>
 
 
 /********************  Some Constants *****************/
@@ -392,7 +396,7 @@ static void ProcessTxLInt (void)
 /**********************************************************************************/
 void SendPacketsL (PDRV_PACKET_DESC Pkt)
 {
-	UINT32 Idx, IdxNext, reg;
+	UINT32 Idx, IdxNext;
 	UINT32 TxCnt = 0;
 	TX_DESC_T *TxDesc;
 	UINT8 *buf;
@@ -536,7 +540,6 @@ inline void SetPktAlign (PDRV_PACKET_DESC Pkt)
 int if5120_init (void)
 {
 	int i, eth_num;
-	static int init = 0;
 	UINT32 reg1, reg2;
 	UINT8 MacAddr[6];
 
@@ -700,7 +703,7 @@ void Am5120_RefreePkt (PDRV_PACKET_DESC Pkt)
 /***** Switch Interrupt Handler ******************************************************/
 void Am5120Isr (int intLev)
 {
-	UINT32 IntReg, IntMask, reg;
+	UINT32 IntReg, IntMask/*, reg*/;
 	int LoopCnt = 0, RxFull = 0;
 
 	// Disable Switch Interrupts

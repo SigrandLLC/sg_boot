@@ -6,6 +6,11 @@
 #include <ip.h>
 #include <udp.h>
 #include <if_5120.h>
+#include <utils.h>
+#include <buart.h>
+#include <param.h>
+#include <timer.h>
+#include <except.h>
 
 static UINT32 remote_ip; // TFTP server ip
 static UINT32 gw_ip;	// TFTP server gateway ip
@@ -21,7 +26,7 @@ int tftp_send_ack (int block)
 	skb_headerinit (&skb);
 	udp_skb_reserve (&skb);
 	tftp_ack = (struct tftphdr *) skb_put (&skb, sizeof (struct tftphdr));
-	tftp_ack->th_opcode = htons (ACK);
+	tftp_ack->th_opcode = htons (TFTP_ACK);
 	tftp_ack->th_block = htons (block);
 
 	udp_send (&skb, remote_ip, TFTP, remote_port);
@@ -35,14 +40,14 @@ int tftp_send_rrq (UINT32 servip, char *filename)
 	char *temp;
 	unsigned int rrqlen;
 	short *opCode;
-	int fileNameLen, i;
+	int fileNameLen;
 	skb_headerinit (&skb);
 	udp_skb_reserve (&skb);
 	temp = (char *) skb.data;
 
 	// operating code
 	opCode = (short *) temp;
-	*opCode = htons (RRQ);
+	*opCode = htons (TFTP_RRQ);
 	temp += 2;
 
 	// remote file name
@@ -71,6 +76,8 @@ int tftp_send_rrq (UINT32 servip, char *filename)
 	udp_send (&skb, remote_ip, TFTP, remote_port);
 	return 0;
 }
+
+int tftp_rcv_packet (struct sk_buff *skb); // forward declaration
 
 int rcv_imgpkt (char *buf, int *buf_len)
 {
@@ -102,7 +109,7 @@ int tftp_rcv_packet (struct sk_buff *skb)
 	if (udp_rcv_packet (skb) == 1)
 	{
 		tftp_hdr = (struct tftphdr *) skb->data;
-		if (ntohs (tftp_hdr->th_opcode) == DATA)
+		if (ntohs (tftp_hdr->th_opcode) == TFTP_DATA)
 		{
 			if (remote_ip != ip_get_source_ip (skb))
 			{
@@ -137,7 +144,7 @@ UINT32 tftpc (char *buf, int buf_size, int mode)
 	if (get_tftp_param (&servip, &gwip, servfile, mode) != 0)
 	{
 		buart_print ("\n\rTFTP Server IP or Filename Error.");
-		return;
+		return 0;
 	}
 
 	gw_ip = gwip;

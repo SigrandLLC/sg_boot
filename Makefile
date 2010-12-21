@@ -37,7 +37,7 @@ else
 $(error BYTE_ORDER != LITTLE_ENDIAN)
 endif
 
-CC_FLAG 	= $(ENDIAN_FG) -Wcomment -O2
+CC_FLAG 	= $(ENDIAN_FG) -Wcomment -O2 -Wall
 CPU_FLAG	= -mips32
 INCLUDE_DIR	= -I. -I./include
 

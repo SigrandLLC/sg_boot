@@ -7,3 +7,5 @@ int mips_int_enable(int intnum);
 int mips_int_disable(int intnum);
 int mips_int_lock(void);
 void mips_int_unlock(int s);
+void panic (void);
+void install_exception (void);

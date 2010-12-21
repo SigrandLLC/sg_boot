@@ -91,7 +91,7 @@ void gexcept_hdl (UINT32 status_reg, UINT32 cause_reg, UINT32 epc_reg)
 void install_exception (void)
 {
 	static int installed = 0;
-	UINT32 status_val, addr;
+	UINT32 status_val/*, addr*/;
 	int len;
 
 	extern char TLBrefill_except[], TLBrefill_exceptEnd[];

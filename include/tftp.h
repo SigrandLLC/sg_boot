@@ -1,6 +1,8 @@
 #ifndef __TFTP_H
 #define	__TFTP_H
 
+#include <ctype.h> // UINT32 tftpc (...
+
 /*
  * Trivial File Transfer Protocol (IEN-133)
  */
@@ -9,11 +11,11 @@
 /*
  * Packet types.
  */
-#define	RRQ		01				/* read request */
-#define	WRQ		02				/* write request */
-#define	DATA	03				/* data packet */
-#define	ACK		04				/* acknowledgement */
-#define	ERROR	05				/* error code */
+#define	TFTP_RRQ	01				/* read request */
+#define	TFTP_WRQ	02				/* write request */
+#define	TFTP_DATA	03				/* data packet */
+#define	TFTP_ACK	04				/* acknowledgement */
+#define	TFTP_ERROR	05				/* error code */
 
 /*
  * TFTP state
@@ -59,7 +61,9 @@ struct tftphdr
 /*
  * Function prototypes
  */
-void tftp_client_download (void);
+void   tftp_init (void);
+UINT32 tftpc (char *buf, int buf_size, int mode);
+
 
 #endif /* __TFTP_H */
 

@@ -13,5 +13,12 @@ void Set_If_config (void);
 int check_ip (unsigned long, int);
 
 void PrintBspParam (void);
-int set_boot_param (void);
+int  set_boot_param (void);
+void print_tftpc_param (void);
+int  set_tftpc_param (void);
+int  get_tftp_param (UINT32 *servip, UINT32 *gwip, char *servfile, int mode);
+int  boot_param_init (void);
+int  bsp_GetMacBase (UINT8 *buf, int *macnum);
+int  bsp_GetTftpIp  (UINT32 *tftpip);
+int  bsp_GetGwIp (UINT32 *gwip);
 

@@ -1,10 +1,16 @@
 #include <ctype.h>
 #include <param.h>
+#include <utils.h>
+#include <memlib.h>
 #include <uartdrv.h>
 #include <bsp_cfg.h>
 #include <adm5120.h>
 #include <linuxld.h>
 #include <mips4kc.h>
+#include <nf.h>
+#include <arp.h>
+#include <ip.h>
+#include <udp.h>
 /*****************************************************************************************/
 void Set_Board_SerialNo (void);
 void Set_Board_Version (void);
@@ -76,7 +82,7 @@ int set_boot_param (void)
 
 int bsp_SetMac (UINT8 *mac, int macnum)
 {
-	int len, i;
+	int i;
 	UINT32 sum;
 
 	if ((mac == NULL) || (macnum < 1) || (macnum > BSP_MAX_MAC_NUM))
@@ -118,8 +124,6 @@ int bsp_SetMac (UINT8 *mac, int macnum)
 
 int bsp_GetMacBase (UINT8 *buf, int *macnum)
 {
-	int len;
-
 	if (buf == NULL) return -1;
 
 	if (cfg->macmagic != MAC_MAGIC) return -1;
@@ -137,8 +141,11 @@ void Set_Mac (void)
 	char buf[BOOT_LINE_SIZE + 1];
 	char mac[8];
 	char mactmp[] = "00-00-00-00-00-00-";
-	int macnum, newmacnum, i;
+	int macnum, i;
 	int flags = 0;
+#ifndef NO_NUMBER_OF_MACS
+	int newmacnum;
+#endif
 
 #define FLAG_OLD_MAC_VALID		1
 #define FLAG_MAC_MODIFIED		2
@@ -177,8 +184,8 @@ mac_again:
 		flags |= FLAG_MAC_MODIFIED;
 	}
 
-num_again:
 #ifndef NO_NUMBER_OF_MACS
+num_again:
 	buart_print ("Enter new number of MAC address (between 1-8): ");
 	newmacnum = buart_getchar ();
 	buart_put (newmacnum);
@@ -213,7 +220,7 @@ num_again:
 		{
 			memcpy (mactmp, cfg->mac, 6);
 			ProgramMac (0, mactmp); // Change current MAC addr.
-			eth_reinit (mactmp);
+			eth_reinit ();
 			buart_print ("\n\rMAC address updated successfully.");
 		}
 	} else

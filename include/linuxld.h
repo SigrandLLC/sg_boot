@@ -83,7 +83,18 @@ extern "C"
 #define LINUXLD_NANDFLASH_KERNEL_START		(LINUXLD_NANDFLASH_BOOTPARAM_START + LINUXLD_NANDFLASH_BOOTPARAM_SIZE)
 
 
+#ifndef __ASSEMBLER__
+int  tftpc_download    (int mode);
+void check_for_bad     (void);
+void flash_erase_all   (void);
+void find_bad_blocks   (void);
+void create_bad_blocks (void);
+void boot_linux        (void);
+#endif
+
 #endif /* _LINUXLD_H */
+
+
 
 #if __cplusplus
 }

@@ -10,6 +10,7 @@
 #include <adm5120.h>
 #include <buart.h>
 #include <uartdrv.h>
+#include <timer.h>
 
 #include <bconfig.h>
 
@@ -80,7 +81,7 @@ int InitUart (int port, int rate)
  * OUTPUT:
  * RETURN:
  *--------------------------------------------------------------*/
-void buart_init ()
+void buart_init (void)
 {
 	InitUart (UART_PORT0, 115200);
 }
@@ -127,7 +128,7 @@ void buart_set_baud (int baud_rate)
  * RETURN:   -1      -- BUSY
  *           else    -- byte received
  *--------------------------------------------------------------*/
-static int buart_read ()
+static int buart_read (void)
 {
 	UINT32 uartfr;
 	UINT32 uartsr, data;
@@ -190,7 +191,7 @@ static int buart_write (char c)
  * INPUT:    *ptr    -- string to print
  *
  *----------------------------------------------------------------------*/
-void buart_print (char *str)
+void buart_print (const char *str)
 {
 	for (; *str; str++)
 	{

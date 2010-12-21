@@ -24,6 +24,7 @@ struct iphdr
 } __attribute__ ((packed));
 
 int ip_init (void);
+int ip_reinit (unsigned long ip);
 int ip_rcv_packet (struct sk_buff *skb);
 int ip_send (struct sk_buff *skb, unsigned long ip, unsigned char proto);
 void ip_skb_reserve (struct sk_buff *skb);

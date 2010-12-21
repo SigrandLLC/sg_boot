@@ -12,6 +12,7 @@
 #define  __UARTDRV_H__
 
 #include <ctype.h>
+#include <buart.h>
 
 #define UART_PORT0			0
 #define UART_PORT1			1

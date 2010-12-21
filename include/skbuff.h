@@ -20,5 +20,6 @@ unsigned char *skb_put (struct sk_buff *skb, unsigned int len);
 unsigned char *skb_push (struct sk_buff *skb, unsigned int len);
 unsigned char *skb_pull (struct sk_buff *skb, unsigned int len);
 void skb_reserve (struct sk_buff *skb, unsigned int len);
+void skb_headerinit (struct sk_buff *skb);
 
 #endif	/* __SKBUFF_H */

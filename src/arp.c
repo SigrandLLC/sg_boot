@@ -2,6 +2,8 @@
 #include <skbuff.h>
 #include <eth.h>
 #include <arp.h>
+#include <param.h>
+#include <utils.h>
 
 #define ARP_CACHE_SIZE	16
 

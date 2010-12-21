@@ -1,7 +1,10 @@
 #include <skbuff.h>
 #include <eth.h>
+#include <arp.h>
 #include <ip.h>
 #include <checksum.h>
+#include <param.h>
+#include <utils.h>
 
 static UINT32 local_ip = 0;
 static UINT32 gw_ip = 0;

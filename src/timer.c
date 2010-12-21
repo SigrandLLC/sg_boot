@@ -1,6 +1,7 @@
 #include <ctype.h>
 #include <mips4kc.h>
 #include <adm5120.h>
+#include <timer.h>
 
 static UINT32 timeticks = 0;
 

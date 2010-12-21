@@ -333,5 +333,15 @@ typedef struct _TRANS_ENTRY_
 #define PACKAGE_BGA
 //#define PACKAGE_PQNP
 
+
+int  if5120_init   (void);
+void if5120turnon  (void);
+void if5120shutdown(void);
+PDRV_PACKET_DESC Am5120_GetFreePkt (void);
+void Am5120_RefreePkt (PDRV_PACKET_DESC Pkt);
+void SendPacketsL (PDRV_PACKET_DESC Pkt);
+int ProgramMac (int vlan, UINT8 *Mac);
+
+
 #endif
 

@@ -12,6 +12,10 @@
 #include <bsp_cfg.h>
 #include <dslam.h>
 #include <menu.h>
+#include <memlib.h>
+#include <timer.h>
+#include <except.h>
+#include <tftp.h>
 
 #define VERSION "1.3"
 

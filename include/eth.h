@@ -54,12 +54,17 @@ struct ethhdr
 
 struct sk_buff;
 
-int eth_init (void);
-int eth_send (struct sk_buff *skb, unsigned char *dest_addr, unsigned short proto);
-int eth_rcv (struct sk_buff *skb);
-int eth_get_addr (unsigned char *addr);
-void eth_skb_reserve (struct sk_buff *skb);
+int eth_init  (void);
+int eth_reinit(void);
+int eth_send  (struct sk_buff *skb, unsigned char *dest_addr, unsigned short proto);
+int eth_rcv   (struct sk_buff *skb);
+int eth_rcv_packet  (struct sk_buff *skb);
+int eth_get_addr    (unsigned char *addr);
+void eth_skb_reserve(struct sk_buff *skb);
 void eth_exit (void);
+
+void IndicateRxPacketL (PDRV_PACKET_DESC Pkt);
+UINT32 InitEthPktQueue (void);
 
 #define ETH_HDR_LEN		14
 #define ETH_DASA_LEN	12

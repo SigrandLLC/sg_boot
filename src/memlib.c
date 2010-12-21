@@ -138,8 +138,7 @@ void zFree (voidpf opaque, voidpf address)
 /****************************************************************************/
 void memlib_init (void)
 {
-	int s, i;
-	unsigned long reg_offset, reg;
+	int s;
 	_heap_h = (void *) LINUXLD_MEMPOOL_START;
 	s = mips_int_lock ();
 

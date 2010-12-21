@@ -7,10 +7,11 @@ extern "C" {
 
 #include <zlib.h>
 
-extern void *MemAlloc(UINT32 NumOfByte, UINT32 clear);
-extern void *SharedMemAlloc(UINT32 NumOfByte, UINT32 clear);
+void memlib_init (void);
+void *MemAlloc(UINT32 NumOfByte, UINT32 clear);
+void *SharedMemAlloc(UINT32 NumOfByte, UINT32 clear);
 voidpf zAlloc (voidpf opaque, uInt items, uInt size);
-void zFree (voidpf opaque, voidpf address);
+void   zFree  (voidpf opaque, voidpf address);
 
 #endif
 
