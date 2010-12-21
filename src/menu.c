@@ -52,6 +52,7 @@ menu_rc_t menu_exit (int data)
 
 void menu_print_header(const char *header)
 {
+	buart_print ("\n\r");
 	buart_print ("\n\r"); buart_print (header);
 	buart_print ("\n\r=====================================");
 }
