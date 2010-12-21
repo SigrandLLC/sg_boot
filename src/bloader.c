@@ -85,45 +85,34 @@ void tftp_client_menu (void)
 
 }
 
+extern int update_bootloader ();
+extern int xmodem_download (void);
+
+static menu_entry_t xmodem_menu[] =
+{
+	{ .key = 'B', .line = "Update bootloader", .func_void = (menu_func_void_t)update_bootloader },
+	{ .key = 'S', .line = "Update system"    , .func_void = (menu_func_void_t)xmodem_download },
+	{ .key = 'X', .line = "Exit"             , .func_int  = menu_exit },
+	{ .key = '\0' }
+};
 static void print_xmodem_menu (void)
 {
 	buart_print ("\n\rXmodem Client Menu");
 	buart_print ("\n\r===============================");
-	buart_print ("\n\r [B]: Update bootloader");
-	buart_print ("\n\r [S]: Update system");
-	buart_print ("\n\r [X]: Exit");
+	menu_print(xmodem_menu);
 	buart_print ("\n\rEnter your option: ");
 }
 
 void xmodem_client_menu (void)
 {
-	char key;
 	while (1)
 	{
+		menu_rc_t rc;
 		print_xmodem_menu ();
-		key = buart_getchar ();
-		buart_put (key);
-		switch (key)
-		{
-			case 'B':
-			case 'b':
-				update_bootloader ();
-				break;
-
-			case 'S':
-			case 's':
-				xmodem_download ();
-				break;
-
-			case 'X':
-			case 'x':
-				return;
-
-			default:
-				break;
-		}
+		rc = menu_call(xmodem_menu);
+		if (rc == MENU_EXIT)
+                        return;
 	}
-
 }
 
 static void print_flash_menu (void)
@@ -192,7 +181,7 @@ static menu_entry_t main_menu[] =
 	{ .key = '1', .line = "Xmodem download"  , .func_void = xmodem_client_menu },
 	{ .key = '2', .line = "TFTP download"    , .func_void = tftp_client_menu },
 	{ .key = '3', .line = "Print boot params", .func_void = PrintBspParam },
-	{ .key = '4', .line = "Set boot params"  , .func_void = (func_void_t)set_boot_param },
+	{ .key = '4', .line = "Set boot params"  , .func_void = (menu_func_void_t)set_boot_param },
 	{ .key = '5', .line = "Flash operations" , .func_void = flash_client_menu },
 	{ .key = '6', .line = "Reset"            , .func_void = reset },
 	{ .key = '\0' }
