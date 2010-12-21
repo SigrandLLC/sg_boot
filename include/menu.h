@@ -25,9 +25,11 @@ typedef struct
         //int (*func)(char key/*, void* data*/);
 } menu_entry_t;
 
-void      menu_print(const menu_entry_t *menu_array);
-menu_rc_t menu_call (const menu_entry_t *menu_array);
-menu_rc_t menu_exit (int);
+void      menu_print_header (const char *header);
+void      menu_print_entries(const menu_entry_t *menu_array);
+menu_rc_t menu_call(const menu_entry_t *menu_array);
+menu_rc_t menu_exit(int);
+void      menu_do_all(const char *header, const menu_entry_t *menu);
 
 
 #endif

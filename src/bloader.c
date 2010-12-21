@@ -99,24 +99,10 @@ static menu_entry_t xmodem_menu[] =
 	{ .key = 'X', .line = "Exit"             , .func_int  = menu_exit },
 	{ .key = '\0' }
 };
-static void print_xmodem_menu (void)
-{
-	buart_print ("\n\rXmodem Client Menu");
-	buart_print ("\n\r===============================");
-	menu_print(xmodem_menu);
-	buart_print ("\n\rEnter your option: ");
-}
 
 void xmodem_client_menu (void)
 {
-	while (1)
-	{
-		menu_rc_t rc;
-		print_xmodem_menu ();
-		rc = menu_call(xmodem_menu);
-		if (rc == MENU_EXIT)
-                        return;
-	}
+	menu_do_all("Xmodem Client Menu", xmodem_menu);
 }
 
 static void print_flash_menu (void)
@@ -190,23 +176,9 @@ static menu_entry_t main_menu[] =
 	{ .key = '6', .line = "Reset"            , .func_void = reset },
 	{ .key = '\0' }
 };
-
-// This routine prints the main menu
-static void print_menu ()
-{
-	buart_print ("\n\r"
-		"\n\rADM5120 based router:"
-		"\n\r=================================="
-		"\n\rBootloader Menu");
-
-        menu_print(main_menu);
-
-	buart_print ("\n\rPlease enter your number: ");
-}
 //- main menu
 
 // This routine is the C entry pointer of the loader
-
 void c_entry (void)
 {
 	int i, c, countdown = 3;
@@ -370,10 +342,7 @@ void c_entry (void)
 	buart_print (buf);*/
 
 	//Bootloader Function Start.
-	while (1)
-	{
-		print_menu ();
-                menu_call(main_menu);
-	}
+        while (1)
+		menu_do_all("ADM5120 based router: Bootloader Menu", main_menu);
 }
 

@@ -7,7 +7,7 @@ extern inline char toupper(char c)
     return c >= 'a' && c <= 'z' ? c - 32 : c;
 }
 
-void menu_print(const menu_entry_t *menu)
+void menu_print_entries(const menu_entry_t *menu)
 {
 	for ( ; menu->line != NULL; ++menu)
 	{
@@ -48,5 +48,24 @@ menu_rc_t menu_exit (int data)
 {
         (void)data;
         return MENU_EXIT;
+}
+
+void menu_print_header(const char *header)
+{
+	buart_print ("\n\r"); buart_print (header);
+	buart_print ("\n\r=====================================");
+}
+
+void menu_do_all(const char *header, const menu_entry_t *menu)
+{
+	while (1)
+	{
+                menu_print_header(header);
+		menu_print_entries(menu);
+		buart_print("\n\rEnter your option: ");
+
+		if (menu_call(menu) == MENU_EXIT)
+			return;
+	}
 }
 
