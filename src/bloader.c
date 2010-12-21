@@ -32,62 +32,28 @@ extern void _icache_sync_all (void);
 
 
 
-static void print_tftpc_menu (void)
+#if 0 // too dangerous and useless
+void tftpc_download_all(void)
 {
-	buart_print ("\n\rTFTP Client Menu");
-	buart_print ("\n\r===============================");
-	buart_print ("\n\r [P]: Set parameters");
-	buart_print ("\n\r [S]: Update system");
-	buart_print ("\n\r [B]: Update bootloader");
-	//buart_print ("\n\r [A]: Update all");
-	buart_print ("\n\r [X]: exit");
-	buart_print ("\n\rEnter your option: ");
+	tftpc_download (TFTP_LOAD_BOOTLOADER);
+	tftpc_download (TFTP_LOAD_LINUX);
 }
-
+#endif
+static menu_entry_t tftpc_menu[] =
+{
+	{ .key = 'P', .line = "Set parameters"   , .func_void = (menu_func_void_t)set_tftpc_param },
+	{ .key = 'S', .line = "Update OS    "    , .func_int  = tftpc_download, .int_data = TFTP_LOAD_LINUX },
+	{ .key = 'B', .line = "Update Bootloader", .func_int  = tftpc_download, .int_data = TFTP_LOAD_BOOTLOADER },
+//	{ .key = 'A', .line = "Update All"       , .func_void = tftpc_download_all },
+	{ .key = 'X', .line = "Exit"             , .func_int  = menu_exit },
+	{ .key = '\0' }
+};
 void tftp_client_menu (void)
 {
-	char key;
-	while (1)
-	{
-		print_tftpc_param ();
-		print_tftpc_menu ();
-		key = buart_getchar ();
-		buart_put (key);
-		switch (key)
-		{
-			case 'B':
-			case 'b':
-				tftpc_download (TFTP_LOAD_BOOTLOADER);
-				break;
-
-			case 'S':
-			case 's':
-				tftpc_download (TFTP_LOAD_LINUX);
-				break;
-
-#if 0 // too dangerous and useless
-			case 'A':
-			case 'a':
-				tftpc_download (TFTP_LOAD_BOOTLOADER);
-				tftpc_download (TFTP_LOAD_LINUX);
-				break;
-#endif
-
-			case 'P':
-			case 'p':
-				set_tftpc_param ();
-				break;
-
-			case 'X':
-			case 'x':
-				return;
-
-			default:
-				break;
-		}
-	}
-
+	//print_tftpc_param (); FIXME: print at start of each menu loop
+	menu_do_all("TFTP Client Menu", tftpc_menu);
 }
+
 
 extern int update_bootloader ();
 extern int xmodem_download (void);
