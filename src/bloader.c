@@ -59,8 +59,7 @@ static menu_entry_t tftpc_menu[] =
 
 void tftp_client_menu (void)
 {
-	//print_tftpc_param (); FIXME: print at start of each menu loop
-	menu_do_all("TFTP Client Menu", tftpc_menu);
+	menu_do_all("TFTP Client Menu", print_tftpc_param, tftpc_menu);
 }
 //- tftp menu
 
@@ -80,7 +79,7 @@ static menu_entry_t xmodem_menu[] =
 
 void xmodem_client_menu (void)
 {
-	menu_do_all("Xmodem Client Menu", xmodem_menu);
+	menu_do_all("Xmodem Client Menu", NULL, xmodem_menu);
 }
 //+ xmodem menu
 
@@ -106,7 +105,7 @@ static menu_entry_t flash_menu[] =
 
 void flash_client_menu (void)
 {
-	menu_do_all("Flash Client Menu", flash_menu);
+	menu_do_all("Flash Client Menu", NULL, flash_menu);
 }
 //- flash menu
 
@@ -290,6 +289,6 @@ void c_entry (void)
 
 	//Bootloader Function Start.
         while (1)
-		menu_do_all("ADM5120 based router: Bootloader Menu", main_menu);
+		menu_do_all("ADM5120 based router: Bootloader Menu", NULL, main_menu);
 }
 
