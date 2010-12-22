@@ -59,19 +59,19 @@ extern "C"
 
 #define RUNTIME_IMG_ADDR		(LINUXLD_LOADER_START + 0x1000)
 
-	/********************************************************************************************
-	#### System Map (NAND Flash) ####
+/********************************************************************************************
+#### System Map (NAND Flash) ####
 
-						+-------------------------+  LINUXLD_NANDFLASH_LOADER_START
-						|	Linuxld (64k)		  |
-						+-------------------------+  LINUXLD_NANDFLASH_BOOTPARAM_START
-						|	Boot param (64k)	  |
-						+-------------------------+  LINUXLD_NANDFLASH_KERNEL_START
-						|						  |
-						|	Linux kernel (20MB)	  |
-						|						  |
-						+-------------------------+
-	 *********************************************************************************************/
+	+-------------------------+  LINUXLD_NANDFLASH_LOADER_START
+	|       Linuxld (64k)     |
+	+-------------------------+  LINUXLD_NANDFLASH_BOOTPARAM_START
+	|       Boot param (64k)  |
+	+-------------------------+  LINUXLD_NANDFLASH_KERNEL_START
+	|                         |
+	| Linux kernel (20MB)     |
+	|                         |
+	+-------------------------+
+ *********************************************************************************************/
 
 #define LINUXLD_NANDFLASH_LOADER_SIZE		0x18000
 #define LINUXLD_NANDFLASH_BOOTPARAM_SIZE	0x8000
