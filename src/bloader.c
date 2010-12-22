@@ -114,12 +114,12 @@ void flash_client_menu (void)
 //+ main menu
 static menu_entry_t main_menu[] =
 {
-	{ .key = '1', .line = "Xmodem download"  , .func_void = xmodem_client_menu },
-	{ .key = '2', .line = "TFTP download"    , .func_void = tftp_client_menu },
-	{ .key = '3', .line = "Print boot params", .func_void = PrintBspParam },
-	{ .key = '4', .line = "Set boot params"  , .func_void = (menu_func_void_t)set_boot_param },
-	{ .key = '5', .line = "Flash operations" , .func_void = flash_client_menu },
-	{ .key = '6', .line = "Reset"            , .func_void = reset },
+	{ .key = 'M', .line = "Xmodem download"  , .func_void = xmodem_client_menu },
+	{ .key = 'T', .line = "TFTP download"    , .func_void = tftp_client_menu },
+	{ .key = 'P', .line = "Print boot params", .func_void = PrintBspParam },
+	{ .key = 'S', .line = "Set boot params"  , .func_void = (menu_func_void_t)set_boot_param },
+	{ .key = 'F', .line = "Flash operations" , .func_void = flash_client_menu },
+	{ .key = 'R', .line = "Reset"            , .func_void = reset },
 	{ .key = '\0' }
 };
 //- main menu
