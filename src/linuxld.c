@@ -232,14 +232,20 @@ void boot_linux (void)
 {
 	int status;
 	void (*funcptr)(void);
-	buart_print ("\n\rBooting Linux... ");
+	buart_print ("\n\rReading Linux... ");
+	status = nf_read ((UINT8 *) LINUXLD_DOWNLOAD_START, (UINT8 *) LINUXLD_NANDFLASH_KERNEL_START, LINUX_IMAGE_SIZE);
+	if (status==0)
+	{
+		buart_print (pass);
+	}
+	else
+	{
+		buart_print (fail);
+		return;
+	}
 
-	// NAND flash cannot ungzip kernel as directly as NOR flash.
-	// NAND flash "must" copy kernel to sdram first.
-
-	nf_read ((UINT8 *) LINUXLD_DOWNLOAD_START, (UINT8 *) LINUXLD_NANDFLASH_KERNEL_START, LINUX_IMAGE_SIZE);
 	// decompressing
-	buart_print ("\n\rKernel decompress... "); //okay!");
+	buart_print ("\n\rDecompress Linux... ");
 	status = ungzip ((unsigned char *) LINUXLD_DOWNLOAD_START);
 
 	if (status != Z_OK) // failed in unzipping
@@ -266,6 +272,7 @@ void boot_linux (void)
 	funcptr = (void *) LINUX_ENTRY_POINT;
 	_icache_sync_all ();
 
+	buart_print ("\n\rBooting Linux... ");
 	buart_print ("\n\r\n\r");
 
 	funcptr ();
