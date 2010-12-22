@@ -25,13 +25,13 @@ FLASH_TYPE = NAND_FLASH
 LOADER_OFFSET = 0x80800000
 RUNTIME_OFFSET = 0x80801000
 
-CROSS_TOOLS = $(HOME)/gnutools/mipsisa32-elf/bin/mipsisa32-elf
-AS	= $(CROSS_TOOLS)-as
-CC	= $(CROSS_TOOLS)-gcc
-LD	= $(CROSS_TOOLS)-ld
-AR	= $(CROSS_TOOLS)-ar
-OBJCOPY	= $(CROSS_TOOLS)-objcopy
-OBJDUMP	= $(CROSS_TOOLS)-objdump
+CROSS_PREFIX ?= $(HOME)/gnutools/mipsisa32-elf/bin/mipsisa32-elf-
+AS	= $(CROSS_PREFIX)as
+CC	= $(CROSS_PREFIX)gcc
+LD	= $(CROSS_PREFIX)ld
+AR	= $(CROSS_PREFIX)ar
+OBJCOPY	= $(CROSS_PREFIX)objcopy
+OBJDUMP	= $(CROSS_PREFIX)objdump
 
 RM	= rm $(if $(V),-v) -f
 RM_R	= rm $(if $(V),-v) -fr
