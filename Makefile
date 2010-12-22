@@ -1,6 +1,3 @@
-BYTE_ORDER = LITTLE_ENDIAN
-FLASH_TYPE = NAND_FLASH
-
 # These values must conform to linuxld.h content
 # LOADER_OFFSET = 0x80002000
 #RUNTIME_OFFSET = 0x80003000
@@ -36,30 +33,19 @@ OBJCOPY	= $(CROSS_PREFIX)objcopy
 OBJDUMP	= $(CROSS_PREFIX)objdump
 
 #============================ Tools ==================================
-RM	= rm $(if $(V),-v) -f
-RM_R	= rm $(if $(V),-v) -fr
-MV	= mv $(if $(V),-v)
-CP	= mv $(if $(V),-v)
+RM	= rm    $(if $(V),-v) -f
+RM_R	= rm    $(if $(V),-v) -fr
+MV	= mv    $(if $(V),-v)
+CP	= mv    $(if $(V),-v) -a
 MKDIR   = mkdir $(if $(V),-v)
 MKDIR_P = mkdir $(if $(V),-v) -p
 
 #=======================  Endian dependance  =========================
-ifeq "$(BYTE_ORDER)" "LITTLE_ENDIAN"
-  CCBYTE_ORDER = little-endian
   ENDIAN_FG = -EL
   LIB_PATH = -L./lib/el
-  EDIR = el
-else ifeq "$(BYTE_ORDER)" "BIG_ENDIAN"
-  CCBYTE_ORDER = big-endian
-  ENDIAN_FG = -EB
-  LIB_PATH = -L./lib/eb
-  EDIR = eb
-else
-  $(error Unknown BYTE_ORDER: $(BYTE_ORDER))
-endif
 
 #=======================  Compiler Flags  ============================
-CC_FLAG 	= $(ENDIAN_FG) -Wcomment -O2 -Wall -W
+CC_FLAG 	= -Wa,$(ENDIAN_FG) -Wcomment -O2 -Wall -W # -Os
 CPU_FLAG	= -mips32
 INCLUDE_DIR	= -I./include
 
