@@ -91,14 +91,14 @@ int update_bootloader (void)
 
 	/* erase flash */
 	buart_print ("\n\rEraseing flash.......");
-	if (nf_erase (flash, len, 0) != 0)
+	if (nf_erase (flash, len, 0) < 0)
 		goto fail;
 	else
 		buart_print (pass);
 
 	/* write flash */
 	buart_print ("\n\rProgramming flash....");
-	if (nf_write_boot ((UINT8 *) flash, image, len) != 0)
+	if (nf_write_boot ((UINT8 *) flash, image, len) < 0)
 		goto fail;
 	else
 		buart_print (pass);
@@ -158,7 +158,7 @@ int tftpc_download (int mode)
 
 
 	if (nf_erase (flash, (mode == TFTP_LOAD_LINUX) ?
-		(NAND_FLASH_SIZE - LINUXLD_NANDFLASH_KERNEL_START) : len, 0) != 0)
+		(NAND_FLASH_SIZE - LINUXLD_NANDFLASH_KERNEL_START) : len, 0) < 0)
 	{
 		buart_print (fail);
 		return -1;
@@ -171,13 +171,13 @@ int tftpc_download (int mode)
 
 	if (mode == TFTP_LOAD_BOOTLOADER)
 	{
-		if (nf_write_boot (flash, image, len))
+		if (nf_write_boot (flash, image, len) < 0)
 		{
 			buart_print (fail);
 			return -1;
 		}
 	} else
-		if (nf_write (flash, image, len, 0) != 0)
+		if (nf_write (flash, image, len, 0) < 0)
 	{
 		buart_print (fail);
 		return -1;
@@ -206,7 +206,7 @@ int xmodem_download (void)
 	/* erase flash */
 	buart_print ("\n\rEraseing flash.......");
 
-	if (nf_erase (flash, len, 0) != 0)
+	if (nf_erase (flash, len, 0) < 0)
 		goto fail;
 
 	buart_print (pass);
@@ -214,7 +214,7 @@ int xmodem_download (void)
 	/* write flash */
 	buart_print ("\n\rProgramming flash....");
 
-	if (nf_write (flash, image, len, 0) != 0)
+	if (nf_write (flash, image, len, 0) < 0)
 		goto fail;
 
 	buart_print (pass);
@@ -233,16 +233,15 @@ void boot_linux (void)
 	int status;
 	void (*funcptr)(void);
 	buart_print ("\n\rReading Linux... ");
-	status = nf_read ((UINT8 *) LINUXLD_DOWNLOAD_START, (UINT8 *) LINUXLD_NANDFLASH_KERNEL_START, LINUX_IMAGE_SIZE);
-	if (status==0)
-	{
-		buart_print (pass);
-	}
-	else
+	status = nf_read ((UINT8 *) LINUXLD_DOWNLOAD_START,
+			  (UINT8 *) LINUXLD_NANDFLASH_KERNEL_START,
+			  LINUX_IMAGE_SIZE);
+	if (status < 0)
 	{
 		buart_print (fail);
 		return;
 	}
+	buart_print (pass);
 
 	// decompressing
 	buart_print ("\n\rDecompress Linux... ");

@@ -191,14 +191,14 @@ void c_entry (void)
 	}
 
 	// Read the Network configuration data.
-	if (boot_param_init () != 0)
+	if (boot_param_init () < 0)
 	{
 		buart_print ("\n\rRead bsp error.");
 		panic ();
 	}
 
 	// Init Switch.
-	if (if5120_init () != 0)
+	if (if5120_init () < 0)
 	{
 		buart_print ("\n\rSwitch init error.");
 		panic ();

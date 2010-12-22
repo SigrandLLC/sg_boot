@@ -648,17 +648,16 @@ int nand_read (UINT8 *dst, UINT8 *src, UINT32 len)
 {
 	size_t retlen;
 
-	if (nand_read_ecc ((loff_t) src, (size_t) len, &retlen, (u_char *) dst, &oobinfo_buf))
-		buart_print ("\n\rOne or more bad pages detected. Check flash for bad blocks.");
-	return (int) retlen;
+	int rc = nand_read_ecc ((loff_t) src, (size_t) len, &retlen, (u_char *) dst, &oobinfo_buf);
+	return rc < 0 ? rc : retlen;
 }
 
 int nand_write (UINT8 *dst, UINT8 *src, UINT32 len, UINT8 wp)
 {
 	size_t retlen;
 
-	nand_write_ecc ((loff_t) dst, (size_t) len, &retlen, (const u_char *) src, &oobinfo_buf, wp);
-	return (int) retlen;
+	int rc = nand_write_ecc ((loff_t) dst, (size_t) len, &retlen, (const u_char *) src, &oobinfo_buf, wp);
+	return rc < 0 ? rc : retlen;
 }
 
 // note that, the addr must be the block starting address

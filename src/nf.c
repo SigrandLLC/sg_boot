@@ -14,8 +14,7 @@ int nf_erase (UINT8 *addr, UINT32 len, UINT8 wp)
 	ultoa (len, buf);
 	buart_print (buf);*/
 
-	nand_erase (addr, len, wp);
-	return 0;
+	return nand_erase (addr, len, wp);
 }
 
 int nf_write (UINT8 *dst, UINT8 *src, UINT32 len, UINT8 wp)
@@ -28,8 +27,7 @@ int nf_write (UINT8 *dst, UINT8 *src, UINT32 len, UINT8 wp)
 	ultoa (len, buf);
 	buart_print (buf);*/
 
-	int rc = nand_write (dst, src, len, wp);
-	return rc == len ? 0 : -1;
+	return nand_write (dst, src, len, wp);
 }
 
 int nf_write_boot (UINT8 *dst, UINT8 *src, UINT32 len)
@@ -48,7 +46,6 @@ int nf_read (UINT8 *dst, UINT8 *src, UINT32 len)
 	ultoa (len, buf);
 	buart_print (buf);*/
 
-	int rc = nand_read (dst, src, len);
-	return rc == len ? 0 : -1;
+	return nand_read (dst, src, len);
 }
 

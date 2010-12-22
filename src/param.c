@@ -60,7 +60,7 @@ int set_boot_param (void)
 	Set_TFTP_IP ();
 
 	/* Before Write back, backup original content */
-	if (nf_read (image, (char *) LINUXLD_NANDFLASH_BOOTPARAM_START, LINUXLD_NANDFLASH_BOOTPARAM_SIZE) != 0)
+	if (nf_read (image, (char *) LINUXLD_NANDFLASH_BOOTPARAM_START, LINUXLD_NANDFLASH_BOOTPARAM_SIZE) < 0)
 	{
 		buart_print ("\n\rRead buffer error!!");
 		return -1;
@@ -68,9 +68,9 @@ int set_boot_param (void)
 	memcpy (image, (char *) cfg, sizeof (BOARD_CFG_T));
 
 	/* Write back new parameter to flash */
-	if (nf_erase ((char *) LINUXLD_NANDFLASH_BOOTPARAM_START, LINUXLD_NANDFLASH_BOOTPARAM_SIZE, 1) != 0) // параметры write protected
+	if (nf_erase ((char *) LINUXLD_NANDFLASH_BOOTPARAM_START, LINUXLD_NANDFLASH_BOOTPARAM_SIZE, 1) < 0) // параметры write protected
 		buart_print ("\n\rErase flash error.");
-	else if (nf_write ((char *) LINUXLD_NANDFLASH_BOOTPARAM_START, image, LINUXLD_NANDFLASH_BOOTPARAM_SIZE, 1) != 0)
+	else if (nf_write ((char *) LINUXLD_NANDFLASH_BOOTPARAM_START, image, LINUXLD_NANDFLASH_BOOTPARAM_SIZE, 1) < 0)
 		buart_print ("\n\rWrite flash error.");
 	if (cfg->tftploipmagic == TFTPLOIPMAGIC && cfg->macmagic == MAC_MAGIC)
 		arp_add_entry (cfg->mac, cfg->tftp_param.local_ip);
@@ -447,7 +447,7 @@ linuxname_again:
 	cfg->tftpmagic = TFTPMAGIC;
 
 	/* Before Write back, backup original content */
-	if (nf_read (image, (char *) LINUXLD_NANDFLASH_BOOTPARAM_START, LINUXLD_NANDFLASH_BOOTPARAM_SIZE) != 0)
+	if (nf_read (image, (char *) LINUXLD_NANDFLASH_BOOTPARAM_START, LINUXLD_NANDFLASH_BOOTPARAM_SIZE) < 0)
 	{
 		buart_print ("\n\rRead buffer error!!");
 		return -1;
@@ -455,9 +455,9 @@ linuxname_again:
 	memcpy (image, (char *) cfg, sizeof (BOARD_CFG_T));
 
 	/* Write back new parameter to flash */
-	if (nf_erase ((char *) LINUXLD_NANDFLASH_BOOTPARAM_START, LINUXLD_NANDFLASH_BOOTPARAM_SIZE, 1) != 0) // параметры write protected
+	if (nf_erase ((char *) LINUXLD_NANDFLASH_BOOTPARAM_START, LINUXLD_NANDFLASH_BOOTPARAM_SIZE, 1) < 0) // параметры write protected
 		buart_print ("\n\rErase flash error.");
-	else if (nf_write ((char *) LINUXLD_NANDFLASH_BOOTPARAM_START, image, LINUXLD_NANDFLASH_BOOTPARAM_SIZE, 1) != 0)
+	else if (nf_write ((char *) LINUXLD_NANDFLASH_BOOTPARAM_START, image, LINUXLD_NANDFLASH_BOOTPARAM_SIZE, 1) < 0)
 		buart_print ("\n\rWrite flash error.");
 
 	buart_print ("\n\r");
