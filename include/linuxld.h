@@ -63,19 +63,19 @@ extern "C"
 #### System Map (NAND Flash) ####
 
 	+-------------------------+  LINUXLD_NANDFLASH_LOADER_START
-	|       Linuxld (64k)     |
+	|       Linuxld (96k)     |
 	+-------------------------+  LINUXLD_NANDFLASH_BOOTPARAM_START
-	|       Boot param (64k)  |
+	|       Boot param (32k)  |
 	+-------------------------+  LINUXLD_NANDFLASH_KERNEL_START
 	|                         |
-	| Linux kernel (20MB)     |
+	| Linux kernel (4MB)      |
 	|                         |
 	+-------------------------+
  *********************************************************************************************/
 
-#define LINUXLD_NANDFLASH_LOADER_SIZE		0x18000
-#define LINUXLD_NANDFLASH_BOOTPARAM_SIZE	0x8000
-#define LINUXLD_NANDFLASH_KERNEL_SIZE		0x400000 // Т.к. нам нужно загрузить только ядро, этого достаточно
+#define LINUXLD_NANDFLASH_LOADER_SIZE		0x018000 // 96 Kb old: 0x14000 // 80 Kb
+#define LINUXLD_NANDFLASH_BOOTPARAM_SIZE	0x008000 // 32 Kb old: 0x0C000 // 48 Kb
+#define LINUXLD_NANDFLASH_KERNEL_SIZE		0x400000 // 4MB, enough for kernel, old: 2MB
 
 
 #define LINUXLD_NANDFLASH_LOADER_START		0x0
