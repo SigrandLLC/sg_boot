@@ -706,6 +706,7 @@ void Am5120Isr (int intLev)
 {
 	UINT32 IntReg, IntMask/*, reg*/;
 	int LoopCnt = 0, RxFull = 0;
+	(void)intLev;
 
 	// Disable Switch Interrupts
 	ADM5120_SW_REG (SW_Int_mask_REG) = 0xFFFFFFF;
@@ -719,10 +720,10 @@ void Am5120Isr (int intLev)
 	IntReg = ifp->IntStatus | (IntReg & AM5120_INT_MASK);
 	while (IntReg && LoopCnt < MAX_INT_LOOP_CNT)
 	{
-		//		if(IntReg &  GLOBAL_QUE_FULL_INT) ifp->DropFlag = TRUE;
+		//if(IntReg &  GLOBAL_QUE_FULL_INT) ifp->DropFlag = TRUE;
 		//buart_put('I');
-		if (IntReg & LINK_INT); //ProcessLinkInt(ifp);
-		if (IntReg & TX_H_INT); //ProcessTxHInt(ifp);
+		//if (IntReg & LINK_INT) ProcessLinkInt(ifp);
+		//if (IntReg & TX_H_INT) ProcessTxHInt(ifp);
 		if (IntReg & TX_L_INT) ProcessTxLInt ();
 		if (IntReg & RX_H_INT)
 		{

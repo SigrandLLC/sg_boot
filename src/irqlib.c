@@ -166,6 +166,7 @@ static void irq_handler (int intnum)
 	UINT32 intsrc;
 	int i;
 	IRQ_OBJ *pIRQ;
+	(void)intnum;
 
 	intsrc = ADM5120_INTC_REG (IRQ_STATUS_REG) & IRQ_MASK;
 	for (i = 0; intsrc; intsrc >>= 1, i++)
@@ -192,6 +193,7 @@ void fiq_handler (int intnum)
 	UINT32 intsrc;
 	IRQ_OBJ *pIRQ;
 	int i;
+	(void)intnum;
 
 	intsrc = ADM5120_INTC_REG (FIQ_STATUS_REG) & IRQ_MASK;
 	for (i = 0; intsrc; intsrc >>= 1, i++)

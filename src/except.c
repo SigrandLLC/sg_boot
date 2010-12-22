@@ -74,6 +74,7 @@ void int_hdl (UINT32 status_reg, UINT32 cause_reg)
 void gexcept_hdl (UINT32 status_reg, UINT32 cause_reg, UINT32 epc_reg)
 {
 	int exc_code;
+	(void)epc_reg;
 
 	exc_code = (cause_reg & CP0_CAUSE_EXCCODE_MASK) >> CP0_CAUSE_EXCCODE_SHIFT;
 

@@ -32,6 +32,7 @@ void skb_headerinit (struct sk_buff *skb)
 
 void free_skb (struct sk_buff *skb)
 {
+	(void)skb;
 }
 
 unsigned char *skb_put (struct sk_buff *skb, unsigned int len)

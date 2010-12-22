@@ -141,6 +141,7 @@ UINT32 tftpc (char *buf, int buf_size, int mode)
 	char servfile[15];
 	int transmit_flag, pkt_len = 0, rrqcount = 0;
 	char *working = buf;
+	(void)buf_size;
 
 	if (get_tftp_param (&servip, &gwip, servfile, mode) != 0)
 	{

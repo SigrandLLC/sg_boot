@@ -18,6 +18,7 @@ int ip_init (void)
 
 int ip_reinit (unsigned long ip)
 {
+	(void)ip;
 	bsp_GetTftpIp (&local_ip);
 	return 0;
 }

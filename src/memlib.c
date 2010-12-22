@@ -125,11 +125,14 @@ void *SharedMemAlloc (UINT32 NumOfByte, UINT32 clear)
 
 voidpf zAlloc (voidpf opaque, uInt items, uInt size)
 {
+	(void)opaque;
 	return MemAlloc (items * size, 1);
 }
 
 void zFree (voidpf opaque, voidpf address)
 {
+	(void)opaque;
+	(void)address;
 	return; // Потому что мы щедрые
 }
 

@@ -251,6 +251,7 @@ void nand_write_page_oob (UINT8 *dst, UINT8 *buf, UINT8 oob, UINT8 wp)
 {
 	UINT32 i, col, row1, row2;
 
+	(void)wp;
 	//if (wp) // снимаем write protection
 		*(base + NAND_SET_WP_REG) = 1;
 	// buart_print ("\n\rnand_write_page_oob - WP");
@@ -350,7 +351,7 @@ static int nand_block_bad (unsigned long page)
 static int nand_write_page (u_char *data_poi, int page,
 	struct nand_oobinfo *oobsel, UINT8 wp)
 {
-	int i, eccmode, *oob_config;
+	int i, eccmode, *oob_config = NULL;
 	u_char ecc_code[6], oob[] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x85, 0x19, 0x03, 0x20, 0x08, 0x00, 0x00, 0x00};
 	/* force SOFT_ECC given by NAND driver, Jeanson */
 
@@ -435,8 +436,9 @@ static int
 nand_read_ecc (loff_t from, size_t len, size_t * retlen, u_char * buf,
 	struct nand_oobinfo *oobsel)
 {
-	int j, page, eccmode, *oob_config;
-	int read = 0, ecc_status = 0, ecc_failed = 0;
+	int j, page, eccmode, *oob_config = NULL;
+	size_t read = 0;
+	int ecc_status = 0, ecc_failed = 0;
 	u_char ecc_calc[6], ecc_code[6];
 
 	// use chip default if zero
@@ -568,7 +570,8 @@ static int nand_write_ecc (loff_t to, size_t len, size_t * retlen, const u_char 
 	struct nand_oobinfo *oobsel, UINT8 wp)
 {
 	unsigned long page1st, blkAddr = -1;
-	int page, ret = 0, written = 0;
+	int page, ret = 0;
+	size_t written = 0;
 	// struct nand_chip *this = mtd->priv;
 	u_char *data_poi;
 
@@ -649,7 +652,7 @@ int nand_read (UINT8 *dst, UINT8 *src, UINT32 len)
 	size_t retlen;
 
 	int rc = nand_read_ecc ((loff_t) src, (size_t) len, &retlen, (u_char *) dst, &oobinfo_buf);
-	return rc < 0 ? rc : retlen;
+	return rc < 0 ? rc : (int)retlen;
 }
 
 int nand_write (UINT8 *dst, UINT8 *src, UINT32 len, UINT8 wp)
@@ -657,7 +660,7 @@ int nand_write (UINT8 *dst, UINT8 *src, UINT32 len, UINT8 wp)
 	size_t retlen;
 
 	int rc = nand_write_ecc ((loff_t) dst, (size_t) len, &retlen, (const u_char *) src, &oobinfo_buf, wp);
-	return rc < 0 ? rc : retlen;
+	return rc < 0 ? rc : (int)retlen;
 }
 
 // note that, the addr must be the block starting address
