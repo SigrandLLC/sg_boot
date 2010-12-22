@@ -29,7 +29,7 @@ void      menu_print_header (const char *header);
 void      menu_print_entries(const menu_entry_t *menu_array);
 menu_rc_t menu_call(const menu_entry_t *menu_array);
 menu_rc_t menu_exit(int);
-void      menu_do_all(const char *header, const menu_entry_t *menu);
+void      menu_do_all(const char *header, menu_func_void_t func_header, const menu_entry_t *menu);
 
 
 #endif

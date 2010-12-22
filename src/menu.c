@@ -57,11 +57,12 @@ void menu_print_header(const char *header)
 	buart_print ("\n\r=====================================");
 }
 
-void menu_do_all(const char *header, const menu_entry_t *menu)
+void menu_do_all(const char *header, menu_func_void_t func_header, const menu_entry_t *menu)
 {
 	while (1)
 	{
-                menu_print_header(header);
+		menu_print_header(header);
+		if (func_header) func_header();
 		menu_print_entries(menu);
 		buart_print("\n\rEnter your option: ");
 
