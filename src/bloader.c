@@ -34,6 +34,7 @@ extern void _icache_sync_all (void);
 
 static void reset(void)
 {
+	buart_print ("\n\r");
 	ADM5120_SW_REG (SftRest_REG) = SOFTWARE_RESET;
 }
 
@@ -140,6 +141,7 @@ void c_entry (void)
 	bt_name[6] = hexdigit[(i >> 8)&0xf];
 	bt_name[7] = hexdigit[(i >> 4)&0xf];
 	bt_name[8] = hexdigit[i & 0xf];
+	buart_print ("\r\n\n");
 	buart_print (bt_name);
 	//buart_print ("\n\r");
 	//buart_print ("\n\rCopyleft");
