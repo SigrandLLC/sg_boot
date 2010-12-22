@@ -28,8 +28,8 @@ int nf_write (UINT8 *dst, UINT8 *src, UINT32 len, UINT8 wp)
 	ultoa (len, buf);
 	buart_print (buf);*/
 
-	nand_write (dst, src, len, wp);
-	return 0;
+	int rc = nand_write (dst, src, len, wp);
+	return rc == len ? 0 : -1;
 }
 
 int nf_write_boot (UINT8 *dst, UINT8 *src, UINT32 len)
@@ -48,7 +48,7 @@ int nf_read (UINT8 *dst, UINT8 *src, UINT32 len)
 	ultoa (len, buf);
 	buart_print (buf);*/
 
-	nand_read (dst, src, len);
-	return 0;
+	int rc = nand_read (dst, src, len);
+	return rc == len ? 0 : -1;
 }
 
