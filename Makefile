@@ -61,7 +61,7 @@ endif
 #=======================  Compiler Flags  ============================
 CC_FLAG 	= $(ENDIAN_FG) -Wcomment -O2 -Wall -W
 CPU_FLAG	= -mips32
-INCLUDE_DIR	= -I. -I./include
+INCLUDE_DIR	= -I./include
 
 ALL_C_FLAGS	= $(CC_FLAG) $(INCLUDE_DIR) $(CPU_FLAG) $(EXT_DEF) $(EXTRA_DEFINE)
 
