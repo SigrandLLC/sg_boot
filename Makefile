@@ -1,3 +1,15 @@
+BYTE_ORDER = LITTLE_ENDIAN
+FLASH_TYPE = NAND_FLASH
+
+# Эти значения должны соответствовать содержимому linuxld.h
+#LOADER_OFFSET = 0x80002000
+#RUNTIME_OFFSET = 0x80003000
+LOADER_OFFSET = 0x80800000
+RUNTIME_OFFSET = 0x80801000
+
+EXTRA_DEFINE = -DNO_NUMBER_OF_MACS
+
+#============================ Make ==============================
 # Don't define any builtin rules and variables.
 MAKEFLAGS := $(MAKEFLAGS)R
 
@@ -14,17 +26,7 @@ MAKEFLAGS := $(MAKEFLAGS)R
 #V = 1
 v = $(if $(V),,@)
 
-EXTRA_DEFINE = -DNO_NUMBER_OF_MACS
-
-BYTE_ORDER = LITTLE_ENDIAN
-FLASH_TYPE = NAND_FLASH
-
-# Эти значения должны соответствовать содержимому linuxld.h
-#LOADER_OFFSET = 0x80002000
-#RUNTIME_OFFSET = 0x80003000
-LOADER_OFFSET = 0x80800000
-RUNTIME_OFFSET = 0x80801000
-
+#============================ Compilers ==============================
 CROSS_PREFIX ?= $(HOME)/gnutools/mipsisa32-elf/bin/mipsisa32-elf-
 AS	= $(CROSS_PREFIX)as
 CC	= $(CROSS_PREFIX)gcc
@@ -33,6 +35,7 @@ AR	= $(CROSS_PREFIX)ar
 OBJCOPY	= $(CROSS_PREFIX)objcopy
 OBJDUMP	= $(CROSS_PREFIX)objdump
 
+#============================ Tools ==================================
 RM	= rm $(if $(V),-v) -f
 RM_R	= rm $(if $(V),-v) -fr
 MV	= mv $(if $(V),-v)
@@ -40,21 +43,29 @@ CP	= mv $(if $(V),-v)
 MKDIR   = mkdir $(if $(V),-v)
 MKDIR_P = mkdir $(if $(V),-v) -p
 
+#=======================  Endian dependance  =========================
 ifeq "$(BYTE_ORDER)" "LITTLE_ENDIAN"
-CCBYTE_ORDER = little-endian
-ENDIAN_FG = -EL
-LIB_PATH = -L./lib/el
-EDIR = el
+  CCBYTE_ORDER = little-endian
+  ENDIAN_FG = -EL
+  LIB_PATH = -L./lib/el
+  EDIR = el
+else ifeq "$(BYTE_ORDER)" "BIG_ENDIAN"
+  CCBYTE_ORDER = big-endian
+  ENDIAN_FG = -EB
+  LIB_PATH = -L./lib/eb
+  EDIR = eb
 else
-$(error BYTE_ORDER != LITTLE_ENDIAN)
+  $(error Unknown BYTE_ORDER: $(BYTE_ORDER))
 endif
 
+#=======================  Compiler Flags  ============================
 CC_FLAG 	= $(ENDIAN_FG) -Wcomment -O2 -Wall -W
 CPU_FLAG	= -mips32
 INCLUDE_DIR	= -I. -I./include
 
 ALL_C_FLAGS	= $(CC_FLAG) $(INCLUDE_DIR) $(CPU_FLAG) $(EXT_DEF) $(EXTRA_DEFINE)
 
+#=======================  Directories  ===============================
 OBJ_DIR = ./build
 BIN_DIR = ./bin
 SRC_DIR = ./src
@@ -64,6 +75,7 @@ TFTPBOOT = $(HOME)/tftpboot
  BIN_DIR_STAMP =  $(BIN_DIR)/.dir
 TFTPBOOT_STAMP = $(TFTPBOOT)/.dir
 
+#==================== NandFlash Linker Flags  ===========================
 LD_FLAG = -X -N
 LIBS = -lz -lc -lgcc -lnosys
 
@@ -85,9 +97,6 @@ EXEC_NAME_RAM = nand_bootmain_ram
 EXEC_OBJS_RAM = $(EXEC_OBJS)
 
 
-ALL_OBJS = $(BOOT_OBJS) $(BOOT_OBJS_RAM) $(EXEC_OBJS)
-
-
 ROM_NAME = nandloader
 RAM_NAME = nandloader_ram
 
@@ -101,6 +110,10 @@ BOOT_RAM_IMG = $(OBJ_DIR)/$(BOOT_NAME_RAM).img
 MAIN_RAM_IMG = $(OBJ_DIR)/$(EXEC_NAME_RAM).img
 
 
+ALL_OBJS = $(BOOT_OBJS) $(BOOT_OBJS_RAM) $(EXEC_OBJS)
+
+
+#====================== NandFlash Rules  =============================
 .PHONY  : all %install
 all     : $(ROM_IMG) $(RAM_IMG)
 install : rom_img_install ram_img_install
@@ -154,13 +167,6 @@ $(MAIN_RAM_IMG) : $(EXEC_OBJS_RAM) $(OBJ_DIR_STAMP)
 	$(v)$(OBJCOPY) -O binary $(OBJ_DIR)/$(EXEC_NAME_RAM).elf $@
 
 
-%/.dir :
-	@echo "> Creating directory $@"
-	$(v)$(MKDIR_P)        $(dir $@)
-	$(v)touch                   $@
-
-
-
 $(OBJ_DIR)/%.o : $(SRC_DIR)/%.c $(OBJ_DIR_STAMP)
 	@echo "> Compiling $< to $@"
 	$(v)$(CC) $(ALL_C_FLAGS)  -c $< -o $@
@@ -170,13 +176,21 @@ $(OBJ_DIR)/%.o : $(SRC_DIR)/%.S $(OBJ_DIR_STAMP)
 	$(v)$(CC) $(ALL_C_FLAGS) -c $< -o $@
 
 
+#======================== Directory rules ============================
+%/.dir :
+	@echo "> Creating directory $@"
+	$(v)$(MKDIR_P)        $(dir $@)
+	$(v)touch                   $@
+
+
+#========================== Clean rules ==============================
 .PHONY : clean
 clean:
 	@echo "> Cleaning $(OBJ_DIR) $(BIN_DIR)"
 	$(v)$(RM_R)       $(OBJ_DIR) $(BIN_DIR)
 
 
-#+ dependencies generation
+#===================== Dependencies generation =======================
 deps = $(patsubst %.o,%.dep,$(ALL_OBJS))
 #$(warning deps: $(deps))
 
@@ -206,5 +220,4 @@ endif
 ifndef DONT_INCLUDE_DEPS
   -include $(deps)
 endif
-#- dependencies generation
 
