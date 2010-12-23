@@ -42,8 +42,8 @@ MKDIR_P = mkdir $(if $(V),-v) -p
 
 #=======================  Endian dependance  =========================
 ENDIAN_FG = -EL
-LIB_PATH  = -L./lib/el
 EDIR      = el
+LIB_PATH  = -L./lib/$(EDIR)
 
 #=======================  Compiler Flags  ============================
 CC_FLAG 	= $(ENDIAN_FG) -Wcomment -Os -Wall -W
