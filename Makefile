@@ -36,7 +36,7 @@ OBJDUMP	= $(CROSS_PREFIX)objdump
 RM	= rm    $(if $(V),-v) -f
 RM_R	= rm    $(if $(V),-v) -fr
 MV	= mv    $(if $(V),-v)
-CP	= mv    $(if $(V),-v) -a
+CP	= cp    $(if $(V),-v) -a
 MKDIR   = mkdir $(if $(V),-v)
 MKDIR_P = mkdir $(if $(V),-v) -p
 
