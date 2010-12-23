@@ -1,10 +1,9 @@
 # These values must conform to linuxld.h content
-# LOADER_OFFSET = 0x80002000
-#RUNTIME_OFFSET = 0x80003000
   LOADER_OFFSET = 0x80800000
  RUNTIME_OFFSET = 0x80801000
 
 EXTRA_DEFINE = -DNO_NUMBER_OF_MACS
+
 
 #============================ Make ==============================
 # Don't define any builtin rules and variables.
@@ -17,11 +16,12 @@ MAKEFLAGS := $(MAKEFLAGS)R
 .DEFAULT:
 
 #.DEFAULT:
-#	$(error no rules for target $@)
+#	$(error no rules for target "$@")
 
 # Set V=something for verbose building messages
 #V = 1
 v = $(if $(V),,@)
+
 
 #============================ Compilers ==============================
 CROSS_PREFIX ?= $(HOME)/gnutools/mipsisa32-elf/bin/mipsisa32-elf-
@@ -32,6 +32,7 @@ AR	= $(CROSS_PREFIX)ar
 OBJCOPY	= $(CROSS_PREFIX)objcopy
 OBJDUMP	= $(CROSS_PREFIX)objdump
 
+
 #============================ Tools ==================================
 RM	= rm    $(if $(V),-v) -f
 RM_R	= rm    $(if $(V),-v) -fr
@@ -40,17 +41,20 @@ CP	= cp    $(if $(V),-v) -a
 MKDIR   = mkdir $(if $(V),-v)
 MKDIR_P = mkdir $(if $(V),-v) -p
 
+
 #=======================  Endian dependance  =========================
 ENDIAN_FG = -EL
 EDIR      = el
 LIB_PATH  = -L./lib/$(EDIR)
 
+
 #=======================  Compiler Flags  ============================
-CC_FLAG 	= $(ENDIAN_FG) -Os -Wall -W
+CC_FLAG 	= $(ENDIAN_FG) -Wall -W -Os
 CPU_FLAG	= -mips32
 INCLUDE_DIR	= -I./include
 
 ALL_C_FLAGS	= $(CC_FLAG) $(INCLUDE_DIR) $(CPU_FLAG) $(EXT_DEF) $(EXTRA_DEFINE)
+
 
 #=======================  Directories  ===============================
 OBJ_DIR  = ./build
@@ -61,6 +65,7 @@ TFTPBOOT = $(HOME)/tftpboot
  OBJ_DIR_STAMP =  $(OBJ_DIR)/.dir
  BIN_DIR_STAMP =  $(BIN_DIR)/.dir
 TFTPBOOT_STAMP = $(TFTPBOOT)/.dir
+
 
 #==================== NandFlash Linker Flags  ===========================
 LD_FLAG = -X -N
@@ -75,9 +80,9 @@ BOOT_OBJS_RAM = $(OBJ_DIR)/nand_bootinit_ram.o
 EXEC_NAME = nand_bootmain
 
 exec_objs  = nand_ldrinit.o bloader.o linuxld.o xmodem.o nand.o nand_ecc.o
-exec_objs += cachelib.o dslam.o irqlib.o timer.o vector.o except.o utils.o
+exec_objs += cachelib.o irqlib.o timer.o vector.o except.o utils.o
 exec_objs += if_5120.o memlib.o uartdrv.o tftp.o eth.o skbuff.o arp.o ip.o
-exec_objs += udp.o param.o nf.o menu.o
+exec_objs += udp.o param.o nf.o dslam.o menu.o
 
 EXEC_OBJS = $(addprefix $(OBJ_DIR)/,$(exec_objs))
 
