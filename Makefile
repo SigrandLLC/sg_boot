@@ -41,8 +41,9 @@ MKDIR   = mkdir $(if $(V),-v)
 MKDIR_P = mkdir $(if $(V),-v) -p
 
 #=======================  Endian dependance  =========================
-  ENDIAN_FG = -EL
-  LIB_PATH = -L./lib/el
+ENDIAN_FG = -EL
+LIB_PATH  = -L./lib/el
+EDIR      = el
 
 #=======================  Compiler Flags  ============================
 CC_FLAG 	= -Wa,$(ENDIAN_FG) -Wcomment -O2 -Wall -W # -Os
@@ -78,6 +79,7 @@ exec_objs += if_5120.o memlib.o uartdrv.o tftp.o eth.o skbuff.o arp.o ip.o
 exec_objs += udp.o param.o nf.o menu.o
 
 EXEC_OBJS = $(addprefix $(OBJ_DIR)/,$(exec_objs))
+
 
 EXEC_NAME_RAM = nand_bootmain_ram
 EXEC_OBJS_RAM = $(EXEC_OBJS)
