@@ -46,16 +46,16 @@ EDIR      = el
 LIB_PATH  = -L./lib/$(EDIR)
 
 #=======================  Compiler Flags  ============================
-CC_FLAG 	= $(ENDIAN_FG) -Wcomment -Os -Wall -W
+CC_FLAG 	= $(ENDIAN_FG) -Os -Wall -W
 CPU_FLAG	= -mips32
 INCLUDE_DIR	= -I./include
 
 ALL_C_FLAGS	= $(CC_FLAG) $(INCLUDE_DIR) $(CPU_FLAG) $(EXT_DEF) $(EXTRA_DEFINE)
 
 #=======================  Directories  ===============================
-OBJ_DIR = ./build
-BIN_DIR = ./bin
-SRC_DIR = ./src
+OBJ_DIR  = ./build
+BIN_DIR  = ./bin
+SRC_DIR  = ./src
 TFTPBOOT = $(HOME)/tftpboot
 
  OBJ_DIR_STAMP =  $(OBJ_DIR)/.dir
@@ -70,6 +70,7 @@ BOOT_NAME     = nand_bootinit
 BOOT_NAME_RAM = nand_bootinit_ram
 BOOT_OBJS     = $(OBJ_DIR)/nand_bootinit.o
 BOOT_OBJS_RAM = $(OBJ_DIR)/nand_bootinit_ram.o
+
 
 EXEC_NAME = nand_bootmain
 
