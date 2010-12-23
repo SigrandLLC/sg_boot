@@ -218,7 +218,6 @@ void c_entry (void)
 		//ADM5120_SW_REG (Port_conf2_REG) = 0x10a;	// включим порт
 		//store_vlan2port ();
 		store_default (0);							// включаем нулевой
-		store_default (0);
 		store_default (1);							// и первый свитч
 	}
 
