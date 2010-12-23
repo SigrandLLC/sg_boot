@@ -3,6 +3,9 @@
 #include <mips4kc.h>
 #include <adm5120sw.h>
 #include <param.h>
+#include <buart.h>
+#include <utils.h>
+#include <string.h>
 
 struct dslam_env
 {
@@ -164,30 +167,49 @@ unsigned long read_reg (int sw_num, unsigned long reg_num)
 	return reg_val;
 }
 
+static int write_reg_ver (int sw_num, unsigned long reg_num, unsigned long reg_val)
+{
+        UINT32 val;
+	write_reg (sw_num, reg_num, reg_val);
+	val = read_reg (sw_num, reg_num);
+	if (val != reg_val)
+	{
+		char buf[10];
+                memset(buf, 0, sizeof(buf));
+		buart_print ("\n\rDSLAM register write verify failed: ");
+		buart_print (" sw: 0x"  ); ultoa (sw_num , buf); buart_print (buf);
+		buart_print (" reg: 0x" ); ultoa (reg_num, buf); buart_print (buf);
+		buart_print (" val: 0x" ); ultoa (reg_val, buf); buart_print (buf);
+		buart_print (" read: 0x"); ultoa (    val, buf); buart_print (buf);
+                return -1;
+	}
+        return 0;
+}
+
 void store_default (UINT8 sw_num)
 {
 	UINT32 val;
 	// udelay (10000);
 	// this is need for poperly work ethernet modules
-	write_reg (sw_num, 0xfa, 0x0200);
+	write_reg_ver (sw_num, 0xfa, 0x0200);
 	// trunk hash algorithm selection is source and dest
-	write_reg (sw_num, 0x40, 0x000c);
+	write_reg_ver (sw_num, 0x40, 0x000c);
 
-	write_reg (sw_num, 0x3b, 0x0000);
-	write_reg (sw_num, 0x3c, 0x0000);
-	write_reg (sw_num, 0x01, 0x0432);
-	write_reg (sw_num, 0xff, 0x0080);
-	write_reg (sw_num, 0xf9, 0x1e38);
+	write_reg_ver (sw_num, 0x3b, 0x0000);
+	write_reg_ver (sw_num, 0x3c, 0x0000);
+	write_reg_ver (sw_num, 0x01, 0x0432);
+	write_reg_ver (sw_num, 0xff, 0x0080);
+	write_reg_ver (sw_num, 0xf9, 0x1e38);
 
-	write_reg (sw_num, 0xd8, 0xffff);
+	write_reg_ver (sw_num, 0xd8, 0xffff);
 	if (sw_num == 0)
-		write_reg (sw_num, 0xd9, 0x37ff);
+		write_reg_ver (sw_num, 0xd9, 0x37ff);
 	else
-		write_reg (sw_num, 0xd9, 0x17ff);
+		write_reg_ver (sw_num, 0xd9, 0x17ff);
 
 	// set addres aging time to minimal
 	val = read_reg (sw_num, 0x44);
-	write_reg (sw_num, 0x44, val & 0xFC00);
+	write_reg_ver (sw_num, 0x44, val & 0xFC00);
 	//	printk(KERN_NOTICE"default settings is set\n");
 	//	printk(KERN_NOTICE"0xd8=%lx\n", read_reg(sw_num, 0xd8));
 }
