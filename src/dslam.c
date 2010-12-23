@@ -216,6 +216,19 @@ void store_default (UINT8 sw_num)
 
 int IsDslamBoardPresent (void)
 {
+#if 1
+	UINT32 val = read_reg (0, 0x01);
+	if ( (val & 0x1f) == 0x12)
+	{
+		//buart_print ("\n\rDSLAM presented");
+		return 1;
+	}
+        else
+	{
+		//buart_print ("\n\rDSLAM absent");
+		return 0;
+	}
+#else
 	int i, reg = 0;
 	ADM5120_SW_REG (GPIO_conf0_REG) |= 0xC0C00000;
 	udelay (1);
@@ -260,6 +273,7 @@ int IsDslamBoardPresent (void)
 	if (reg == 0xffff)
 		return 0; // No DSLAM board
 	return 1; // DSLAM board present
+#endif
 }
 
 static int SetupVLAN (int unit, unsigned long portmask)
