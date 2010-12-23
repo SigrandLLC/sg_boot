@@ -46,7 +46,7 @@ LIB_PATH  = -L./lib/el
 EDIR      = el
 
 #=======================  Compiler Flags  ============================
-CC_FLAG 	= -Wa,$(ENDIAN_FG) -Wcomment -O2 -Wall -W # -Os
+CC_FLAG 	= $(ENDIAN_FG) -Wcomment -Os -Wall -W
 CPU_FLAG	= -mips32
 INCLUDE_DIR	= -I./include
 
