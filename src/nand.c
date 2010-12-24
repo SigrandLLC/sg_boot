@@ -17,6 +17,7 @@
 #include <linuxld.h>
 #include <utils.h>
 #include <buart.h>
+#include <string.h>
 #include "nand.h"
 #include "ftl-port.h"	//porting by ProChao, 10/8/2003
 
@@ -355,10 +356,8 @@ static int nand_write_page (u_char *data_poi, int page,
 	u_char ecc_code[6], oob[] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x85, 0x19, 0x03, 0x20, 0x08, 0x00, 0x00, 0x00};
 	/* force SOFT_ECC given by NAND driver, Jeanson */
 
-	for (i = 0; i < NAND_PAGE_SIZE; i++)
-		oobdata_buf[i] = data_poi[i];
-	for (i = 0; i < NAND_PAGE_OOB_SIZE; i++)
-		oobdata_buf[i + NAND_PAGE_SIZE] = oob[i];
+	memcpy(oobdata_buf, data_poi, NAND_PAGE_SIZE);
+	memcpy(oobdata_buf+NAND_PAGE_SIZE, oob, NAND_PAGE_OOB_SIZE);
 
 	/*oobdata_buf[NAND_PAGE_SIZE + NAND_BADBLOCK_POS] = SECTOR_USED;
 	oobdata_buf[NAND_PAGE_SIZE + NAND_BADBLOCK_POS + 1] = SECTOR_USED;
@@ -419,12 +418,14 @@ static int nand_write_page (u_char *data_poi, int page,
 	// *(base + NAND_CLR_WP_REG) = 1;
 
 	/* Loop through and verify the data */
-	for (i = 0; i < NAND_PAGE_SIZE + NAND_PAGE_OOB_SIZE * (eccmode == NAND_ECC_SOFT); i++)
-		if (oobdata_buf[i] != oobdata_buf2[i])
-		{
-			print_val ("Failed write verify, page", page);
-			return -EIO;
-		}
+	if ( memcmp(oobdata_buf, oobdata_buf2,
+		    NAND_PAGE_SIZE + NAND_PAGE_OOB_SIZE * (eccmode == NAND_ECC_SOFT))
+	    != 0
+	   )
+	{
+		print_val ("Failed write verify, page", page);
+		return -EIO;
+	}
 
 	return 0;
 }
@@ -547,8 +548,7 @@ static int nand_mark_bad_block (UINT32 page)
 	// *(base + NAND_SET_WP_REG) = 1;
 	*(base + NAND_CLR_CE_REG) = 1;
 
-	for (i = 0; i < NAND_PAGE_SIZE + NAND_PAGE_OOB_SIZE; i++)
-		oobdata_buf[i] = 0;
+	memset(oobdata_buf, 0, sizeof(oobdata_buf));
 
 	nand_write_page_oob ((UINT8 *)(page * NAND_PAGE_SIZE), oobdata_buf, 1, 0);
 
