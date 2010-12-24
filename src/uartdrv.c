@@ -17,8 +17,8 @@
 
 #define TRUE		1
 #define FALSE		0
-int errcnt = 0;
-int orcnt = 0;
+static int errcnt = 0;
+static int orcnt = 0;
 
 //=====================  Macros  ========================
 #define UART_REG_READ(_uart, _reg)		\
@@ -31,7 +31,7 @@ int orcnt = 0;
 
 
 //================== Global variables ===================
-const UART_RATE_ENTRY rate_tab[] ={
+static const UART_RATE_ENTRY rate_tab[] ={
 	{1200, UART_1200bps_DIVISOR},
 	{2400, UART_2400bps_DIVISOR},
 	{9600, UART_9600bps_DIVISOR},
@@ -43,9 +43,9 @@ const UART_RATE_ENTRY rate_tab[] ={
 };
 
 
-const int rate_option = sizeof (rate_tab) / sizeof (UART_RATE_ENTRY);
+static const int rate_option = sizeof (rate_tab) / sizeof (UART_RATE_ENTRY);
 
-UART_OBJ uart;
+static UART_OBJ uart;
 
 
 
@@ -331,5 +331,4 @@ GETKEY:
 
 	strncpy (buf, readBuf, cpNum);
 }
-
 

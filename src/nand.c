@@ -26,7 +26,7 @@
 // read, write only by page boundaries
 
 //---------------------------------------------------------
-volatile UINT8 *base = (UINT8 *) NAND_REG_BASE;
+static volatile UINT8 *base = (UINT8 *) NAND_REG_BASE;
 
 /*static struct nand_oobinfo oobinfo_buf = {// init'ed by ProChao
 	1, // use ECC

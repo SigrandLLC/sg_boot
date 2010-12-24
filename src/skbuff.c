@@ -60,4 +60,3 @@ void skb_reserve (struct sk_buff *skb, unsigned int len)
 	skb->data += len;
 }
 
-

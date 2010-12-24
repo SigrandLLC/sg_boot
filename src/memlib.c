@@ -20,7 +20,7 @@ void *SharedMemAlloc (UINT32 NumOfByte, UINT32 clear);*/
 
 void *_heap_h;
 
-UINT32 AvilMemHead;
+static UINT32 AvilMemHead;
 
 
 /**********************************************************************************/

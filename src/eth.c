@@ -29,7 +29,7 @@ extern void DbgUartPutChar (char);
 #define DbgUartPutChar
 #endif
 
-PEthPktQueue_OBJ EthPktQueue;
+static PEthPktQueue_OBJ EthPktQueue;
 static char local_mac[6];
 
 /**********************************************************************************/
@@ -177,5 +177,4 @@ void eth_skb_reserve (struct sk_buff *skb)
 {
 	skb_reserve (skb, ETH_HLEN);
 }
-
 

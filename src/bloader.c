@@ -23,10 +23,9 @@
 
 
 UINT8 dslam_present = 0;
-char hexdigit[] = "0123456789abcdef";
-char bt_name[] = "\r\nADM0000 Boot:";
-const char version_string[] = "\n\rVersion "VERSION" (" __DATE__ " - " __TIME__ ")";
-void *_heap_h;
+static char hexdigit[] = "0123456789abcdef";
+static char bt_name[] = "\r\nADM0000 Boot:";
+static const char version_string[] = "\n\rVersion "VERSION" (" __DATE__ " - " __TIME__ ")";
 
 extern void _icache_sync_all (void);
 

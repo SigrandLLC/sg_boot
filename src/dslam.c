@@ -18,19 +18,19 @@ struct dslam_env
 	unsigned long regnum;
 };
 
-struct dslam_env chips[] = {
+static struct dslam_env chips[] = {
 	{ GPIO6_OUTPUT_EN, GPIO6_INPUT_MASK, GPIO6_OUTPUT_HI, GPIO7_OUTPUT_EN, GPIO7_INPUT_MODE, GPIO7_OUTPUT_HI, 0xf2},
 	{ GPIO1_OUTPUT_EN, GPIO1_INPUT_MASK, GPIO1_OUTPUT_HI, GPIO0_OUTPUT_EN, GPIO0_INPUT_MODE, GPIO0_OUTPUT_HI, 0xf2}
 };
 
 #define chips_num (sizeof(chips)/sizeof(struct dslam_env))
 
-unsigned long ic_readpreamble = 0x58;
-unsigned char ic_readpreamble_sz = 7; // 7 bit wide
-unsigned long ic_writepreamble = 0x54;
-unsigned char ic_writepreamble_sz = 7; // 7 bit wide
-unsigned long ic_pause = 0x2;
-unsigned char ic_pause_sz = 2; // 2 bit wide
+static unsigned long ic_readpreamble = 0x58;
+static unsigned char ic_readpreamble_sz = 7; // 7 bit wide
+static unsigned long ic_writepreamble = 0x54;
+static unsigned char ic_writepreamble_sz = 7; // 7 bit wide
+static unsigned long ic_pause = 0x2;
+static unsigned char ic_pause_sz = 2; // 2 bit wide
 
 void udelay (UINT32 us)
 {

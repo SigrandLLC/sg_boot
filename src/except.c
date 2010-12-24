@@ -33,7 +33,7 @@ extern UINT32 mips_cp0_status_read (void);
 extern void mips_cp0_status_write (UINT32 val);
 extern int _splset (int);
 
-MIPS_INT_ENTRY mips_int_tab[] ={
+static MIPS_INT_ENTRY mips_int_tab[] ={
 	{MIPS_INT_UNREGISTERD, NULL, 0, 0}, // ADM5120_MIPSINT_SOFT0
 	{MIPS_INT_UNREGISTERD, NULL, 0, 0}, // ADM5120_MIPSINT_SOFT1
 	{MIPS_INT_UNREGISTERD, NULL, 0, 0}, // ADM5120_MIPSINT_IRQ

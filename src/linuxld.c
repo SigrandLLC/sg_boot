@@ -43,8 +43,8 @@
 
 
 static int gz_magic[2] = {0x1f, 0x8b}; /* gzip magic header */
-char *pass = "PASS";
-char *fail = "FAIL";
+static const char *pass = "PASS";
+static const char *fail = "FAIL";
 
 int ungzip (Byte * compr);
 extern void _icache_sync_all (void);

@@ -762,5 +762,3 @@ void Am5120Isr (int intLev)
 	ifp->IntCnt++;
 }
 
-
-
