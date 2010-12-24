@@ -303,11 +303,11 @@ void nand_write_page_oob (UINT8 *dst, UINT8 *buf, UINT8 oob, UINT8 wp)
 static int nand_block_bad (unsigned long page)
 {
 	UINT8 status, status1;
-	if (page < NAND_BLK_PER_PAGE) // весь загрузчик лежит в 256 страницах.
+	if (page < NAND_PAGE_PER_BLK) // весь загрузчик лежит в 256 страницах.
 		return 0; // В первых страницах OOB используется для данных, этот
 
 	// если хочется посмотреть как система реагирует на бедблоки, следует расскомментить это
-	/*if ((page == NAND_BLK_PER_PAGE * 100) || (page == NAND_BLK_PER_PAGE * 150) || (page == NAND_BLK_PER_PAGE * 600))
+	/*if ((page == NAND_PAGE_PER_BLK * 100) || (page == NAND_PAGE_PER_BLK * 150) || (page == NAND_PAGE_PER_BLK * 600))
 	{
 		nand_mark_bad_block (page);
 		return 1;
@@ -483,7 +483,7 @@ nand_read_ecc (loff_t from, size_t len, size_t * retlen, u_char * buf,
 		// будет работать косячно, если читать не с начала сектора, но
 		// мы читаем всегда с начала сектора =)
 		// if this page is the 1st page of current block
-		if ((page % NAND_BLK_PER_PAGE) == 0)
+		if ((page % NAND_PAGE_PER_BLK) == 0)
 		{ // yes, this page is the 1st page, using the oob_data to check block validity
 			if (oobdata_buf[NAND_PAGE_SIZE + NAND_BADBLOCK_POS] != SECTOR_FREE)
 			{ // this block might be used normal (marked FREE or USED)
@@ -492,7 +492,7 @@ nand_read_ecc (loff_t from, size_t len, size_t * retlen, u_char * buf,
 					((oobdata_buf[NAND_PAGE_SIZE + NAND_BADBLOCK_POS] != SECTOR_USED) &&
 					(oobdata_buf[NAND_PAGE_SIZE + NAND_BADBLOCK_POS] != SECTOR_FREE)))
 				{
-					page += NAND_BLK_PER_PAGE; // move forward to next block
+					page += NAND_PAGE_PER_BLK; // move forward to next block
 					continue; // блок плохой? Прыгнули к следующему.
 				}
 			}
@@ -543,7 +543,7 @@ static int nand_mark_bad_block (UINT32 page)
 {
 	int i;
 
-	page -= page % NAND_BLK_PER_PAGE; // на всякий случай, сместимся к 1-й странице
+	page -= page % NAND_PAGE_PER_BLK; // на всякий случай, сместимся к 1-й странице
 	nand_erase ((UINT8 *)(page * NAND_PAGE_SIZE), NAND_SIZE_PER_BLK, 0); // эту единицу следует убрать после отладки
 
 	// *(base + NAND_SET_WP_REG) = 1;
@@ -607,7 +607,7 @@ static int nand_write_ecc (loff_t to, size_t len, size_t * retlen, const u_char 
 	while (written < len)
 	{ // before doing write, checking if this block is bad block or not ?
 		// 32-pages per block, determine the 1st page
-		page1st = page - page % NAND_BLK_PER_PAGE;
+		page1st = page - page % NAND_PAGE_PER_BLK;
 		/* get the first page of this current block */
 		if (blkAddr != page1st)
 		{ // checking this block, if not checked yet
@@ -616,7 +616,7 @@ static int nand_write_ecc (loff_t to, size_t len, size_t * retlen, const u_char 
 			{ // this block is bad block, double confirm this is bad one, then try next block
 				print_val ("\n\rBad flash block detected! Address", page1st * NAND_PAGE_SIZE);
 				// move forward to the 1st page of next block
-				page = page1st + NAND_BLK_PER_PAGE;
+				page = page1st + NAND_PAGE_PER_BLK;
 				continue;
 			}
 		}
@@ -703,9 +703,9 @@ int nand_erase (UINT8 *addr, UINT32 len, UINT8 wp)
 
 void check_bad_block (void)
 {
-	int i, page_no = NAND_FLASH_BLOCK_NO * NAND_BLK_PER_PAGE;
+	int i, page_no = NAND_FLASH_BLOCK_NO * NAND_PAGE_PER_BLK;
 	// no useless ECC on bootloader write (first 8 blocks), don't check it
-	for (i = NAND_BLK_PER_PAGE * 8; i < page_no; i += NAND_BLK_PER_PAGE)
+	for (i = NAND_PAGE_PER_BLK * 8; i < page_no; i += NAND_PAGE_PER_BLK)
 	{
 		if (nand_block_bad (i) != 0)
 			print_val ("Bad block", i * NAND_PAGE_SIZE);
@@ -763,18 +763,18 @@ void scan_bad_blocks (void)
 		bad = 0;
 		if ((block * NAND_SIZE_PER_BLK >= LINUXLD_NANDFLASH_LOADER_SIZE) && (block * NAND_SIZE_PER_BLK < LINUXLD_NANDFLASH_KERNEL_START))
 			continue; // пропускаем область с параметрами, т.к. оне на затирается форматированием
-		print_val1 ("block", block * NAND_PAGE_SIZE * NAND_BLK_PER_PAGE);
+		print_val1 ("block", block * NAND_PAGE_SIZE * NAND_PAGE_PER_BLK);
 
-		for (page = 0; page < NAND_BLK_PER_PAGE; page++)
+		for (page = 0; page < NAND_PAGE_PER_BLK; page++)
 		{
-			src = (block * NAND_BLK_PER_PAGE + page) * NAND_PAGE_SIZE;
+			src = (block * NAND_PAGE_PER_BLK + page) * NAND_PAGE_SIZE;
 			nand_read_page_oob ((UINT8 *)src, oobdata_buf, 1);
 
 			for (j = 0; j < NAND_PAGE_SIZE + NAND_PAGE_OOB_SIZE; j++)
 				if (oobdata_buf[j] != 0xff) // битый байт
 				{
 					buart_print (" - bad.\n\r");
-					nand_mark_bad_block (block * NAND_BLK_PER_PAGE);
+					nand_mark_bad_block (block * NAND_PAGE_PER_BLK);
 					bad = 1;
 					break;
 				}

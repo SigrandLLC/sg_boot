@@ -25,7 +25,7 @@ typedef unsigned long UINT32;*/
 #define NAND_FLASH_SIZE		0x2000000	//32MB+1MB // revised by ProChao, 10/8/2003
 #define NAND_PAGE_SIZE		0x200		//512+16Bytes
 #define	NAND_PAGE_OOB_SIZE	0x10		//16Bytes
-#define NAND_BLK_PER_PAGE	0x20		//32 pages per block
+#define NAND_PAGE_PER_BLK	0x20		//32 pages per block
 #define NAND_SIZE_PER_BLK	0x4000		//16k per block
 #define NAND_FLASH_BLOCK_NO	2048		//2048 blocks per device
 #endif
