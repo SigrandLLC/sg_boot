@@ -704,8 +704,7 @@ int nand_erase (UINT8 *addr, UINT32 len, UINT8 wp)
 void check_bad_block (void)
 {
 	int i, page_no = NAND_FLASH_BLOCK_NO * NAND_BLK_PER_PAGE;
-	// т.к. при записи загрузчика (первые 8 блоков) ECC не пишется (и оно ему в
-	// любом случае не поможет), то и проверять его смысла нет
+	// no useless ECC on bootloader write (first 8 blocks), don't check it
 	for (i = NAND_BLK_PER_PAGE * 8; i < page_no; i += NAND_BLK_PER_PAGE)
 	{
 		if (nand_block_bad (i) != 0)
