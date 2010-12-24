@@ -133,7 +133,7 @@ void zFree (voidpf opaque, voidpf address)
 {
 	(void)opaque;
 	(void)address;
-	return; // Потому что мы щедрые
+	return;
 }
 
 /****************************************************************************/
