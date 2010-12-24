@@ -22,15 +22,15 @@
 
 #define NAND_ECC
 
-// чтение и запись - строго по границам страниц, ибо нефиг.
+// read, write only by page boundaries
 
 //---------------------------------------------------------
 volatile UINT8 *base = (UINT8 *) NAND_REG_BASE;
 
 /*static struct nand_oobinfo oobinfo_buf = {// init'ed by ProChao
-	1, // структура содержит информацию о том, используем ли мы
-	{0, 1, 2, 3, 4, 5} // есс, и в каких по счёту байтах находится информация
-}; // о есс. Инфа о статусе сектора - в секторных байтах (5, 6)*/
+	1, // use ECC
+	{0, 1, 2, 3, 4, 5} // ECC offsets.
+}; // sector status in sector bytes (5, 6)*/
 
 static struct nand_oobinfo oobinfo_buf = {// init'ed by ProChao
 	1,
@@ -160,7 +160,7 @@ static void nand_command (unsigned command, int column, int page_addr)
 		nand_hwcontrol (NAND_CTL_SETALE);
 		/* Serially input address */
 		if (column != -1)
-			nand_write_byte (column); // дальше 256 байта не прочитает =)
+			nand_write_byte (column); // 256 bytes limit =)
 		if (page_addr != -1)
 		{
 			nand_write_byte ((unsigned char) (page_addr & 0xff));
@@ -201,14 +201,14 @@ static void nand_command (unsigned command, int column, int page_addr)
 }
 #endif // nand_command unused3
 
-// при выбранном кристалле читает одну страницу в буфер
-// при oob == 1 читает ещё и OOB
+// for selected chip
+// reads 1 page in buffer, additionally reads OOB if oob == 1
 
 void nand_read_page_oob (UINT8 *src, UINT8 *buf, UINT8 oob)
 {
 	UINT32 col, row1, row2, i;
 
-	*(base + NAND_CLR_SPn_REG) = 1; // читаем основную часть блока
+	*(base + NAND_CLR_SPn_REG) = 1; // read main block part
 
 	col = (int) src & ADD1MASK;
 	row1 = ((int) src & ADD2MASK) >> ADD2SHIFT;
@@ -237,22 +237,22 @@ void nand_read_page_oob (UINT8 *src, UINT8 *buf, UINT8 oob)
 
 	if (oob)
 	{
-		*(base + NAND_SET_SPn_REG) = 1; // читаем OOB
+		*(base + NAND_SET_SPn_REG) = 1; // read OOB
 
 		for (i = 0; i < NAND_PAGE_OOB_SIZE; i++)
 			buf[i + NAND_PAGE_SIZE] = *(base + NAND_RW_REG);
 	}
 }
 
-// при выбранном кристалле пишет одну страницу в буфер
-// при oob == 1 пишет ещё и OOB
+// for selected chip
+// writes 1 page in buffer, additionally writes OOB if oob == 1
 
 void nand_write_page_oob (UINT8 *dst, UINT8 *buf, UINT8 oob, UINT8 wp)
 {
 	UINT32 i, col, row1, row2;
 
 	(void)wp;
-	//if (wp) // снимаем write protection
+	//if (wp) // clear write protection
 		*(base + NAND_SET_WP_REG) = 1;
 	// buart_print ("\n\rnand_write_page_oob - WP");
 
@@ -295,7 +295,7 @@ void nand_write_page_oob (UINT8 *dst, UINT8 *buf, UINT8 oob, UINT8 wp)
 		;
 	}
 
-	/*if (wp) // ставим write protection обратно
+	/*if (wp) // set write protection back
 		*(base + NAND_CLR_WP_REG) = 1;*/
 }
 
@@ -303,19 +303,19 @@ void nand_write_page_oob (UINT8 *dst, UINT8 *buf, UINT8 oob, UINT8 wp)
 static int nand_block_bad (unsigned long page)
 {
 	UINT8 status, status1;
-	if (page < NAND_PAGE_PER_BLK) // весь загрузчик лежит в 256 страницах.
-		return 0; // В первых страницах OOB используется для данных, этот
+	if (page < NAND_PAGE_PER_BLK) // entire bootloader fits in 256 pages
+		return 0; // in first pages OOB used for data
 
-	// если хочется посмотреть как система реагирует на бедблоки, следует расскомментить это
+	// uncomment lines below to see reaction for bad blocks
 	/*if ((page == NAND_PAGE_PER_BLK * 100) || (page == NAND_PAGE_PER_BLK * 150) || (page == NAND_PAGE_PER_BLK * 600))
 	{
 		nand_mark_bad_block (page);
 		return 1;
 	}*/
 
-	// факт следует учесть, иначе первый сектор станет ББ.
-	// впрочем, загрузчик пока что не умеет обрабатывать ошибки
-	// страниц, но на случай реализации этого дела..
+	// In first pages OOB used for data, take it into account or first sector becomes bad.
+	// The bootloader yet not handles page errors.
+	// When it learns...
 	// *(base + NAND_SET_WP_REG) = 1;
 	*(base + NAND_CLR_CE_REG) = 1;
 	nand_read_page_oob ((UINT8 *)(page * NAND_PAGE_SIZE), oobdata_buf, 1);
@@ -327,7 +327,7 @@ static int nand_block_bad (unsigned long page)
 	if (status != 0xff)
 	{ // might be programmed alrady with ECC info, so checking other status info
 		if (status != status1) // these 2 octets should be programmed same
-			return 1; // а если нет, значит есть косячный бит в OOB
+			return 1; // if not, there is bad bit in OOB
 		// this block is treated as the bad one
 		switch (status)
 		{
@@ -367,8 +367,8 @@ static int nand_write_page (u_char *data_poi, int page,
 
 
 	if (oobsel)
-	{ // задав nand_oobinfo как NULL, указывают
-		eccmode = NAND_ECC_SOFT; // на то, что ecc не используется.
+	{ // ECC is not used if nand_oobinfo == NULL
+		eccmode = NAND_ECC_SOFT;
 		oob_config = oobsel->eccpos;
 	} else
 		eccmode = NAND_ECC_NONE;
@@ -480,8 +480,7 @@ nand_read_ecc (loff_t from, size_t len, size_t * retlen, u_char * buf,
 			default:
 				break;
 		}
-		// будет работать косячно, если читать не с начала сектора, но
-		// мы читаем всегда с начала сектора =)
+		// page boundary read assumed.
 		// if this page is the 1st page of current block
 		if ((page % NAND_PAGE_PER_BLK) == 0)
 		{ // yes, this page is the 1st page, using the oob_data to check block validity
@@ -493,7 +492,7 @@ nand_read_ecc (loff_t from, size_t len, size_t * retlen, u_char * buf,
 					(oobdata_buf[NAND_PAGE_SIZE + NAND_BADBLOCK_POS] != SECTOR_FREE)))
 				{
 					page += NAND_PAGE_PER_BLK; // move forward to next block
-					continue; // блок плохой? Прыгнули к следующему.
+					continue; // bad block? jump to next
 				}
 			}
 		}
@@ -505,20 +504,19 @@ nand_read_ecc (loff_t from, size_t len, size_t * retlen, u_char * buf,
 			ecc_code[j] = oobdata_buf[NAND_PAGE_SIZE + oob_config[j]];
 		/* correct data, if neccecary */
 		ecc_status = nand_correct_data (&oobdata_buf[0], &ecc_code[0], &ecc_calc[0]);
-		if (ecc_status == -1) // это значит, что данные прочитать уже не удастся
+		if (ecc_status == -1) // really failed data
 			ecc_failed++;
-		// = следует как-то сообщить пользователю о постигшей его утрате.
-		// или м.б. попытаться прочитать блок ещё раз 30? И если ecc_status = 1,
-		// значит уже есть одна ошибка, которую мы исправили.
+		// = should signal caller about failure
+		// or maybe try to read 30 times? If ecc_status == 1, we have corrected error.
 
-		if (eccmode != NAND_ECC_HW3_512) // всегда верно
+		if (eccmode != NAND_ECC_HW3_512) // always true
 		{
 			ecc_status = nand_correct_data (&oobdata_buf[256], &ecc_code[3], &ecc_calc[3]);
 			if (ecc_status == -1)
 				ecc_failed++;
 		}
 readdata:
-		// здесь нужна задержка, иначе виснет
+		// delay needed or hangs
 		for (j = 0; j < 10000; j++);
 		;
 		// buart_print (".");
@@ -543,16 +541,16 @@ static int nand_mark_bad_block (UINT32 page)
 {
 	int i;
 
-	page -= page % NAND_PAGE_PER_BLK; // на всякий случай, сместимся к 1-й странице
-	nand_erase ((UINT8 *)(page * NAND_PAGE_SIZE), NAND_SIZE_PER_BLK, 0); // эту единицу следует убрать после отладки
+	page -= page % NAND_PAGE_PER_BLK; // align to block boundary
+	nand_erase ((UINT8 *)(page * NAND_PAGE_SIZE), NAND_SIZE_PER_BLK, 0);
 
 	// *(base + NAND_SET_WP_REG) = 1;
 	*(base + NAND_CLR_CE_REG) = 1;
 
 	for (i = 0; i < NAND_PAGE_SIZE + NAND_PAGE_OOB_SIZE; i++)
-		oobdata_buf[i] = 0; // забиваем блок нулями, в т.ч. и OOB
+		oobdata_buf[i] = 0;
 
-	nand_write_page_oob ((UINT8 *)(page * NAND_PAGE_SIZE), oobdata_buf, 1, 0); // эту тоже (убрал)
+	nand_write_page_oob ((UINT8 *)(page * NAND_PAGE_SIZE), oobdata_buf, 1, 0);
 
 	*(base + NAND_SET_CE_REG) = 1;
 	// *(base + NAND_CLR_WP_REG) = 1;
@@ -597,8 +595,8 @@ static int nand_write_ecc (loff_t to, size_t len, size_t * retlen, const u_char 
 	// *(base + NAND_SET_WP_REG) = 1;
 	// Check the WP bit
 	nand_command (NAND_CMD_STATUS, -1, -1);
-	if (!(nand_read_byte () & 0x80)) // = надо применить этот механизм к
-	{ // области загрузочных параметров
+	if (!(nand_read_byte () & 0x80)) // = apply this mechanism to boot parameters area
+	{
 		buart_print ("nand_write_ecc: Device is write protected!!!\n");
 		ret = -EIO;
 		goto out;
@@ -612,7 +610,7 @@ static int nand_write_ecc (loff_t to, size_t len, size_t * retlen, const u_char 
 		if (blkAddr != page1st)
 		{ // checking this block, if not checked yet
 			blkAddr = page1st;
-			if (nand_block_bad (blkAddr) != 0) // 0 - хороший, 1 - плохой
+			if (nand_block_bad (blkAddr) != 0) // 0 - good, 1 - bad
 			{ // this block is bad block, double confirm this is bad one, then try next block
 				print_val ("\n\rBad flash block detected! Address", page1st * NAND_PAGE_SIZE);
 				// move forward to the 1st page of next block
@@ -624,12 +622,13 @@ static int nand_write_ecc (loff_t to, size_t len, size_t * retlen, const u_char 
 		data_poi = (u_char*) & buf[written];
 		/* We use the same function for write and writev */
 		if (nand_write_page (data_poi, page, oobsel, wp))
-			// т.е. мы не смогли записать страницу, пометим блок как плохой
-		{ // и начнём писать со следующего блока то, что начали писать в этом
+		{
+			// page write failed, mark block bad:
 			nand_mark_bad_block (page1st);
-			written -= (page * NAND_PAGE_SIZE) % NAND_SIZE_PER_BLK; // вычтем то,
-			// что уже успели записать в плохой блок.
-			blkAddr = -1; // дабы снова проверить, ББ ли? И, естественно, прыгнуть.
+			// write to next block:
+			// subtract written to bad block:
+			written -= (page * NAND_PAGE_SIZE) % NAND_SIZE_PER_BLK;
+			blkAddr = -1; // to check again for bad and jump
 			continue;
 		}
 		/* Update written bytes count */
@@ -671,7 +670,7 @@ int nand_erase (UINT8 *addr, UINT32 len, UINT8 wp)
 
 	base = (UINT8 *) NAND_REG_BASE;
 
-	if (wp) // снимаем write protection
+	if (wp) // clear write protection
 		//buart_print ("\n\rnand_erase - WP");
 		*(base + NAND_SET_WP_REG) = 1;
 	*(base + NAND_CLR_SPn_REG) = 1;
@@ -745,11 +744,9 @@ void nand_write_boot (UINT8 *dst, UINT8 *src, UINT32 len)
 }
 
 
-// после стирания сектора, всё его содержимое становится FF. Битый бит, это
-// такой бит, который при записи в него 1 остаётся в 0. Насколько мне известно,
-// залипших 1 в nand-flash не бывает. Поэтому достаточно прочитать содержимое
-// всех блоков после форматирования. Если хоть один бит в блоке = 0,
-// значит блок плохой, и его следует пометить таковым.
+// After sector erase all content is 0xFF.
+// Bad bit stays 0 after writing 1. AFAIK, no bad 1 exists.
+// Read all blocks after erase and if 0 bit detected, block is bad.
 
 void scan_bad_blocks (void)
 {
@@ -762,7 +759,7 @@ void scan_bad_blocks (void)
 	{
 		bad = 0;
 		if ((block * NAND_SIZE_PER_BLK >= LINUXLD_NANDFLASH_LOADER_SIZE) && (block * NAND_SIZE_PER_BLK < LINUXLD_NANDFLASH_KERNEL_START))
-			continue; // пропускаем область с параметрами, т.к. оне на затирается форматированием
+			continue; // skip parameters area - not erased
 		print_val1 ("block", block * NAND_PAGE_SIZE * NAND_PAGE_PER_BLK);
 
 		for (page = 0; page < NAND_PAGE_PER_BLK; page++)
@@ -771,7 +768,7 @@ void scan_bad_blocks (void)
 			nand_read_page_oob ((UINT8 *)src, oobdata_buf, 1);
 
 			for (j = 0; j < NAND_PAGE_SIZE + NAND_PAGE_OOB_SIZE; j++)
-				if (oobdata_buf[j] != 0xff) // битый байт
+				if (oobdata_buf[j] != 0xff) // bad byte
 				{
 					buart_print (" - bad.\n\r");
 					nand_mark_bad_block (block * NAND_PAGE_PER_BLK);
