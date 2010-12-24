@@ -540,8 +540,6 @@ readdata:
 
 static int nand_mark_bad_block (UINT32 page)
 {
-	int i;
-
 	page -= page % NAND_PAGE_PER_BLK; // align to block boundary
 	nand_erase ((UINT8 *)(page * NAND_PAGE_SIZE), NAND_SIZE_PER_BLK, 0);
 
