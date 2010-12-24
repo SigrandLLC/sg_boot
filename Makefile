@@ -2,7 +2,10 @@
   LOADER_OFFSET = 0x80800000
  RUNTIME_OFFSET = 0x80801000
 
-EXTRA_DEFINE = -DNO_NUMBER_OF_MACS
+NO_NUMBER_OF_MACS = -DNO_NUMBER_OF_MACS
+NO_XMODEM         = -DNO_XMODEM
+
+EXTRA_DEFINE = $(NO_NUMBER_OF_MACS) $(NO_XMODEM)
 
 
 #============================ Make ==============================
@@ -79,7 +82,8 @@ BOOT_OBJS_RAM = $(OBJ_DIR)/nand_bootinit_ram.o
 
 EXEC_NAME = nand_bootmain
 
-exec_objs  = nand_ldrinit.o bloader.o linuxld.o xmodem.o nand.o nand_ecc.o
+exec_objs  = nand_ldrinit.o bloader.o linuxld.o $(if $(NO_XMODEM),,xmodem.o)
+exec_objs += nand.o nand_ecc.o
 exec_objs += cachelib.o irqlib.o timer.o vector.o except.o utils.o
 exec_objs += if_5120.o memlib.o uartdrv.o tftp.o eth.o skbuff.o arp.o ip.o
 exec_objs += udp.o param.o nf.o dslam.o menu.o

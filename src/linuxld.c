@@ -76,6 +76,7 @@ void create_bad_blocks (void)
 	bad_block ();
 }
 
+#ifndef NO_XMODEM
 int update_bootloader (void)
 {
 	void *flash = (void *) LINUXLD_NANDFLASH_LOADER_START;
@@ -112,6 +113,7 @@ fail:
 ok:
 	return (rc);
 }
+#endif
 
 int tftpc_download (int mode)
 {
@@ -188,8 +190,8 @@ int tftpc_download (int mode)
 }
 
 
+#ifndef NO_XMODEM
 // download linux image to flash using xmodem
-
 int xmodem_download (void)
 {
 	void *flash = (void *) LINUXLD_NANDFLASH_KERNEL_START;
@@ -225,6 +227,7 @@ fail:
 	buart_print (fail);
 	return -1;
 }
+#endif
 
 // linux boot function
 

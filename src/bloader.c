@@ -66,6 +66,7 @@ void tftp_client_menu (void)
 
 
 //+ xmodem menu
+#ifndef NO_XMODEM
 extern int update_bootloader ();
 extern int xmodem_download (void);
 
@@ -82,6 +83,7 @@ void xmodem_client_menu (void)
 {
 	menu_do_all("Xmodem Client Menu", NULL, xmodem_menu);
 }
+#endif
 //+ xmodem menu
 
 
@@ -114,7 +116,9 @@ void flash_client_menu (void)
 //+ main menu
 static menu_entry_t main_menu[] =
 {
+#ifndef NO_XMODEM
 	{ .key = 'M', .line = "Xmodem download"  , .func_void = xmodem_client_menu },
+#endif
 	{ .key = 'T', .line = "TFTP download"    , .func_void = tftp_client_menu },
 	{ .key = 'P', .line = "Print boot params", .func_void = PrintBspParam },
 	{ .key = 'S', .line = "Set boot params"  , .func_void = (menu_func_void_t)set_boot_param },
