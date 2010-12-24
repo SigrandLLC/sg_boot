@@ -38,7 +38,7 @@
 #define ADM5120_EXTIO0_BASE					0x10C00000
 #define ADM5120_EXTIO1_BASE					0x10E00000
 #define ADM5120_MPMC_BASE					0x11000000
-#define ADM5120_USBHOST_BASE				0x11200000
+#define ADM5120_USBHOST_BASE					0x11200000
 #define ADM5120_PCIMEM_BASE					0x11400000
 #define ADM5120_PCIIO_BASE					0x11500000
 #define ADM5120_PCICFG_BASE					0x115FFFF0
@@ -57,8 +57,8 @@
 /*=======================  MIPS interrupt  ===================*/
 #define ADM5120_MIPSINT_SOFT0				0
 #define ADM5120_MIPSINT_SOFT1				1
-#define ADM5120_MIPSINT_IRQ					2
-#define ADM5120_MIPSINT_FIQ					3
+#define ADM5120_MIPSINT_IRQ				2
+#define ADM5120_MIPSINT_FIQ				3
 #define ADM5120_MIPSINT_REV0				4
 #define ADM5120_MIPSINT_REV1				5
 #define ADM5120_MIPSINT_REV2				6
@@ -96,36 +96,36 @@
 #define MPMC_DM_RASCAS1_REG					0x0124
 
 #define MPMC_SM_CONFIG0_REG					0x0200
-#define MPMC_SM_WAITWEN0_REG				0x0204
-#define MPMC_SM_WAITOEN0_REG				0x0208
+#define MPMC_SM_WAITWEN0_REG					0x0204
+#define MPMC_SM_WAITOEN0_REG					0x0208
 #define MPMC_SM_WAITRD0_REG					0x020C
-#define MPMC_SM_WAITPAGE0_REG				0x0210
+#define MPMC_SM_WAITPAGE0_REG					0x0210
 #define MPMC_SM_WAITWR0_REG					0x0214
-#define MPMC_SM_WAITTURN0_REG				0x0218
+#define MPMC_SM_WAITTURN0_REG					0x0218
 
 #define MPMC_SM_CONFIG1_REG					0x0220
-#define MPMC_SM_WAITWEN1_REG				0x0224
-#define MPMC_SM_WAITOEN1_REG				0x0228
+#define MPMC_SM_WAITWEN1_REG					0x0224
+#define MPMC_SM_WAITOEN1_REG					0x0228
 #define MPMC_SM_WAITRD1_REG					0x022C
-#define MPMC_SM_WAITPAGE1_REG				0x0230
+#define MPMC_SM_WAITPAGE1_REG					0x0230
 #define MPMC_SM_WAITWR1_REG					0x0234
-#define MPMC_SM_WAITTURN1_REG				0x0238
+#define MPMC_SM_WAITTURN1_REG					0x0238
 
 #define MPMC_SM_CONFIG2_REG					0x0240
-#define MPMC_SM_WAITWEN2_REG				0x0244
-#define MPMC_SM_WAITOEN2_REG				0x0248
+#define MPMC_SM_WAITWEN2_REG					0x0244
+#define MPMC_SM_WAITOEN2_REG					0x0248
 #define MPMC_SM_WAITRD2_REG					0x024C
-#define MPMC_SM_WAITPAGE2_REG				0x0250
+#define MPMC_SM_WAITPAGE2_REG					0x0250
 #define MPMC_SM_WAITWR2_REG					0x0254
-#define MPMC_SM_WAITTURN2_REG				0x0258
+#define MPMC_SM_WAITTURN2_REG					0x0258
 
 #define MPMC_SM_CONFIG3_REG					0x0260
-#define MPMC_SM_WAITWEN3_REG				0x0264
-#define MPMC_SM_WAITOEN3_REG				0x0268
+#define MPMC_SM_WAITWEN3_REG					0x0264
+#define MPMC_SM_WAITOEN3_REG					0x0268
 #define MPMC_SM_WAITRD3_REG					0x026C
-#define MPMC_SM_WAITPAGE3_REG				0x0270
+#define MPMC_SM_WAITPAGE3_REG					0x0270
 #define MPMC_SM_WAITWR3_REG					0x0274
-#define MPMC_SM_WAITTURN3_REG				0x0278
+#define MPMC_SM_WAITTURN3_REG					0x0278
 
 /* Macro for access MPMC register */
 #define ADM5120_MPMC_REG(_offset)\
@@ -136,13 +136,13 @@
 #define MPMC_DRAIN_W_BUF					0x00000008
 #define MPMC_LOW_POWER_MODE					0x00000004
 #define MPMC_ADDR_MIRROR					0x00000002
-#define MPMC_ENABLE							0x00000001
+#define MPMC_ENABLE						0x00000001
 #define MPMC_CONTROL_MASK					0x0000000f
 
 /* MPMC_STATUS_REG (offset: 0x0004) */
 #define MPMC_SREFACK						0x00000004
 #define MPMC_WBUF_DIRTY						0x00000002
-#define MPMC_BUSY							0x00000001
+#define MPMC_BUSY						0x00000001
 #define MPMC_STATUS_MASK					0x00000007
 
 /* MPMC_CONFIG_REG (offset: 0x0008) */
@@ -153,25 +153,25 @@
 #define MPMC_CONFIG_MASK					0x00000101
 
 /* MPMC_DM_CONTROL_REG (offset: 0x0020) */
-#define DM_PVHHOUT_HI_VOLTAGE				0x00008000
+#define DM_PVHHOUT_HI_VOLTAGE					0x00008000
 #define DM_RPOUT_HI_VOLTAGE					0x00004000
 #define DM_DEEP_SLEEP_MODE					0x00002000
 
 #define DM_SDRAM_NOP						0x00000180
-#define DM_SDRAM_PRECHARGE_ALL				0x00000100
-#define DM_SDRAM_MODE_SETTING				0x00000080
+#define DM_SDRAM_PRECHARGE_ALL					0x00000100
+#define DM_SDRAM_MODE_SETTING					0x00000080
 #define DM_SDRAM_NORMAL_OP					0x00000000
-#define DM_SDRAM_OPMODE_MASK				0x00000180
+#define DM_SDRAM_OPMODE_MASK					0x00000180
 
-#define DM_SELF_REFRESH_MODE				0x00000004
+#define DM_SELF_REFRESH_MODE					0x00000004
 #define DM_CLKOUT_ALWAYS					0x00000002
 #define DM_CLKEN_ALWAYS						0x00000001
 
-#define MPMC_DM_CONTROL_MASK				0x0000e187
+#define MPMC_DM_CONTROL_MASK					0x0000e187
 
 
 /* MPMC_DM_REFRESH_REG (offset:0x0024) */
-#define MPMC_DM_REFRESH_MASK				0x00000300
+#define MPMC_DM_REFRESH_MASK					0x00000300
 
 /* MPMC_DM_TRP_REG (offset: 0x0030) */
 #define MPMC_DM_TRP_MASK					0x0000000f
@@ -207,37 +207,37 @@
 #define MPMC_DM_TMRD_MASK					0x0000000f
 
 /* MPMC_SM_EXTWAIT_REG (offset:	0x0080) */
-#define MPMC_SM_EXTWAIT_MASK				0x0000003f
+#define MPMC_SM_EXTWAIT_MASK					0x0000003f
 
 
 /* MPMC_DM_CONFIG0_REG (offset: 0x0100) */
 /* MPMC_DM_CONFIG1_REG (offset: 0x0120) */
-#define DM_CFG_ROW_WIDTH_13BIT				0x20000000
-#define DM_CFG_ROW_WIDTH_12BIT				0x10000000
-#define DM_CFG_ROW_WIDTH_11BIT				0x00000000
-#define DM_CFG_ROW_WIDTH_MASK				0x30000000
-#define DM_CFG_ROW_WIDTH_SHIFT				28
+#define DM_CFG_ROW_WIDTH_13BIT					0x20000000
+#define DM_CFG_ROW_WIDTH_12BIT					0x10000000
+#define DM_CFG_ROW_WIDTH_11BIT					0x00000000
+#define DM_CFG_ROW_WIDTH_MASK					0x30000000
+#define DM_CFG_ROW_WIDTH_SHIFT					28
 
 #define DM_CFG_2BANK_DEV					0x00000000
 #define DM_CFG_4BANK_DEV					0x04000000
 #define DM_CFG_BANK_SHIFT					26
 
-#define DM_CFG_COL_WIDTH_11BIT				0x01400000
-#define DM_CFG_COL_WIDTH_10BIT				0x01000000
-#define DM_CFG_COL_WIDTH_9BIT				0x00c00000
-#define DM_CFG_COL_WIDTH_8BIT				0x00800000
-#define DM_CFG_COL_WIDTH_7BIT				0x00400000
-#define DM_CFG_COL_WIDTH_6BIT				0x00000000
-#define DM_CFG_COL_WIDTH_MASK				0x01c00000
-#define DM_CFG_COL_WIDTH_SHIFT				22
+#define DM_CFG_COL_WIDTH_11BIT					0x01400000
+#define DM_CFG_COL_WIDTH_10BIT					0x01000000
+#define DM_CFG_COL_WIDTH_9BIT					0x00c00000
+#define DM_CFG_COL_WIDTH_8BIT					0x00800000
+#define DM_CFG_COL_WIDTH_7BIT					0x00400000
+#define DM_CFG_COL_WIDTH_6BIT					0x00000000
+#define DM_CFG_COL_WIDTH_MASK					0x01c00000
+#define DM_CFG_COL_WIDTH_SHIFT					22
 
-#define DM_CFG_WRITE_PROTECT				0x00100000
+#define DM_CFG_WRITE_PROTECT					0x00100000
 #define DM_CFG_BUFFER_EN					0x00080000
 
-#define DM_CFG_ADDR_MAPPING_MASK			0x00005F80
+#define DM_CFG_ADDR_MAPPING_MASK				0x00005F80
 
-#define DM_CFG_DEV_SYNC_FLASH				0x00000010
-#define DM_CFG_DEV_LOWPOWER_SDRAM			0x00000008
+#define DM_CFG_DEV_SYNC_FLASH					0x00000010
+#define DM_CFG_DEV_LOWPOWER_SDRAM				0x00000008
 #define DM_CFG_DEV_SDRAM					0x00000000
 #define DM_CFG_DEV_MASK						0x00000018
 
@@ -262,8 +262,8 @@
 #define SM_WRITE_PROTECT					0x00100000
 #define SM_WRITEBUF_ENABLE					0x00080000
 #define SM_EXTENDED_WAIT					0x00000100
-#define SM_PB								0x00000080
-#define SM_CS_HIGH							0x00000040
+#define SM_PB							0x00000080
+#define SM_CS_HIGH						0x00000040
 #define SM_PAGE_MODE						0x00000008
 
 #define SM_MEM_WIDTH_32BIT					0x00000002
@@ -277,14 +277,14 @@
 /* MPMC_SM_WAITWEN1_REG	(offset: 0x0224) */
 /* MPMC_SM_WAITWEN2_REG	(offset: 0x0244) */
 /* MPMC_SM_WAITWEN3_REG	(offset: 0x0264) */
-#define MPMC_SM_WAITWEN_MASK				0x0000000f
+#define MPMC_SM_WAITWEN_MASK					0x0000000f
 
 
 /* MPMC_SM_WAITOEN0_REG (offset: 0x0208) */
 /* MPMC_SM_WAITOEN1_REG (offset: 0x0228) */
 /* MPMC_SM_WAITOEN2_REG (offset: 0x0248) */
 /* MPMC_SM_WAITOEN3_REG (offset: 0x0268) */
-#define MPMC_SM_WAITOEN_MASK				0x0000000f
+#define MPMC_SM_WAITOEN_MASK					0x0000000f
 
 /* MPMC_SM_WAITRD0_REG (offset: 0x020C) */
 /* MPMC_SM_WAITRD1_REG (offset: 0x022C) */
@@ -296,7 +296,7 @@
 /* MPMC_SM_WAITPAGE1_REG (offset: 0x0230) */
 /* MPMC_SM_WAITPAGE2_REG (offset: 0x0250) */
 /* MPMC_SM_WAITPAGE3_REG (offset: 0x0270) */
-#define MPMC_SM_WAITPAGE_MASK				0x0000001f
+#define MPMC_SM_WAITPAGE_MASK					0x0000001f
 
 
 /* MPMC_SM_WAITWR0_REG (offset: 0x0214) */
@@ -310,7 +310,7 @@
 /* MPMC_SM_WAITTURN1_REG (offset: 0x0238) */
 /* MPMC_SM_WAITTURN2_REG (offset: 0x0258) */
 /* MPMC_SM_WAITTURN3_REG (offset: 0x0278) */
-#define MPMC_SM_WAITTURN_MASK				0x0000000f
+#define MPMC_SM_WAITTURN_MASK					0x0000000f
 
 
 /* SDRAM mode register */
@@ -319,7 +319,7 @@
 #define SDRAM_BTLEN_2						0x0001
 #define SDRAM_BTLEN_4						0x0002
 #define SDRAM_BTLEN_8						0x0003
-#define SDRAM_BTLEN_FULLPAGE				0x0007
+#define SDRAM_BTLEN_FULLPAGE					0x0007
 #define SDRAM_BTLEN_MASK					0x0007
 
 #define SDRAM_BT_SEQUENCIAL					0x0000
@@ -327,13 +327,13 @@
 
 #define SDRAM_CAS_LATENCY_2					0x0020
 #define SDRAM_CAS_LATENCY_3					0x0030
-#define SDRAM_CAS_LATENCY_MASK				0x0030
+#define SDRAM_CAS_LATENCY_MASK					0x0030
 
-#define SDRAM_OPMODE_STANDARD				0x0000
+#define SDRAM_OPMODE_STANDARD					0x0000
 #define SDRAM_OPMODE_MASK					0x0180
 
-#define SDRAM_WBTMODE_ENABLE				0x0000
-#define SDRAM_WBTMODE_DISABLE				0x0200
+#define SDRAM_WBTMODE_ENABLE					0x0000
+#define SDRAM_WBTMODE_DISABLE					0x0200
 
 #define SDRAM_MODEREG_MASK					0x03FF
 
@@ -373,18 +373,18 @@
 #define INT_LVL_MAX							INT_LVL_SWITCH
 
 /* interrupts */
-#define IRQ_TIMER							(0x1 << INT_LVL_TIMER)
-#define IRQ_UART0							(0x1 << INT_LVL_UART0)
-#define IRQ_UART1							(0x1 << INT_LVL_UART1)
-#define IRQ_USBHOST							(0x1 << INT_LVL_USBHOST)
-#define IRQ_EXTIO_0							(0x1 << INT_LVL_EXTIO_0)
-#define IRQ_EXTIO_1							(0x1 << INT_LVL_EXTIO_1)
+#define IRQ_TIMER						(0x1 << INT_LVL_TIMER)
+#define IRQ_UART0						(0x1 << INT_LVL_UART0)
+#define IRQ_UART1						(0x1 << INT_LVL_UART1)
+#define IRQ_USBHOST						(0x1 << INT_LVL_USBHOST)
+#define IRQ_EXTIO_0						(0x1 << INT_LVL_EXTIO_0)
+#define IRQ_EXTIO_1						(0x1 << INT_LVL_EXTIO_1)
 #define IRQ_PCI_INT0						(0x1 << INT_LVL_PCI_0)
 #define IRQ_PCI_INT1						(0x1 << INT_LVL_PCI_1)
 #define IRQ_PCI_INT2						(0x1 << INT_LVL_PCI_2)
-#define IRQ_SWITCH							(0x1 << INT_LVL_SWITCH)
+#define IRQ_SWITCH						(0x1 << INT_LVL_SWITCH)
 
-#define IRQ_MASK							0x3ff
+#define IRQ_MASK						0x3ff
 
 
 /* IRQ LEVEL reg */
@@ -398,40 +398,40 @@
 
 /*=========================  Switch Control Register  ========================*/
 /* Control Register */
-#define CODE_REG							0x0000
-#define SftRest_REG							0x0004
+#define CODE_REG						0x0000
+#define SftRest_REG						0x0004
 #define Boot_done_REG						0x0008
-#define SWReset_REG							0x000C
+#define SWReset_REG						0x000C
 #define Global_St_REG						0x0010
-#define PHY_st_REG							0x0014
-#define Port_st_REG							0x0018
+#define PHY_st_REG						0x0014
+#define Port_st_REG						0x0018
 #define Mem_control_REG						0x001C
-#define SW_conf_REG							0x0020
+#define SW_conf_REG						0x0020
 #define CPUp_conf_REG						0x0024
 #define Port_conf0_REG						0x0028
 #define Port_conf1_REG						0x002C
 #define Port_conf2_REG						0x0030
 
-#define VLAN_G1_REG							0x0040
-#define VLAN_G2_REG							0x0044
+#define VLAN_G1_REG						0x0040
+#define VLAN_G2_REG						0x0044
 #define Send_trig_REG						0x0048
 #define Srch_cmd_REG						0x004C
 #define ADDR_st0_REG						0x0050
 #define ADDR_st1_REG						0x0054
-#define MAC_wt0_REG							0x0058
-#define MAC_wt1_REG							0x005C
+#define MAC_wt0_REG						0x0058
+#define MAC_wt1_REG						0x005C
 #define BW_cntl0_REG						0x0060
 #define BW_cntl1_REG						0x0064
 #define PHY_cntl0_REG						0x0068
 #define PHY_cntl1_REG						0x006C
-#define FC_th_REG							0x0070
+#define FC_th_REG						0x0070
 #define Adj_port_th_REG						0x0074
-#define Port_th_REG							0x0078
+#define Port_th_REG						0x0078
 #define PHY_cntl2_REG						0x007C
 #define PHY_cntl3_REG						0x0080
 #define Pri_cntl_REG						0x0084
 #define VLAN_pri_REG						0x0088
-#define TOS_en_REG							0x008C
+#define TOS_en_REG						0x008C
 #define TOS_map0_REG						0x0090
 #define TOS_map1_REG						0x0094
 #define Custom_pri1_REG						0x0098
@@ -451,7 +451,7 @@
 #define Watchdog0_REG						0x00C0
 #define Watchdog1_REG						0x00C4
 
-#define Swap_in_REG							0x00C8
+#define Swap_in_REG						0x00C8
 #define Swap_out_REG						0x00CC
 
 // Tx/Rx Descriptors
@@ -466,7 +466,7 @@
 
 // Timer Control
 #define Timer_int_REG						0x00F0
-#define Timer_REG							0x00F4
+#define Timer_REG						0x00F4
 
 // LED control
 #define Port0_LED_REG						0x0100
@@ -516,16 +516,16 @@
 #define SOFTWARE_RESET						0x1
 
 /* Boot_done_REG */
-#define BOOT_DONE							0x1
+#define BOOT_DONE						0x1
 
 /* SWReset_REG */
 #define SWITCH_RESET						0x1
 
 /* Global_St_REG */
-#define DATA_BUF_BIST_FAILED				(0x1 << 0)
-#define LINK_TAB_BIST_FAILED				(0x1 << 1)
+#define DATA_BUF_BIST_FAILED					(0x1 << 0)
+#define LINK_TAB_BIST_FAILED					(0x1 << 1)
 #define MC_TAB_BIST_FAILED					(0x1 << 2)
-#define ADDR_TAB_BIST_FAILED				(0x1 << 3)
+#define ADDR_TAB_BIST_FAILED					(0x1 << 3)
 #define DCACHE_D_FAILED						(0x3 << 4)
 #define DCACHE_T_FAILED						(0x1 << 6)
 #define ICACHE_D_FAILED						(0x3 << 7)
@@ -551,7 +551,7 @@
 #define PORT_DUPLEX_MASK					0x003F0000
 #define PORT_FLOWCTRL_MASK					0x1F000000
 
-#define PORT_GMII_FLOWCTRL_MASK				0x60000000
+#define PORT_GMII_FLOWCTRL_MASK					0x60000000
 #define PORT_GMII_FC_ON						0x20000000
 #define PORT_GMII_RXFC_ON					0x20000000
 #define PORT_GMII_TXFC_ON					0x40000000
@@ -565,7 +565,7 @@
 #define SDRAM_SIZE_8MBYTES					0x0002
 #define SDRAM_SIZE_16MBYTES					0x0003
 #define SDRAM_SIZE_64MBYTES					0x0004
-#define SDRAM_SIZE_128MBYTES				0x0005
+#define SDRAM_SIZE_128MBYTES					0x0005
 #define SDRAM_SIZE_MASK						0x0007
 
 #define MEMCNTL_SDRAM1_EN					(0x1 << 5)
@@ -584,16 +584,16 @@
 
 /* SW_conf_REG */
 #define SW_AGE_TIMER_MASK					0x000000F0
-#define SW_AGE_TIMER_DISABLE				0x0
+#define SW_AGE_TIMER_DISABLE					0x0
 #define SW_AGE_TIMER_FAST					0x00000080
 #define SW_AGE_TIMER_300SEC					0x00000010
 #define SW_AGE_TIMER_600SEC					0x00000020
-#define SW_AGE_TIMER_1200SEC				0x00000030
-#define SW_AGE_TIMER_2400SEC				0x00000040
-#define SW_AGE_TIMER_4800SEC				0x00000050
-#define SW_AGE_TIMER_9600SEC				0x00000060
-#define SW_AGE_TIMER_19200SEC				0x00000070
-//#define SW_AGE_TIMER_38400SEC				0x00000070
+#define SW_AGE_TIMER_1200SEC					0x00000030
+#define SW_AGE_TIMER_2400SEC					0x00000040
+#define SW_AGE_TIMER_4800SEC					0x00000050
+#define SW_AGE_TIMER_9600SEC					0x00000060
+#define SW_AGE_TIMER_19200SEC					0x00000070
+//#define SW_AGE_TIMER_38400SEC					0x00000070
 
 #define SW_BC_PREV_MASK						0x00000300
 #define SW_BC_PREV_DISABLE					0
@@ -613,7 +613,7 @@
 #define SW_HASH_ALG_XOR48					0x00002000
 #define SW_HASH_ALG_XOR32					0x00004000
 
-#define SW_DISABLE_BACKOFF_TIMER			0x00008000
+#define SW_DISABLE_BACKOFF_TIMER				0x00008000
 
 #define SW_BP_NUM_MASK						0x000F0000
 #define SW_BP_NUM_SHIFT						16
@@ -626,7 +626,7 @@
 #define SW_BISR_DISABLE						0x00800000
 
 #define SW_DIS_MII_WAS_TX					0x01000000
-#define SW_BISS_EN							0x02000000
+#define SW_BISS_EN						0x02000000
 #define SW_BISS_TH_MASK						0x0C000000
 #define SW_BISS_TH_SHIFT					26
 #define SW_REQ_LATENCY_MASK					0xF0000000
@@ -647,7 +647,7 @@
 
 
 /* Port_conf0_REG */
-#define SW_DISABLE_PORT_MASK				0x0000003F
+#define SW_DISABLE_PORT_MASK					0x0000003F
 #define SW_EN_MC_MASK						0x00003F00
 #define SW_EN_MC_SHIFT						8
 #define SW_EN_BP_MASK						0x003F0000
@@ -657,43 +657,43 @@
 
 
 /* Port_conf1_REG */
-#define SW_DIS_SA_LEARN_MASK				0x0000003F
-#define SW_PORT_BLOCKING_MASK				0x00000FC0
-#define SW_PORT_BLOCKING_SHIFT				6
+#define SW_DIS_SA_LEARN_MASK					0x0000003F
+#define SW_PORT_BLOCKING_MASK					0x00000FC0
+#define SW_PORT_BLOCKING_SHIFT					6
 #define SW_PORT_BLOCKING_ON					0x1
 
-#define SW_PORT_BLOCKING_MODE_MASK			0x0003F000
-#define SW_PORT_BLOCKING_MODE_SHIFT			12
-#define SW_PORT_BLOCKING_CTRLONLY			0x1
+#define SW_PORT_BLOCKING_MODE_MASK				0x0003F000
+#define SW_PORT_BLOCKING_MODE_SHIFT				12
+#define SW_PORT_BLOCKING_CTRLONLY				0x1
 
 #define SW_EN_PORT_AGE_MASK					0x03F00000
-#define SW_EN_PORT_AGE_SHIFT				20
-#define SW_EN_SA_SECURED_MASK				0xFC000000
-#define SW_EN_SA_SECURED_SHIFT				26
+#define SW_EN_PORT_AGE_SHIFT					20
+#define SW_EN_SA_SECURED_MASK					0xFC000000
+#define SW_EN_SA_SECURED_SHIFT					26
 
 
 /* Port_conf2_REG */
 #define SW_GMII_AN_EN						0x00000001
-#define SW_GMII_FORCE_SPD_MASK				0x00000006
-#define SW_GMII_FORCE_SPD_10M				0
-#define SW_GMII_FORCE_SPD_100M				0x2
-#define SW_GMII_FORCE_SPD_1000M				0x4
+#define SW_GMII_FORCE_SPD_MASK					0x00000006
+#define SW_GMII_FORCE_SPD_10M					0
+#define SW_GMII_FORCE_SPD_100M					0x2
+#define SW_GMII_FORCE_SPD_1000M					0x4
 
-#define SW_GMII_FORCE_FULL_DUPLEX			0x00000008
+#define SW_GMII_FORCE_FULL_DUPLEX				0x00000008
 
 #define SW_GMII_FORCE_RXFC					0x00000010
 #define SW_GMII_FORCE_TXFC					0x00000020
 
-#define SW_GMII_EN							0x00000040
+#define SW_GMII_EN						0x00000040
 #define SW_GMII_REVERSE						0x00000080
 
-#define SW_GMII_TXC_CHECK_EN				0x00000100
+#define SW_GMII_TXC_CHECK_EN					0x00000100
 
-#define SW_LED_FLASH_TIME_MASK				0x00030000
-#define SW_LED_FLASH_TIME_30MS				0
-#define SW_LED_FLASH_TIME_60MS				0x00010000
-#define SW_LED_FLASH_TIME_240MS				0x00020000
-#define SW_LED_FLASH_TIME_480MS				0x00030000
+#define SW_LED_FLASH_TIME_MASK					0x00030000
+#define SW_LED_FLASH_TIME_30MS					0
+#define SW_LED_FLASH_TIME_60MS					0x00010000
+#define SW_LED_FLASH_TIME_240MS					0x00020000
+#define SW_LED_FLASH_TIME_480MS					0x00030000
 
 
 /* Send_trig_REG */
@@ -731,16 +731,16 @@
 #define SW_PORT_TX_10MK						7
 
 /* BW_cntl1_REG */
-#define SW_TRAFFIC_SHAPE_IPG				(0x1 << 31)
+#define SW_TRAFFIC_SHAPE_IPG					(0x1 << 31)
 
 /* PHY_cntl0_REG */
 #define SW_PHY_ADDR_MASK					0x0000001F
 #define PHY_ADDR_MAX						0x1f
-#define SW_PHY_REG_ADDR_MASK				0x00001F00
-#define SW_PHY_REG_ADDR_SHIFT				8
+#define SW_PHY_REG_ADDR_MASK					0x00001F00
+#define SW_PHY_REG_ADDR_SHIFT					8
 #define PHY_REG_ADDR_MAX					0x1f
 #define SW_PHY_WRITE						0x00002000
-#define SW_PHY_READ							0x00004000
+#define SW_PHY_READ						0x00004000
 #define SW_PHY_WDATA_MASK					0xFFFF0000
 #define SW_PHY_WDATA_SHIFT					16
 
@@ -765,9 +765,9 @@
 #define SW_FORCE_FC_SHIFT					15
 #define SW_PHY_NORMAL_MASK					0x01F00000
 #define SW_PHY_NORMAL_SHIFT					20
-#define SW_PHY_AUTOMDIX_MASK				0x3E000000
-#define SW_PHY_AUTOMDIX_SHIFT				25
-#define SW_PHY_REC_MCCAVERAGE				0x40000000
+#define SW_PHY_AUTOMDIX_MASK					0x3E000000
+#define SW_PHY_AUTOMDIX_SHIFT					25
+#define SW_PHY_REC_MCCAVERAGE					0x40000000
 
 
 /* PHY_cntl3_REG */
@@ -783,7 +783,7 @@
 /* Port_cnt_REG */
 
 /* PHY_cntl4_REG */
-#define PHY_VOLT23							(0x1 << 20)
+#define PHY_VOLT23						(0x1 << 20)
 #define PHY_ROMCODE_25						(0x1 << 21)
 
 /* SW_Int_st_REG & SW_Int_mask_REG */
@@ -805,7 +805,7 @@
 #define MUST_DROP_INT						0x0008000
 #define BC_STORM_INT						0x0010000
 
-#define PORT_STATUS_CHANGE_INT				0x0040000
+#define PORT_STATUS_CHANGE_INT					0x0040000
 #define INTRUDER_INT						0x0080000
 #define	WATCHDOG0_EXPR_INT					0x0100000
 #define WATCHDOG1_EXPR_INT					0x0200000
@@ -852,7 +852,7 @@
 #define GPIO6_OUTPUT_EN						0x00400000
 #define GPIO7_OUTPUT_EN						0x00800000
 
-#define GPIO_CONF0_OUTEN_MASK				0x00ff0000
+#define GPIO_CONF0_OUTEN_MASK					0x00ff0000
 
 #define GPIO0_OUTPUT_HI						0x01000000
 #define GPIO1_OUTPUT_HI						0x02000000
@@ -882,21 +882,21 @@
 #define WATCHDOG0_RESET_EN					0x80000000
 #define WATCHDOG1_DROP_EN					0x80000000
 
-#define WATCHDOG_TIMER_SET_MASK				0x7FFF0000
-#define WATCHDOG_TIMER_SET_SHIFT			16
+#define WATCHDOG_TIMER_SET_MASK					0x7FFF0000
+#define WATCHDOG_TIMER_SET_SHIFT				16
 #define WATCHDOG_TIMER_MASK					0x00007FFF
 
 
 /* Timer_int_REG */
-#define SW_TIMER_INT_DISABLE				0x10000
+#define SW_TIMER_INT_DISABLE					0x10000
 #define SW_TIMER_INT						0x1
 
 /* Timer_REG */
-#define SW_TIMER_EN							0x10000
+#define SW_TIMER_EN						0x10000
 #define SW_TIMER_MASK						0xffff
 #define SW_TIMER_10MS_TICKS					0x3D09
 #define SW_TIMER_1MS_TICKS					0x61A
-#define SW_TIMER_100US_TICKS				0x9D
+#define SW_TIMER_100US_TICKS					0x9D
 
 
 /* Port0_LED_REG, Port1_LED_REG, Port2_LED_REG, Port3_LED_REG, Port4_LED_REG*/
@@ -910,9 +910,9 @@
 #define GPIOL_ACT_LED						0x07
 #define GPIOL_COL_LED						0x08
 #define GPIOL_LINK_ACT_LED					0x09
-#define GPIOL_DUPLEX_COL_LED				0x0A
-#define GPIOL_10MLINK_ACT_LED				0x0B
-#define GPIOL_100MLINK_ACT_LED				0x0C
+#define GPIOL_DUPLEX_COL_LED					0x0A
+#define GPIOL_10MLINK_ACT_LED					0x0B
+#define GPIOL_100MLINK_ACT_LED					0x0C
 #define GPIOL_CTRL_MASK						0x0F
 
 #define GPIOL_INPUT_MASK					0x7000
@@ -926,14 +926,14 @@
 
 
 /*===========================  UART Control Register  ========================*/
-#define UART_DR_REG							0x00
+#define UART_DR_REG						0x00
 #define UART_RSR_REG						0x04
 #define UART_ECR_REG						0x04
 #define UART_LCR_H_REG						0x08
 #define UART_LCR_M_REG						0x0c
 #define UART_LCR_L_REG						0x10
-#define UART_CR_REG							0x14
-#define UART_FR_REG							0x18
+#define UART_CR_REG						0x14
+#define UART_FR_REG						0x18
 #define UART_IIR_REG						0x1c
 #define UART_ICR_REG						0x1C
 #define UART_ILPR_REG						0x20
@@ -945,8 +945,8 @@
 #define UART_FRAMING_ERR					0x01
 #define UART_RX_STATUS_MASK					0x0f
 #define UART_RX_ERROR						( UART_BREAK_ERR	\
-											| UART_PARITY_ERR	\
-											| UART_FRAMING_ERR)
+								| UART_PARITY_ERR	\
+								| UART_FRAMING_ERR)
 
 /*  lcr_h reg  */
 #define UART_SEND_BREAK						0x01
@@ -963,33 +963,33 @@
 
 /*  cr reg  */
 #define UART_PORT_EN						0x01
-#define UART_SIREN							0x02
-#define UART_SIRLP							0x04
-#define UART_MODEM_STATUS_INT_EN			0x08
+#define UART_SIREN						0x02
+#define UART_SIRLP						0x04
+#define UART_MODEM_STATUS_INT_EN				0x08
 #define UART_RX_INT_EN						0x10
 #define UART_TX_INT_EN						0x20
-#define UART_RX_TIMEOUT_INT_EN				0x40
+#define UART_RX_TIMEOUT_INT_EN					0x40
 #define UART_LOOPBACK_EN					0x80
 
 /*  fr reg  */
-#define UART_CTS							0x01
-#define UART_DSR							0x02
-#define UART_DCD							0x04
-#define UART_BUSY							0x08
+#define UART_CTS						0x01
+#define UART_DSR						0x02
+#define UART_DCD						0x04
+#define UART_BUSY						0x08
 #define UART_RX_FIFO_EMPTY					0x10
 #define UART_TX_FIFO_FULL					0x20
 #define UART_RX_FIFO_FULL					0x40
 #define UART_TX_FIFO_EMPTY					0x80
 
 /*  iir/icr reg  */
-#define UART_MODEM_STATUS_INT				0x01
-#define UART_RX_INT							0x02
-#define UART_TX_INT							0x04
+#define UART_MODEM_STATUS_INT					0x01
+#define UART_RX_INT						0x02
+#define UART_TX_INT						0x04
 #define UART_RX_TIMEOUT_INT					0x08
 
 #define UART_INT_MASK						0x0f
 
-#define ADM5120_UARTCLK_FREQ				62500000
+#define ADM5120_UARTCLK_FREQ					62500000
 
 #define UART_BAUDDIV(_rate)				\
 	((UINT32)(ADM5120_UARTCLK_FREQ/(16*(_rate)) - 1))
@@ -1022,7 +1022,7 @@
 //#define ADM5120_CACHE_CTRL_REGSIZE		4
 
 /* NAND flash interface */
-#define NAND_RW_REG							0x00
+#define NAND_RW_REG						0x00
 #define NAND_CLR_CE_REG						0x01
 #define NAND_SET_CE_REG						0x02
 #define NAND_CLR_CLE_REG					0x03
@@ -1036,7 +1036,7 @@
 #define NAND_RDY_REG						0x0b
 
 #define NAND_SET_BIT						0x01
-#define NAND_ENABLE							0x100
+#define NAND_ENABLE						0x100
 
 /* Macros for accessing NAND flash interface register */
 #define ADM5120_NAND_REG(_reg)		\
