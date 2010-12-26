@@ -207,9 +207,11 @@ num_again:
 	macnum = 1;
 #endif
 
-	if ((flags & FLAG_MAC_MODIFIED) || ((flags & FLAG_OLD_MAC_VALID) && (flags & FLAG_MAC_NUM_MODIFIED)))
+	if ( (flags & FLAG_MAC_MODIFIED) ||
+	    ((flags & FLAG_OLD_MAC_VALID) && (flags & FLAG_MAC_NUM_MODIFIED)))
 	{
-		if (!(flags & FLAG_MAC_NUM_MODIFIED) && !(flags & FLAG_OLD_MAC_VALID))
+		if (!(flags & FLAG_MAC_NUM_MODIFIED) &&
+		    !(flags & FLAG_OLD_MAC_VALID))
 		{
 			macnum = 1;
 		}
