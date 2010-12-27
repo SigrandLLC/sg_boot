@@ -118,8 +118,8 @@ install : rom_img_install ram_img_install
 
 
 rom_img_install : $(BOOT_IMG) $(MAIN_IMG) $(ROM_IMG) $(TFTPBOOT_STAMP)
-	@echo "> Copying $(ROM_IMG) to $(TFTPBOOT)"
-	$(v)$(CP) $(ROM_IMG) $(TFTPBOOT)
+	@echo "> Copying $(ROM_IMG) to $(TFTPBOOT)/sg5120boot_rom.bin"
+	$(v)$(CP) $(ROM_IMG) $(TFTPBOOT)/sg5120boot_rom.bin
 
 $(ROM_IMG) : $(BOOT_IMG) $(MAIN_IMG) $(BIN_DIR_STAMP)
 	@echo "> Constructing $@"
@@ -142,8 +142,8 @@ $(MAIN_IMG) : $(EXEC_OBJS) $(OBJ_DIR_STAMP)
 
 
 ram_img_install : $(BOOT_RAM_IMG) $(MAIN_RAM_IMG) $(RAM_IMG) $(TFTPBOOT_STAMP)
-	@echo "> Copying $(RAM_IMG) to $(TFTPBOOT)"
-	$(v)$(CP) $(RAM_IMG) $(TFTPBOOT)
+	@echo "> Copying $(RAM_IMG) to $(TFTPBOOT)/sg5120boot_ram.bin"
+	$(v)$(CP) $(RAM_IMG) $(TFTPBOOT)/sg5120boot_ram.bin
 
 $(RAM_IMG) : $(BOOT_RAM_IMG) $(MAIN_RAM_IMG) $(BIN_DIR_STAMP)
 	@echo "> Constructing $@"
