@@ -10,7 +10,7 @@ void Set_Mac (void);
 void Set_If_config (void);
 int check_ip (unsigned long, int);
 
-void PrintBspParam (void);
+void PrintAllParam (void);
 void   SetAllParam (void);
 int  set_boot_param (void);
 void print_tftpc_param (void);

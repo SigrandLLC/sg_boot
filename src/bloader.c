@@ -58,7 +58,7 @@ static menu_entry_t tftpc_menu[] =
 
 void tftp_client_menu (void)
 {
-	menu_do_all("TFTP Client Menu", PrintBspParam, tftpc_menu);
+	menu_do_all("TFTP Client Menu", PrintAllParam, tftpc_menu);
 }
 //- tftp menu
 
@@ -291,6 +291,6 @@ void c_entry (void)
 
 	//Bootloader Function Start.
         while (1)
-		menu_do_all("ADM5120 based router: Bootloader Menu", PrintBspParam, main_menu);
+		menu_do_all("ADM5120 based router: Bootloader Menu", PrintAllParam, main_menu);
 }
 

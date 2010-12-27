@@ -291,7 +291,7 @@ int bsp_GetGwIp (UINT32 *gwip)
 	return 0;
 }
 
-void PrintBspParam (void)
+void PrintAllParam (void)
 {
 	UINT32 tftpip;
 	unsigned char buf[BOOT_LINE_SIZE + 1];
@@ -532,7 +532,7 @@ void SetAllParam(void)
    { .key = '\0' }
  };
 
- menu_do_all("New Parameters Menu", PrintBspParam, menu);
+ menu_do_all("New Parameters Menu", PrintAllParam, menu);
 }
 
 int check_ip (UINT32 ipcheck, int flag)
