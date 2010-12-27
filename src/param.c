@@ -577,20 +577,54 @@ int set_tftpc_param (void)
 
 void SetAllParam(void)
 {
- static menu_entry_t menu[] =
- {
-   { .key = 'M', .line = "Local MAC address"          , .func_void = Set_Mac },
-   { .key = 'I', .line = "Local IP  address"          , .func_void = Set_IP },
-   { .key = 'T', .line = "TFTP server IP address"     , .func_void = set_tftp_ip },
-   { .key = 'G', .line = "TFTP server gateway address", .func_void = set_tftp_gw },
-   { .key = 'B', .line = "BootLoader file name"       , .func_void = set_tftp_boot_name },
-   { .key = 'S', .line = "Linux file name"            , .func_void = set_tftp_linux_name },
-   { .key = 'W', .line = "Write parameters"           , .func_void = (menu_func_void_t)write_params },
-   { .key = 'X', .line = "Exit"                       , .func_int  = menu_exit },
-   { .key = '\0' }
- };
+    static menu_entry_t menu[] =
+    {
+	{
+	    .key = 'M', .line = "Local MAC address",
+	    .func_void = Set_Mac,
+	    .print_val = (menu_func_void_t)PrintMac
+	},
 
- menu_do_all("New Parameters Menu", PrintAllParam, menu);
+	{
+	    .key = 'I', .line = "Local IP  address",
+	    .func_void = Set_IP,
+	    .print_val = (menu_func_void_t)PrintIp
+	},
+
+	{
+	    .key = 'T', .line = "TFTP server IP address",
+	    .func_void = set_tftp_ip,
+	    .print_val = (menu_func_void_t)PrintTftpIP
+	},
+
+	{
+	    .key = 'G', .line = "TFTP server gateway address",
+	    .func_void = set_tftp_gw,
+	    .print_val = (menu_func_void_t)PrintTftpGW
+	},
+
+	{
+	    .key = 'B', .line = "BootLoader file name",
+	    .func_void = set_tftp_boot_name,
+	    .print_val = (menu_func_void_t)PrintBootName
+	},
+
+	{
+	    .key = 'S', .line = "Linux file name",
+	    .func_void = set_tftp_linux_name,
+	    .print_val = (menu_func_void_t)PrintLinuxName
+	},
+
+	{
+	    .key = 'W', .line = "Write parameters",
+	    .func_void = (menu_func_void_t)write_params
+	},
+
+	{ .key = 'X', .line = "Exit", .func_int  = menu_exit },
+	{ .key = '\0' }
+  };
+
+  menu_do_all("New Parameters Menu", PrintAllParam, menu);
 }
 
 int check_ip (UINT32 ipcheck, int flag)
