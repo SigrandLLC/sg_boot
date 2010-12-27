@@ -45,7 +45,8 @@ int set_boot_param (void)
 	char *image = (char *) LINUXLD_DOWNLOAD_START;
 
 	/* Print Item */
-	buart_print (SET_PARAM);
+	buart_print ("\n\r  Set Boot Parameters.");
+	buart_print ("\n\r==========================\n\r");
 
 	/* Set serial number */
 	// Set_Board_SerialNo ();
@@ -295,7 +296,8 @@ void PrintBspParam (void)
 	int macnum;
 
 	/* Print Item */
-	buart_print (PRINT_PARAM);
+	buart_print ("\n\n\rPrint Boot Parameters.");
+	buart_print ("\n\r==========================\n\r");
 
 	/* Print Mac address */
 	if (bsp_GetMacBase (buf, &macnum) != 0)
@@ -331,10 +333,10 @@ void print_tftpc_param (void)
 	char str[] = "xxx.xxx.xxx.xxx";
 	if (cfg->tftpmagic == TFTPMAGIC)
 	{
-		buart_print ("\n\r\n\rServer IP: ");
+		buart_print ("\n\n\rTFTP Server IP address: ");
 		IpAddrToStr (cfg->tftp_param.server_ip, str);
 		buart_print (str);
-		buart_print ("\n\rGateway IP: ");
+		buart_print ("\n\rTFTP Server Gateway IP address: ");
 		IpAddrToStr (cfg->tftp_param.gw_ip, str);
 		buart_print (str);
 		buart_print ("\n\rRemote bootloader file name: ");
