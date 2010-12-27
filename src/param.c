@@ -12,6 +12,8 @@
 #include <arp.h>
 #include <ip.h>
 #include <udp.h>
+#include <menu.h>
+
 /*****************************************************************************************/
 void Set_Board_SerialNo (void);
 void Set_Board_Version (void);
@@ -36,6 +38,7 @@ int boot_param_init (void)
 	return err;
 }
 
+#if 0
 /*****************************************************************************************/
 /*		Main Parameter																	 */
 
@@ -81,6 +84,7 @@ int set_boot_param (void)
 	//buart_print("\n\r\n\rPlease press any key to continue...");
 	//buart_getchar();
 }
+#endif
 
 int bsp_SetMac (UINT8 *mac, int macnum)
 {
@@ -240,13 +244,13 @@ void Set_TFTP_IP (void)
 	char buf[BOOT_LINE_SIZE + 1];
 	if (cfg->tftploipmagic == TFTPLOIPMAGIC)
 	{
-		buart_print ("\n\rIP address: ");
+		buart_print ("\n\rLocal IP address: ");
 		IpAddrToStr (cfg->tftp_param.local_ip, str);
 		buart_print (str);
 	}
 loip_again:
 	buf[0] = 0;
-	buart_print ("\n\rEnter new IP address: ");
+	buart_print ("\n\rEnter new local IP address: ");
 	ReadLine (buf, BOOT_LINE_SIZE);
 	if (buf[0] != 0)
 	{
@@ -373,15 +377,14 @@ int get_tftp_param (UINT32 *servip, UINT32 *gwip, char *servfile, int mode)
 	return 0;
 }
 
-int set_tftpc_param (void)
+static void set_tftp_ip(void)
 {
-	UINT32 servip, gwip;
-	char buf[BSP_FILENAME_STR_LEN + 1];
-	char *image = (char *) LINUXLD_DOWNLOAD_START;
+	UINT32 servip;
+	char buf[BOOT_LINE_SIZE + 1];
 
 servip_again:
 	buf[0] = 0;
-	buart_print ("\n\r\n\rEnter TFTP Server IP address: ");
+	buart_print ("\n\rEnter TFTP server IP address: ");
 	ReadLine (buf, BOOT_LINE_SIZE);
 	if (buf[0] != 0)
 	{
@@ -397,10 +400,18 @@ servip_again:
 			goto servip_again;
 		}
 		cfg->tftp_param.server_ip = servip;
+		cfg->tftpmagic = TFTPMAGIC;
 	} else
 	{
 		buart_print ("TFTP Server IP address unchanged.\n\r");
 	}
+}
+
+static void set_tftp_gw(void)
+{
+	UINT32 gwip;
+	char buf[BOOT_LINE_SIZE + 1];
+
 gwip_again:
 	buf[0] = 0;
 	buart_print ("\n\rEnter TFTP server gateway IP address: ");
@@ -420,47 +431,108 @@ gwip_again:
 				goto gwip_again;
 			}
 		cfg->tftp_param.gw_ip = gwip;
+		cfg->tftpmagic = TFTPMAGIC;
 	} else
 	{
 		buart_print ("TFTP server gateway IP address unchanged.\n\r");
 	}
+}
+
+static void set_tftp_boot_name(void)
+{
+	char buf[BSP_FILENAME_STR_LEN + 1];
 
 	buf[0] = 0;
-	buart_print ("Enter Remote bootloader file name: ");
+	buart_print ("\n\rEnter Remote bootloader file name: ");
 	ReadLine (buf, sizeof(buf)-1);
 	if (buf[0] != 0)
+	{
 		strncpy (cfg->tftp_param.bootloader_name, buf,
 			 sizeof(cfg->tftp_param.bootloader_name)-1);
+		cfg->tftpmagic = TFTPMAGIC;
+	}
 	else
 		buart_print ("Bootloader file name unchanged.\n\r");
+}
+
+static void set_tftp_linux_name(void)
+{
+	char buf[BSP_FILENAME_STR_LEN + 1];
 
 	buf[0] = 0;
-	buart_print ("Enter Remote Linux file name: ");
+	buart_print ("\n\rEnter Remote Linux file name: ");
 	ReadLine (buf, sizeof(buf)-1);
 	if (buf[0] != 0)
+	{
 		strncpy (cfg->tftp_param.linux_name, buf,
 			 sizeof(cfg->tftp_param.linux_name)-1);
+		cfg->tftpmagic = TFTPMAGIC;
+	}
 	else
 		buart_print ("Linux file name unchanged.\n\r");
+}
 
-	cfg->tftpmagic = TFTPMAGIC;
+static int write_params(void)
+{
+	char *image = (char *) LINUXLD_DOWNLOAD_START;
+        int rc = 0;
 
 	/* Before Write back, backup original content */
-	if (nf_read (image, (char *) LINUXLD_NANDFLASH_BOOTPARAM_START, LINUXLD_NANDFLASH_BOOTPARAM_SIZE) < 0)
+	rc = nf_read (image, (char *) LINUXLD_NANDFLASH_BOOTPARAM_START, LINUXLD_NANDFLASH_BOOTPARAM_SIZE);
+	if (rc < 0)
 	{
 		buart_print ("\n\rRead buffer error!!");
-		return -1;
+		return rc;
 	}
 	memcpy (image, (char *) cfg, sizeof (BOARD_CFG_T));
 
 	/* Write back new parameter to flash */
-	if (nf_erase ((char *) LINUXLD_NANDFLASH_BOOTPARAM_START, LINUXLD_NANDFLASH_BOOTPARAM_SIZE, 1) < 0) // параметры write protected
+	rc = nf_erase ((char *) LINUXLD_NANDFLASH_BOOTPARAM_START,
+		                LINUXLD_NANDFLASH_BOOTPARAM_SIZE, 1); // write protected
+	if (rc < 0)
+	{
 		buart_print ("\n\rErase flash error.");
-	else if (nf_write ((char *) LINUXLD_NANDFLASH_BOOTPARAM_START, image, LINUXLD_NANDFLASH_BOOTPARAM_SIZE, 1) < 0)
+                return rc;
+	}
+
+	rc = nf_write ((char *) LINUXLD_NANDFLASH_BOOTPARAM_START, image, LINUXLD_NANDFLASH_BOOTPARAM_SIZE, 1);
+	if (rc < 0)
 		buart_print ("\n\rWrite flash error.");
 
+	if (rc >= 0) buart_print (" PASS\n\r");
+	return rc;
+}
+
+#if 0
+int set_tftpc_param (void)
+{
+	set_tftp_ip();
+	set_tftp_gw();
+	set_tftp_boot_name();
+        set_tftp_linux_name();
+
+	int rc = write_params();
 	buart_print ("\n\r");
-	return 0;
+	return rc;
+}
+#endif
+
+void SetAllParam(void)
+{
+ static menu_entry_t menu[] =
+ {
+   { .key = 'M', .line = "Local MAC address"          , .func_void = Set_Mac },
+   { .key = 'I', .line = "Local IP address"           , .func_void = Set_TFTP_IP },
+   { .key = 'T', .line = "TFTP server IP address"     , .func_void = set_tftp_ip },
+   { .key = 'G', .line = "TFTP server gateway address", .func_void = set_tftp_gw },
+   { .key = 'B', .line = "BootLoader file name"       , .func_void = set_tftp_boot_name },
+   { .key = 'S', .line = "Linux file name"            , .func_void = set_tftp_linux_name },
+   { .key = 'W', .line = "Write parameters"           , .func_void = (menu_func_void_t)write_params },
+   { .key = 'X', .line = "Exit"                       , .func_int  = menu_exit },
+   { .key = '\0' }
+ };
+
+ menu_do_all("New Parameters Menu", PrintBspParam, menu);
 }
 
 int check_ip (UINT32 ipcheck, int flag)

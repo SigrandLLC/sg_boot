@@ -47,7 +47,7 @@ void tftpc_download_all(void)
 
 static menu_entry_t tftpc_menu[] =
 {
-	{ .key = 'P', .line = "Set parameters"   , .func_void = (menu_func_void_t)set_tftpc_param },
+	{ .key = 'P', .line = "Set parameters"   , .func_void = SetAllParam },
 	{ .key = 'S', .line = "Update OS    "    , .func_int  = tftpc_download, .int_data = TFTP_LOAD_LINUX },
 	{ .key = 'B', .line = "Update Bootloader", .func_int  = tftpc_download, .int_data = TFTP_LOAD_BOOTLOADER },
 //	{ .key = 'A', .line = "Update All"       , .func_void = tftpc_download_all },
@@ -118,8 +118,7 @@ static menu_entry_t main_menu[] =
 	{ .key = 'M', .line = "Xmodem download"  , .func_void = xmodem_client_menu },
 #endif
 	{ .key = 'T', .line = "TFTP download"    , .func_void = tftp_client_menu },
-//	{ .key = 'P', .line = "Print parameters" , .func_void = PrintBspParam },
-	{ .key = 'S', .line = "Set parameters"   , .func_void = (menu_func_void_t)set_boot_param },
+	{ .key = 'P', .line = "Set parameters"   , .func_void = SetAllParam },
 //	{ .key = 'F', .line = "Flash operations" , .func_void = flash_client_menu },
 	{ .key = 'R', .line = "Reset"            , .func_void = reset },
 	{ .key = '\0' }
