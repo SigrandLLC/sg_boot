@@ -575,6 +575,12 @@ int set_tftpc_param (void)
 }
 #endif
 
+static menu_rc_t save_exit(int dummy)
+{
+	write_params();
+	return menu_exit(dummy);
+}
+
 void SetAllParam(void)
 {
     static menu_entry_t menu[] =
@@ -604,27 +610,22 @@ void SetAllParam(void)
 	},
 
 	{
-	    .key = 'B', .line = "BootLoader file name",
+	    .key = 'B', .line = "Bootloader file name",
 	    .func_void = set_tftp_boot_name,
 	    .print_val = (menu_func_void_t)PrintBootName
 	},
 
 	{
-	    .key = 'S', .line = "Linux file name",
+	    .key = 'S', .line = "OS file name",
 	    .func_void = set_tftp_linux_name,
 	    .print_val = (menu_func_void_t)PrintLinuxName
 	},
 
-	{
-	    .key = 'W', .line = "Write parameters",
-	    .func_void = (menu_func_void_t)write_params
-	},
-
-	{ .key = 'X', .line = "Exit", .func_int  = menu_exit },
+	{ .key = 'X', .line = "Save parameters and exit", .func_int  = save_exit },
 	{ .key = '\0' }
   };
 
-  menu_do_all("New Parameters Menu", PrintAllParam, menu);
+  menu_do_all("Parameters Menu", NULL, menu);
 }
 
 int check_ip (UINT32 ipcheck, int flag)
