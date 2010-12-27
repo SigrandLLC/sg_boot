@@ -12,6 +12,8 @@
 #include <param.h>
 #include <timer.h>
 #include <except.h>
+#include <uartdrv.h>
+#include <bsp_cfg.h>
 
 static UINT32 remote_ip; // TFTP server ip
 static UINT32 gw_ip;	// TFTP server gateway ip
@@ -138,7 +140,7 @@ int tftp_rcv_packet (struct sk_buff *skb)
 UINT32 tftpc (char *buf, int buf_size, int mode)
 {
 	UINT32 ticks, servip, gwip, total_len;
-	char servfile[15];
+	char servfile[BSP_FILENAME_STR_LEN + 1];
 	int transmit_flag, pkt_len = 0, rrqcount = 0;
 	char *working = buf;
 	(void)buf_size;

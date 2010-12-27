@@ -368,7 +368,7 @@ int get_tftp_param (UINT32 *servip, UINT32 *gwip, char *servfile, int mode)
 int set_tftpc_param (void)
 {
 	UINT32 servip, gwip;
-	char buf[BOOT_LINE_SIZE + 1];
+	char buf[BSP_FILENAME_STR_LEN + 1];
 	char *image = (char *) LINUXLD_DOWNLOAD_START;
 
 servip_again:
@@ -416,34 +416,23 @@ gwip_again:
 	{
 		buart_print ("Gateway IP unchanged.\n\r");
 	}
-loadername_again:
+
 	buf[0] = 0;
 	buart_print ("Enter Remote bootloader file name: ");
-	ReadLine (buf, BOOT_LINE_SIZE);
+	ReadLine (buf, sizeof(buf)-1);
 	if (buf[0] != 0)
-	{
-		if (strlen (buf) > BSP_IFNAME_MAX_LEN)
-		{
-			buart_print ("Ifname is too long. Maximum name length is 15 characters.\n\r");
-			goto loadername_again;
-		}
-		strcpy (cfg->tftp_param.bootloader_name, buf);
-	} else
+		strncpy (cfg->tftp_param.bootloader_name, buf,
+			 sizeof(cfg->tftp_param.bootloader_name)-1);
+	else
 		buart_print ("Bootloader file name unchanged.\n\r");
 
-linuxname_again:
 	buf[0] = 0;
 	buart_print ("Enter Remote Linux file name: ");
-	ReadLine (buf, BOOT_LINE_SIZE);
+	ReadLine (buf, sizeof(buf)-1);
 	if (buf[0] != 0)
-	{
-		if (strlen (buf) > BSP_IFNAME_MAX_LEN)
-		{
-			buart_print ("Ifname is too long. Maximum name length is 15 characters.\n\r");
-			goto linuxname_again;
-		}
-		strcpy (cfg->tftp_param.linux_name, buf);
-	} else
+		strncpy (cfg->tftp_param.linux_name, buf,
+			 sizeof(cfg->tftp_param.linux_name)-1);
+	else
 		buart_print ("Linux file name unchanged.\n\r");
 
 	cfg->tftpmagic = TFTPMAGIC;

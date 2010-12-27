@@ -1,9 +1,10 @@
 #ifndef __BSP_CFG_H__
 #define __BSP_CFG_H__
 
-#define BSP_STR_LEN         79
+#define BSP_STR_LEN		79
 #define BSP_MAX_MAC_NUM		8
 #define BSP_MAX_IF_CNT		BSP_MAX_MAC_NUM
+#define BSP_FILENAME_STR_LEN	255
 
 typedef struct IF_CFG_S
 {
@@ -24,8 +25,8 @@ typedef struct TFTP_CFG_S
 	UINT32 local_ip;
 	UINT32 server_ip;
 	UINT32 gw_ip;
-	char linux_name[15];
-	char bootloader_name[15];
+	char linux_name     [BSP_FILENAME_STR_LEN + 1];
+	char bootloader_name[BSP_FILENAME_STR_LEN + 1];
 } TFTP_CFG_T;
 
 typedef struct BOARD_CFG_S
