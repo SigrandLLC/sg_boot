@@ -17,9 +17,8 @@ void menu_print_entries(const menu_entry_t *menu)
 		buart_print(menu->line);
 		if (menu->print_val)
 		{
-			buart_print(" [ ");
+			buart_print(": ");
 			menu->print_val();
-			buart_print(" ] ");
 		}
 	}
 }
