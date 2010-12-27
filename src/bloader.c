@@ -16,8 +16,7 @@
 #include <timer.h>
 #include <except.h>
 #include <tftp.h>
-
-#define VERSION "1.3"
+#include <version.h>
 
 #define LOADER_START_HINT       '@'
 
