@@ -63,9 +63,9 @@ extern "C"
 #### System Map (NAND Flash) ####
 
 	+-------------------------+  LINUXLD_NANDFLASH_LOADER_START
-	|       Linuxld (96k)     |
+	|       Linuxld (80k)     |
 	+-------------------------+  LINUXLD_NANDFLASH_BOOTPARAM_START
-	|       Boot param (32k)  |
+	|       Boot param (48k)  |
 	+-------------------------+  LINUXLD_NANDFLASH_KERNEL_START
 	|                         |
 	| Linux kernel (4MB)      |
@@ -73,8 +73,8 @@ extern "C"
 	+-------------------------+
  *********************************************************************************************/
 
-#define LINUXLD_NANDFLASH_LOADER_SIZE		0x018000 // 96 Kb old: 0x14000 // 80 Kb
-#define LINUXLD_NANDFLASH_BOOTPARAM_SIZE	0x008000 // 32 Kb old: 0x0C000 // 48 Kb
+#define LINUXLD_NANDFLASH_LOADER_SIZE		0x014000 // 80 Kb
+#define LINUXLD_NANDFLASH_BOOTPARAM_SIZE	0x00C000 // 48 Kb
 #define LINUXLD_NANDFLASH_KERNEL_SIZE		0x400000 // 4MB, enough for kernel, old: 2MB
 
 
