@@ -17,8 +17,8 @@
 /*****************************************************************************************/
 void Set_Board_SerialNo (void);
 void Set_Board_Version (void);
-void Set_Mac (void);
-void Set_IP (void);
+static void Set_Mac (void);
+static void Set_IP  (void);
 
 /*****************************************************************************************/
 // lnitial boot parameter
@@ -86,7 +86,7 @@ int set_boot_param (void)
 }
 #endif
 
-int bsp_SetMac (UINT8 *mac, int macnum)
+static int bsp_SetMac (UINT8 *mac, int macnum)
 {
 	int i;
 	UINT32 sum;
@@ -142,7 +142,7 @@ int bsp_GetMacBase (UINT8 *buf, int *macnum)
 	return 0;
 }
 
-void Set_Mac (void)
+static void Set_Mac (void)
 {
 	char buf[BOOT_LINE_SIZE + 1];
 	char mac[8];
@@ -237,7 +237,7 @@ num_again:
 	}
 }
 
-void Set_IP (void)
+static void Set_IP (void)
 {
 	UINT32 loip;
 	char str[] = "xxx.xxx.xxx.xxx";
@@ -291,6 +291,25 @@ int bsp_GetGwIp (UINT32 *gwip)
 	return 0;
 }
 
+static void print_tftpc_param (void)
+{
+	char str[] = "xxx.xxx.xxx.xxx";
+	if (cfg->tftpmagic == TFTPMAGIC)
+	{
+		buart_print ("\n\n\rTFTP Server IP address: ");
+		IpAddrToStr (cfg->tftp_param.server_ip, str);
+		buart_print (str);
+		buart_print ("\n\rTFTP Server Gateway IP address: ");
+		IpAddrToStr (cfg->tftp_param.gw_ip, str);
+		buart_print (str);
+		buart_print ("\n\rRemote bootloader file name: ");
+		buart_print (cfg->tftp_param.bootloader_name);
+		buart_print ("\n\rRemote Linux file name: ");
+		buart_print (cfg->tftp_param.linux_name);
+		buart_print ("\n\r");
+	}
+}
+
 void PrintAllParam (void)
 {
 	UINT32 tftpip;
@@ -336,25 +355,6 @@ void PrintAllParam (void)
 	buart_print (ipstr);
 
 	print_tftpc_param();
-}
-
-void print_tftpc_param (void)
-{
-	char str[] = "xxx.xxx.xxx.xxx";
-	if (cfg->tftpmagic == TFTPMAGIC)
-	{
-		buart_print ("\n\n\rTFTP Server IP address: ");
-		IpAddrToStr (cfg->tftp_param.server_ip, str);
-		buart_print (str);
-		buart_print ("\n\rTFTP Server Gateway IP address: ");
-		IpAddrToStr (cfg->tftp_param.gw_ip, str);
-		buart_print (str);
-		buart_print ("\n\rRemote bootloader file name: ");
-		buart_print (cfg->tftp_param.bootloader_name);
-		buart_print ("\n\rRemote Linux file name: ");
-		buart_print (cfg->tftp_param.linux_name);
-		buart_print ("\n\r");
-	}
 }
 
 int get_tftp_param (UINT32 *servip, UINT32 *gwip, char *servfile, int mode)
