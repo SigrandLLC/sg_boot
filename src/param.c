@@ -310,13 +310,42 @@ static void print_tftpc_param (void)
 	}
 }
 
-void PrintAllParam (void)
+static int PrintMac(void)
 {
-	UINT32 tftpip;
+	int macnum;
 	unsigned char buf[BOOT_LINE_SIZE + 1];
 	unsigned char mactmp[] = "00-00-00-00-00-00-";
+	int rc = bsp_GetMacBase (buf, &macnum);
+	if (rc == 0)
+	{
+		mactostr (buf, mactmp);
+		mactmp[17] = '\0';
+		buart_print (mactmp);
+		rc = macnum;
+	}
+
+	return rc;
+}
+
+static int PrintIp(void)
+{
+	UINT32 tftpip;
 	unsigned char ipstr[] = "xxx.xxx.xxx.xxx";
-	int macnum;
+
+	int rc = bsp_GetTftpIp (&tftpip);
+	if (rc != 0)
+		ipstr[0] = 0;
+	else
+		IpAddrToStr (tftpip, ipstr);
+
+	buart_print (ipstr);
+
+	return rc;
+}
+
+void PrintAllParam (void)
+{
+	int macnum = 0;
 
 	/* Print Item */
 #if 0
@@ -327,32 +356,20 @@ void PrintAllParam (void)
 #endif
 
 	/* Print Mac address */
-	if (bsp_GetMacBase (buf, &macnum) != 0)
-	{
-		buart_print ("\n\rMAC address: ");
+	buart_print ("\n\rMAC address: ");
+	macnum = PrintMac();
+
 #ifndef NO_NUMBER_OF_MACS
-		buart_print ("\n\rNumber of MAC addresses: 0");
-#endif
-	} else
-	{
-		mactostr (buf, mactmp);
-		mactmp[17] = '\0';
-		buart_print ("\n\rMAC address: ");
-		buart_print (mactmp);
-#ifndef NO_NUMBER_OF_MACS
-		buart_print ("\n\rNumber of MAC addresses: ");
+	buart_print ("\n\rNumber of MAC addresses: ");
+        if (macnum >= 0)
 		buart_put (macnum + '0');
+        else
+		buart_print ("0");
 #endif
-	}
 
 	/* Print IP for TFTP Download */
-	if (bsp_GetTftpIp (&tftpip) != 0)
-	{
-		ipstr[0] = 0;
-	} else
-		IpAddrToStr (tftpip, ipstr);
 	buart_print ("\n\rIP address: ");
-	buart_print (ipstr);
+	PrintIp();
 
 	print_tftpc_param();
 }
