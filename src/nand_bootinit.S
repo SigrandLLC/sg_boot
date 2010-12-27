@@ -23,11 +23,14 @@ VECTOR(_nand_reset, unknown)
 	/* Read current status */
 	mfc0 	k0, CP0_STATUS_REG
 
+	nop
+	nop
+
 	/* Is this a NMI */
 	li		k1, CP0_STATUS_NMI_BIT
 	and		k1, k0, k1
-	beqz	k1, 2f						/* Branch if this is not a NMI. */
-	nop									/* Branch delay slot */
+	beqz	k1, 2f			/* Branch if this is not a NMI. */
+	nop				/* Branch delay slot */
 
 1:
 	b		1b
@@ -59,7 +62,7 @@ VECTOR(_nand_reset, unknown)
 #ifndef KSEG0_UNCACHED
 	// Init cache
 	bal		_C_LABEL(init_cache)
-	nop									/* Branch delay slot */
+	nop					/* Branch delay slot */
 #endif
 
 	/*  In KSEG0, cached  */

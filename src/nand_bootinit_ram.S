@@ -29,8 +29,9 @@ VECTOR(_nand_reset, unknown)
 	/* Is this a NMI */
 	li		k1, CP0_STATUS_NMI_BIT
 	and		k1, k0, k1
-	beqz	k1, 2f						/* Branch if this is not a NMI. */
-	nop
+	beqz	k1, 2f			/* Branch if this is not a NMI. */
+	nop				/* Branch delay slot */
+
 1:
 	b		1b
 	nop
@@ -61,14 +62,15 @@ VECTOR(_nand_reset, unknown)
 #ifndef KSEG0_UNCACHED
 	// Init cache
 	bal		_C_LABEL(init_cache)
-	nop
+	nop					/* Branch delay slot */
 #endif
 
-
 	/*  In KSEG0, cached  */
-/*	bal		init_mpmc_sdram
+/*
+	bal		init_mpmc_sdram
 	nop
 */
+
 	/*===== Copy Switch temporary buffer to SDRAM =====*/
 	/*  Disable interrupt  */
 	mfc0	v0, CP0_STATUS_REG
@@ -80,7 +82,6 @@ VECTOR(_nand_reset, unknown)
 	nop
 
 	/*  v0 now hold the run time address of _mark1  */
-
 _mark1:
 	move	a0, v0
 
@@ -125,7 +126,6 @@ _mark1:
 2:
 --------------------------------------*/
 	/* enable nand flash */
-
 	li		t0, 0xb1000200
 	li		t1, 0x80
 	sw		t1, 0(t0)
@@ -142,6 +142,7 @@ _mark1:
 	bal		img_copy
 	nop
 ------------------------------------*/
+
 	/* jump to the entry point of the runtime code */
 	li		t0, RUNTIME_IMG_ADDR
 	jr		t0
@@ -154,6 +155,7 @@ _mark1:
 VECTOR_END(_nand_reset)
 
 VECTOR(init_mpmc_sram, unknown)
+
 	/* Program Mem_control Register */
 
 	li		a0, PA2VA(ADM5120_SWCTRL_BASE)
