@@ -58,7 +58,7 @@ static menu_entry_t tftpc_menu[] =
 
 void tftp_client_menu (void)
 {
-	menu_do_all("TFTP Client Menu", print_tftpc_param, tftpc_menu);
+	menu_do_all("TFTP Client Menu", PrintBspParam, tftpc_menu);
 }
 //- tftp menu
 

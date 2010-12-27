@@ -326,6 +326,8 @@ void PrintBspParam (void)
 		IpAddrToStr (tftpip, ipstr);
 	buart_print ("\n\rIP address: ");
 	buart_print (ipstr);
+
+	print_tftpc_param();
 }
 
 void print_tftpc_param (void)
