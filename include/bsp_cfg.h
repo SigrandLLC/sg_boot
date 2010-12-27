@@ -65,7 +65,7 @@ BOARD_CFG_T;
 #define BT_MAGIC			0x6c74676d
 
 #define TFTPMAGIC			0x6c76676d
-#define TFTPLOIPMAGIC		0x6c76676c
+#define TFTPLOIPMAGIC			0x6c76676c
 
 #endif
 
