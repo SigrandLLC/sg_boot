@@ -18,7 +18,7 @@
 void Set_Board_SerialNo (void);
 void Set_Board_Version (void);
 void Set_Mac (void);
-void Set_TFTP_IP (void);
+void Set_IP (void);
 
 /*****************************************************************************************/
 // lnitial boot parameter
@@ -61,7 +61,7 @@ int set_boot_param (void)
 	Set_Mac ();
 
 	/* Set bootloader ip */
-	Set_TFTP_IP ();
+	Set_IP ();
 
 	/* Before Write back, backup original content */
 	if (nf_read (image, (char *) LINUXLD_NANDFLASH_BOOTPARAM_START, LINUXLD_NANDFLASH_BOOTPARAM_SIZE) < 0)
@@ -237,7 +237,7 @@ num_again:
 	}
 }
 
-void Set_TFTP_IP (void)
+void Set_IP (void)
 {
 	UINT32 loip;
 	char str[] = "xxx.xxx.xxx.xxx";
@@ -522,7 +522,7 @@ void SetAllParam(void)
  static menu_entry_t menu[] =
  {
    { .key = 'M', .line = "Local MAC address"          , .func_void = Set_Mac },
-   { .key = 'I', .line = "Local IP address"           , .func_void = Set_TFTP_IP },
+   { .key = 'I', .line = "Local IP  address"          , .func_void = Set_IP },
    { .key = 'T', .line = "TFTP server IP address"     , .func_void = set_tftp_ip },
    { .key = 'G', .line = "TFTP server gateway address", .func_void = set_tftp_gw },
    { .key = 'B', .line = "BootLoader file name"       , .func_void = set_tftp_boot_name },
