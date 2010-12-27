@@ -120,7 +120,7 @@ static menu_entry_t main_menu[] =
 	{ .key = 'T', .line = "TFTP download"    , .func_void = tftp_client_menu },
 //	{ .key = 'P', .line = "Print parameters" , .func_void = PrintBspParam },
 	{ .key = 'S', .line = "Set parameters"   , .func_void = (menu_func_void_t)set_boot_param },
-	{ .key = 'F', .line = "Flash operations" , .func_void = flash_client_menu },
+//	{ .key = 'F', .line = "Flash operations" , .func_void = flash_client_menu },
 	{ .key = 'R', .line = "Reset"            , .func_void = reset },
 	{ .key = '\0' }
 };
