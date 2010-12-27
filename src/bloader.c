@@ -118,8 +118,8 @@ static menu_entry_t main_menu[] =
 	{ .key = 'M', .line = "Xmodem download"  , .func_void = xmodem_client_menu },
 #endif
 	{ .key = 'T', .line = "TFTP download"    , .func_void = tftp_client_menu },
-	{ .key = 'P', .line = "Print boot params", .func_void = PrintBspParam },
-	{ .key = 'S', .line = "Set boot params"  , .func_void = (menu_func_void_t)set_boot_param },
+//	{ .key = 'P', .line = "Print parameters" , .func_void = PrintBspParam },
+	{ .key = 'S', .line = "Set parameters"   , .func_void = (menu_func_void_t)set_boot_param },
 	{ .key = 'F', .line = "Flash operations" , .func_void = flash_client_menu },
 	{ .key = 'R', .line = "Reset"            , .func_void = reset },
 	{ .key = '\0' }
@@ -292,6 +292,6 @@ void c_entry (void)
 
 	//Bootloader Function Start.
         while (1)
-		menu_do_all("ADM5120 based router: Bootloader Menu", NULL, main_menu);
+		menu_do_all("ADM5120 based router: Bootloader Menu", PrintBspParam, main_menu);
 }
 

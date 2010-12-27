@@ -296,8 +296,12 @@ void PrintBspParam (void)
 	int macnum;
 
 	/* Print Item */
+#if 0
 	buart_print ("\n\n\rPrint Boot Parameters.");
 	buart_print ("\n\r==========================\n\r");
+#else
+	buart_print ("\n\r");
+#endif
 
 	/* Print Mac address */
 	if (bsp_GetMacBase (buf, &macnum) != 0)
