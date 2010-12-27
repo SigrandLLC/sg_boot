@@ -291,21 +291,62 @@ int bsp_GetGwIp (UINT32 *gwip)
 	return 0;
 }
 
+static int PrintTftpIP(void)
+{
+	if (cfg->tftpmagic == TFTPMAGIC)
+	{
+		char str[] = "xxx.xxx.xxx.xxx";
+		IpAddrToStr (cfg->tftp_param.server_ip, str);
+		buart_print (str);
+		return 0;
+	}
+        return -1;
+}
+
+static int PrintTftpGW(void)
+{
+	if (cfg->tftpmagic == TFTPMAGIC)
+	{
+		char str[] = "xxx.xxx.xxx.xxx";
+		IpAddrToStr (cfg->tftp_param.gw_ip, str);
+		buart_print (str);
+		return 0;
+	}
+        return -1;
+}
+
+static int PrintBootName(void)
+{
+	if (cfg->tftpmagic == TFTPMAGIC)
+	{
+		buart_print (cfg->tftp_param.bootloader_name);
+		return 0;
+	}
+        return -1;
+}
+
+static int PrintLinuxName(void)
+{
+	if (cfg->tftpmagic == TFTPMAGIC)
+	{
+		buart_print (cfg->tftp_param.linux_name);
+		return 0;
+	}
+        return -1;
+}
+
 static void print_tftpc_param (void)
 {
-	char str[] = "xxx.xxx.xxx.xxx";
 	if (cfg->tftpmagic == TFTPMAGIC)
 	{
 		buart_print ("\n\n\rTFTP Server IP address: ");
-		IpAddrToStr (cfg->tftp_param.server_ip, str);
-		buart_print (str);
+		PrintTftpIP();
 		buart_print ("\n\rTFTP Server Gateway IP address: ");
-		IpAddrToStr (cfg->tftp_param.gw_ip, str);
-		buart_print (str);
+		PrintTftpGW();
 		buart_print ("\n\rRemote bootloader file name: ");
-		buart_print (cfg->tftp_param.bootloader_name);
+		PrintBootName();
 		buart_print ("\n\rRemote Linux file name: ");
-		buart_print (cfg->tftp_param.linux_name);
+		PrintLinuxName();
 		buart_print ("\n\r");
 	}
 }
