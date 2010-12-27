@@ -17,6 +17,7 @@ typedef struct
 	char key;
 
 	menu_func_void_t func_void;
+	menu_func_void_t print_val;
 
 	int int_data;
 	menu_func_int_t func_int;
