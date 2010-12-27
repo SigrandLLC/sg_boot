@@ -375,7 +375,7 @@ int set_tftpc_param (void)
 
 servip_again:
 	buf[0] = 0;
-	buart_print ("\n\r\n\rEnter TFTP Server IP: ");
+	buart_print ("\n\r\n\rEnter TFTP Server IP address: ");
 	ReadLine (buf, BOOT_LINE_SIZE);
 	if (buf[0] != 0)
 	{
@@ -393,11 +393,11 @@ servip_again:
 		cfg->tftp_param.server_ip = servip;
 	} else
 	{
-		buart_print ("Server IP unchanged.\n\r");
+		buart_print ("TFTP Server IP address unchanged.\n\r");
 	}
 gwip_again:
 	buf[0] = 0;
-	buart_print ("\n\rEnter gateway IP: ");
+	buart_print ("\n\rEnter TFTP server gateway IP address: ");
 	ReadLine (buf, BOOT_LINE_SIZE);
 	if (buf[0] != 0)
 	{
@@ -416,7 +416,7 @@ gwip_again:
 		cfg->tftp_param.gw_ip = gwip;
 	} else
 	{
-		buart_print ("Gateway IP unchanged.\n\r");
+		buart_print ("TFTP server gateway IP address unchanged.\n\r");
 	}
 
 	buf[0] = 0;
