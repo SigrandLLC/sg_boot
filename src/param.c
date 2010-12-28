@@ -592,6 +592,8 @@ static int write_params(void)
 	char *image = (char *) LINUXLD_DOWNLOAD_START;
         int rc = 0;
 
+	buart_print ("  Writing parameters... ");
+
 	/* Before Write back, backup original content */
 	rc = nf_read (image, (char *) LINUXLD_NANDFLASH_BOOTPARAM_START, LINUXLD_NANDFLASH_BOOTPARAM_SIZE);
 	if (rc < 0)
@@ -616,7 +618,7 @@ static int write_params(void)
 
 	if (rc >= 0)
 	{
-		buart_print (" PASS\n\r");
+		buart_print ("PASS\n\r");
 		cfg_changed = 0;
 	}
 	return rc;
