@@ -36,32 +36,6 @@ static void reset(void)
 	ADM5120_SW_REG (SftRest_REG) = SOFTWARE_RESET;
 }
 
-//+ tftp menu
-#if 0 // too dangerous and useless
-void tftpc_download_all(void)
-{
-	tftpc_download (TFTP_LOAD_BOOTLOADER);
-	tftpc_download (TFTP_LOAD_LINUX);
-}
-#endif
-
-static menu_entry_t tftpc_menu[] =
-{
-	{ .key = 'P', .line = "Set parameters"   , .func_void = SetAllParam },
-	{ .key = 'S', .line = "Update OS    "    , .func_int  = tftpc_download, .int_data = TFTP_LOAD_LINUX },
-	{ .key = 'B', .line = "Update Bootloader", .func_int  = tftpc_download, .int_data = TFTP_LOAD_BOOTLOADER },
-//	{ .key = 'A', .line = "Update All"       , .func_void = tftpc_download_all },
-	{ .key = 'X', .line = "Exit"             , .func_int  = menu_exit },
-	{ .key = 'R', .line = "Reset"            , .func_void = reset },
-	{ .key = '\0' }
-};
-
-void tftp_client_menu (void)
-{
-	menu_do_all("TFTP Client Menu", PrintAllParam, tftpc_menu);
-}
-//- tftp menu
-
 
 //+ xmodem menu
 #ifndef NO_XMODEM
@@ -111,14 +85,24 @@ void flash_client_menu (void)
 //- flash menu
 
 
+#if 0 // too dangerous and useless
+void tftpc_download_all(void)
+{
+	tftpc_download (TFTP_LOAD_BOOTLOADER);
+	tftpc_download (TFTP_LOAD_LINUX);
+}
+#endif
+
 //+ main menu
 static menu_entry_t main_menu[] =
 {
+	{ .key = 'P', .line = "Set parameters"   , .func_void = SetAllParam },
 #ifndef NO_XMODEM
 	{ .key = 'M', .line = "Xmodem download"  , .func_void = xmodem_client_menu },
 #endif
-	{ .key = 'T', .line = "TFTP download"    , .func_void = tftp_client_menu },
-	{ .key = 'P', .line = "Set parameters"   , .func_void = SetAllParam },
+	{ .key = 'S', .line = "Update OS    "    , .func_int  = tftpc_download, .int_data = TFTP_LOAD_LINUX },
+	{ .key = 'B', .line = "Update Bootloader", .func_int  = tftpc_download, .int_data = TFTP_LOAD_BOOTLOADER },
+//	{ .key = 'A', .line = "Update All"       , .func_void = tftpc_download_all },
 //	{ .key = 'F', .line = "Flash operations" , .func_void = flash_client_menu },
 	{ .key = 'R', .line = "Reset"            , .func_void = reset },
 	{ .key = '\0' }
