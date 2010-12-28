@@ -679,7 +679,7 @@ void SetAllParam(void)
 	    .print_val = (menu_func_void_t)PrintLinuxName
 	},
 
-	{ .key = 'X', .line = "Save parameters and exit", .func_int  = save_exit },
+	{ .key = 'X', .line = "Save parameters and exit menu", .func_int  = save_exit },
 	{ .key = '\0' }
   };
 
