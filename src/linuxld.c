@@ -43,8 +43,8 @@
 
 
 static int gz_magic[2] = {0x1f, 0x8b}; /* gzip magic header */
-static const char *pass = "PASS";
-static const char *fail = "FAIL";
+static const char *pass = " PASS";
+static const char *fail = " FAIL";
 
 int ungzip (Byte * compr);
 extern void _icache_sync_all (void);
@@ -53,9 +53,10 @@ void jump_low_map (void);
 
 void flash_erase_all (void)
 {
-	buart_print ("\n\rEraseing flash.......\n\r");
+	buart_print ("\n\rEraseing flash ");
 	nand_erase ((UINT8 *) LINUXLD_NANDFLASH_LOADER_START, LINUXLD_NANDFLASH_LOADER_SIZE - 1, 1);
 	nand_erase ((UINT8 *) LINUXLD_NANDFLASH_KERNEL_START, NAND_FLASH_SIZE - LINUXLD_NANDFLASH_KERNEL_START, 1);
+	buart_print ("\n\r");
 }
 
 void check_for_bad (void)
@@ -91,14 +92,14 @@ int update_bootloader (void)
 		buart_print (pass);
 
 	/* erase flash */
-	buart_print ("\n\rEraseing flash.......");
+	buart_print ("\n\rEraseing flash ");
 	if (nf_erase (flash, len, 0) < 0)
 		goto fail;
 	else
 		buart_print (pass);
 
 	/* write flash */
-	buart_print ("\n\rProgramming flash....");
+	buart_print ("\n\rProgramming flash ");
 	if (nf_write_boot ((UINT8 *) flash, image, len) < 0)
 		goto fail;
 	else
@@ -156,7 +157,7 @@ int tftpc_download (int mode)
 	buart_print (lenstr);*/
 
 	//erase flash
-	buart_print ("\n\r\n\rEraseing flash.......");
+	buart_print ("\n\r\n\rEraseing flash ");
 
 
 	if (nf_erase (flash, (mode == TFTP_LOAD_LINUX) ?
@@ -169,7 +170,7 @@ int tftpc_download (int mode)
 	buart_print (pass);
 
 	//write flash
-	buart_print ("\n\rProgramming flash....");
+	buart_print ("\n\rProgramming flash ");
 
 	if (mode == TFTP_LOAD_BOOTLOADER)
 	{
@@ -199,14 +200,14 @@ int xmodem_download (void)
 	int len, rc = 0;
 
 	/* download linux image to temp using xmodem */
-	buart_print ("\n\rDownloading..........");
+	buart_print ("\n\rDownloading ");
 	if ((len = xmodem (image, LINUX_IMAGE_SIZE)) == -1)
 		goto fail;
 	else
 		buart_print (pass);
 
 	/* erase flash */
-	buart_print ("\n\rEraseing flash.......");
+	buart_print ("\n\rEraseing flash ");
 
 	if (nf_erase (flash, len, 0) < 0)
 		goto fail;
@@ -214,7 +215,7 @@ int xmodem_download (void)
 	buart_print (pass);
 
 	/* write flash */
-	buart_print ("\n\rProgramming flash....");
+	buart_print ("\n\rProgramming flash ");
 
 	if (nf_write (flash, image, len, 0) < 0)
 		goto fail;
@@ -235,7 +236,7 @@ void boot_linux (void)
 {
 	int status;
 	void (*funcptr)(void);
-	buart_print ("\n\rReading Linux... ");
+	buart_print ("\n\rReading Linux ");
 	status = nf_read ((UINT8 *) LINUXLD_DOWNLOAD_START,
 			  (UINT8 *) LINUXLD_NANDFLASH_KERNEL_START,
 			  LINUX_IMAGE_SIZE);
@@ -247,7 +248,7 @@ void boot_linux (void)
 	buart_print (pass);
 
 	// decompressing
-	buart_print ("\n\rDecompress Linux... ");
+	buart_print ("\n\rDecompress Linux...");
 	status = ungzip ((unsigned char *) LINUXLD_DOWNLOAD_START);
 
 	if (status != Z_OK) // failed in unzipping

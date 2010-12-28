@@ -467,6 +467,7 @@ nand_read_ecc (loff_t from, size_t len, size_t * retlen, u_char * buf,
 	/* Loop until all data read */
 	while (read < len)
 	{
+		if (!(page % NAND_PAGE_PER_BLK)) buart_put('.');
 		switch (eccmode)
 		{
 			case NAND_ECC_NONE: /* No ECC, Read in a page */
@@ -616,6 +617,7 @@ static int nand_write_ecc (loff_t to, size_t len, size_t * retlen, const u_char 
 				continue;
 			}
 		}
+		if (!(page % NAND_PAGE_PER_BLK)) buart_put('.');
 		//
 		data_poi = (u_char*) & buf[written];
 		/* We use the same function for write and writev */
@@ -676,6 +678,7 @@ int nand_erase (UINT8 *addr, UINT32 len, UINT8 wp)
 	// here, NAND_SIZE_PER_BLK=0x4000
 	for (i = 0; i < len; i += NAND_SIZE_PER_BLK, addr += NAND_SIZE_PER_BLK)
 	{
+		if (!(i % NAND_SIZE_PER_BLK)) buart_put('.');
 		row1 = ((int) addr & ADD2MASK) >> ADD2SHIFT;
 		row2 = ((int) addr & ADD3MASK) >> ADD3SHIFT;
 		//
@@ -723,6 +726,7 @@ void nand_write_boot (UINT8 *dst, UINT8 *src, UINT32 len)
 	/* write spare area if < NAND_PAGE_OOB_SIZE */
 	while (i < NAND_BOOT_SIZE)
 	{
+		buart_put('.');
 		nand_write_page_oob (dst, &src[i], 1, 0);
 		i += NAND_PAGE_SIZE + NAND_PAGE_OOB_SIZE;
 		dst += NAND_PAGE_SIZE;
