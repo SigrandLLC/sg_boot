@@ -639,6 +639,40 @@ static menu_rc_t save_exit(int dummy)
 	return menu_exit(dummy);
 }
 
+static int expert_mode;
+static void SetExpertMode(void)
+{
+	if (expert_mode)
+	{
+                expert_mode = 0;
+		buart_print ("\n\rExpert mode Off");
+	}
+	else
+	{
+		char buf[BSP_FILENAME_STR_LEN + 1];
+
+		buf[0] = 0;
+		buart_print ("\n\rEnter expert password: ");
+		ReadLine (buf, sizeof(buf)-1);
+		if ( strcmp(buf, "adm5120") == 0 )
+		{
+			expert_mode = 1;
+			buart_print ("Expert mode On");
+		}
+		else
+		{
+			expert_mode = 0;
+			buart_print ("Wrong password, expert mode Off");
+		}
+	}
+}
+
+extern int bootloader_type_ram;
+static void PrintExpertMode(void)
+{
+	buart_print( expert_mode ? "On" : "Off" );
+}
+
 void SetAllParam(void)
 {
     static menu_entry_t menu[] =
@@ -677,6 +711,12 @@ void SetAllParam(void)
 	    .key = 'S', .line = "OS file name",
 	    .func_void = set_tftp_linux_name,
 	    .print_val = (menu_func_void_t)PrintLinuxName
+	},
+
+	{
+	    .key = 'E', .line = "Expert mode",
+	    .func_void = SetExpertMode,
+	    .print_val = (menu_func_void_t)PrintExpertMode
 	},
 
 	{ .key = 'X', .line = "Save parameters and exit menu", .func_int  = save_exit },
