@@ -159,7 +159,7 @@ $(BOOT_RAM_IMG) : $(BOOT_RAM_OBJS) $(OBJ_DIR_STAMP)
 	@echo "> Linking $@"
 	$(v)$(LD) $(ENDIAN_FG) $(LD_FLAG) $(LIB_PATH) -e _nand_reset -Ttext $(LOADER_OFFSET) \
 			 	-Map $(OBJ_DIR)/$(BOOT_RAM_NAME).map -o $(OBJ_DIR)/$(BOOT_RAM_NAME).elf	\
-				$(BOOT_OBJS_RAM) $(LIBS)
+				$(BOOT_RAM_OBJS) $(LIBS)
 	$(v)$(OBJCOPY) -O binary $(OBJ_DIR)/$(BOOT_RAM_NAME).elf $(OBJ_DIR)/$(BOOT_RAM_NAME).bin
 	$(v)$(OBJCOPY) -I binary -O binary --pad-to 0x1000       $(OBJ_DIR)/$(BOOT_RAM_NAME).bin $@
 
