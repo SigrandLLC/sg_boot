@@ -74,13 +74,14 @@ TFTPBOOT_STAMP = $(TFTPBOOT)/.dir
 LD_FLAG = -X -N
 LIBS = -lz -lc -lgcc -lnosys
 
-BOOT_NAME     = nand_bootinit
-BOOT_NAME_RAM = nand_bootinit_ram
-BOOT_OBJS     = $(OBJ_DIR)/nand_bootinit.o
-BOOT_OBJS_RAM = $(OBJ_DIR)/nand_bootinit_ram.o
+BOOT_ROM_NAME = nand_bootinit
+BOOT_RAM_NAME = nand_bootinit_ram
+BOOT_ROM_OBJS = $(OBJ_DIR)/nand_bootinit.o
+BOOT_RAM_OBJS = $(OBJ_DIR)/nand_bootinit_ram.o
 
+EXEC_ROM_NAME = nand_bootmain
+EXEC_RAM_NAME = nand_bootmain_ram
 
-EXEC_NAME = nand_bootmain
 
 exec_objs  = nand_ldrinit.o bloader.o linuxld.o $(if $(NO_XMODEM),,xmodem.o)
 exec_objs += nand.o nand_ecc.o
@@ -91,8 +92,8 @@ exec_objs += udp.o param.o nf.o dslam.o menu.o
 EXEC_OBJS = $(addprefix $(OBJ_DIR)/,$(exec_objs))
 
 
-EXEC_NAME_RAM = nand_bootmain_ram
-EXEC_OBJS_RAM = $(EXEC_OBJS)
+EXEC_ROM_OBJS = $(EXEC_OBJS)
+EXEC_RAM_OBJS = $(EXEC_OBJS)
 
 
 ROM_NAME = nandloader
@@ -100,16 +101,16 @@ RAM_NAME = nandloader_ram
 
 
      ROM_IMG  = $(BIN_DIR)/$(ROM_NAME).img
-    BOOT_IMG  = $(OBJ_DIR)/$(BOOT_NAME).img
-    MAIN_IMG  = $(OBJ_DIR)/$(EXEC_NAME).img
+BOOT_ROM_IMG  = $(OBJ_DIR)/$(BOOT_ROM_NAME).img
+MAIN_ROM_IMG  = $(OBJ_DIR)/$(EXEC_ROM_NAME).img
 
      RAM_IMG  = $(BIN_DIR)/$(RAM_NAME).img
      RAM_SREC = $(BIN_DIR)/$(RAM_NAME).srec
-BOOT_RAM_IMG  = $(OBJ_DIR)/$(BOOT_NAME_RAM).img
-MAIN_RAM_IMG  = $(OBJ_DIR)/$(EXEC_NAME_RAM).img
+BOOT_RAM_IMG  = $(OBJ_DIR)/$(BOOT_RAM_NAME).img
+MAIN_RAM_IMG  = $(OBJ_DIR)/$(EXEC_RAM_NAME).img
 
 
-ALL_OBJS = $(BOOT_OBJS) $(BOOT_OBJS_RAM) $(EXEC_OBJS)
+ALL_OBJS = $(BOOT_ROM_OBJS) $(BOOT_RAM_OBJS) $(EXEC_ROM_OBJS) $(EXEC_RAM_OBJS)
 
 
 #====================== NandFlash Rules  =============================
@@ -118,28 +119,28 @@ all     : $(ROM_IMG) $(RAM_IMG)
 install : rom_img_install ram_img_install
 
 
-rom_img_install : $(BOOT_IMG) $(MAIN_IMG) $(ROM_IMG) $(TFTPBOOT_STAMP)
+rom_img_install : $(BOOT_ROM_IMG) $(MAIN_ROM_IMG) $(ROM_IMG) $(TFTPBOOT_STAMP)
 	@echo "> Copying $(ROM_IMG) to $(TFTPBOOT)/sg5120boot_rom.bin"
 	$(v)$(CP) $(ROM_IMG) $(TFTPBOOT)/sg5120boot_rom.bin
 
-$(ROM_IMG) : $(BOOT_IMG) $(MAIN_IMG) $(BIN_DIR_STAMP)
+$(ROM_IMG) : $(BOOT_ROM_IMG) $(MAIN_ROM_IMG) $(BIN_DIR_STAMP)
 	@echo "> Constructing $@"
-	$(v)cat $(BOOT_IMG) $(MAIN_IMG) > $@
+	$(v)cat $(BOOT_ROM_IMG) $(MAIN_ROM_IMG) > $@
 
-$(BOOT_IMG) : $(BOOT_OBJS) $(OBJ_DIR_STAMP)
+$(BOOT_ROM_IMG) : $(BOOT_ROM_OBJS) $(OBJ_DIR_STAMP)
 	@echo "> Linking $@"
 	$(v)$(LD) $(ENDIAN_FG) $(LD_FLAG) $(LIB_PATH) -e _nand_reset -Ttext $(LOADER_OFFSET) \
-			 	-Map $(OBJ_DIR)/$(BOOT_NAME).map -o $(OBJ_DIR)/$(BOOT_NAME).elf	\
-				$(BOOT_OBJS) $(LIBS)
-	$(v)$(OBJCOPY) -O binary $(OBJ_DIR)/$(BOOT_NAME).elf  $(OBJ_DIR)/$(BOOT_NAME).bin
-	$(v)$(OBJCOPY) -I binary -O binary --pad-to 0x1000    $(OBJ_DIR)/$(BOOT_NAME).bin $@
+			 	-Map $(OBJ_DIR)/$(BOOT_ROM_NAME).map -o $(OBJ_DIR)/$(BOOT_ROM_NAME).elf	\
+				$(BOOT_ROM_OBJS) $(LIBS)
+	$(v)$(OBJCOPY) -O binary $(OBJ_DIR)/$(BOOT_ROM_NAME).elf  $(OBJ_DIR)/$(BOOT_ROM_NAME).bin
+	$(v)$(OBJCOPY) -I binary -O binary --pad-to 0x1000        $(OBJ_DIR)/$(BOOT_ROM_NAME).bin $@
 
-$(MAIN_IMG) : $(EXEC_OBJS) $(OBJ_DIR_STAMP)
+$(MAIN_ROM_IMG) : $(EXEC_ROM_OBJS) $(OBJ_DIR_STAMP)
 	@echo "> Linking $@"
 	$(v)$(LD) $(ENDIAN_FG) $(LD_FLAG) $(LIB_PATH) -e _ldrinit -Ttext $(RUNTIME_OFFSET) \
-			-Map $(OBJ_DIR)/$(EXEC_NAME).map -o $(OBJ_DIR)/$(EXEC_NAME).elf \
-			$(EXEC_OBJS) $(LIBS)
-	$(v)$(OBJCOPY) -O binary $(OBJ_DIR)/$(EXEC_NAME).elf $@
+			-Map $(OBJ_DIR)/$(EXEC_ROM_NAME).map -o $(OBJ_DIR)/$(EXEC_ROM_NAME).elf \
+			$(EXEC_ROM_OBJS) $(LIBS)
+	$(v)$(OBJCOPY) -O binary $(OBJ_DIR)/$(EXEC_ROM_NAME).elf $@
 
 
 ram_img_install : $(RAM_IMG) $(TFTPBOOT_STAMP)
@@ -154,20 +155,20 @@ $(RAM_SREC) : $(RAM_IMG) $(BIN_DIR_STAMP)
 	@echo "> Converting $< to $@"
 	@$(OBJCOPY) --set-start=$(LOADER_OFFSET) -O srec -I binary $(RAM_IMG) $(RAM_SREC)
 
-$(BOOT_RAM_IMG) : $(BOOT_OBJS_RAM) $(OBJ_DIR_STAMP)
+$(BOOT_RAM_IMG) : $(BOOT_RAM_OBJS) $(OBJ_DIR_STAMP)
 	@echo "> Linking $@"
 	$(v)$(LD) $(ENDIAN_FG) $(LD_FLAG) $(LIB_PATH) -e _nand_reset -Ttext $(LOADER_OFFSET) \
-			 	-Map $(OBJ_DIR)/$(BOOT_NAME_RAM).map -o $(OBJ_DIR)/$(BOOT_NAME_RAM).elf	\
+			 	-Map $(OBJ_DIR)/$(BOOT_RAM_NAME).map -o $(OBJ_DIR)/$(BOOT_RAM_NAME).elf	\
 				$(BOOT_OBJS_RAM) $(LIBS)
-	$(v)$(OBJCOPY) -O binary $(OBJ_DIR)/$(BOOT_NAME_RAM).elf $(OBJ_DIR)/$(BOOT_NAME_RAM).bin
-	$(v)$(OBJCOPY) -I binary -O binary --pad-to 0x1000       $(OBJ_DIR)/$(BOOT_NAME_RAM).bin $@
+	$(v)$(OBJCOPY) -O binary $(OBJ_DIR)/$(BOOT_RAM_NAME).elf $(OBJ_DIR)/$(BOOT_RAM_NAME).bin
+	$(v)$(OBJCOPY) -I binary -O binary --pad-to 0x1000       $(OBJ_DIR)/$(BOOT_RAM_NAME).bin $@
 
-$(MAIN_RAM_IMG) : $(EXEC_OBJS_RAM) $(OBJ_DIR_STAMP)
+$(MAIN_RAM_IMG) : $(EXEC_RAM_OBJS) $(OBJ_DIR_STAMP)
 	@echo "> Linking $@"
 	$(v)$(LD) $(ENDIAN_FG) $(LD_FLAG) $(LIB_PATH) -e _ldrinit -Ttext $(RUNTIME_OFFSET) \
-			-Map $(OBJ_DIR)/$(EXEC_NAME_RAM).map -o $(OBJ_DIR)/$(EXEC_NAME_RAM).elf \
-			$(EXEC_OBJS_RAM) $(LIBS)
-	$(v)$(OBJCOPY) -O binary $(OBJ_DIR)/$(EXEC_NAME_RAM).elf $@
+			-Map $(OBJ_DIR)/$(EXEC_RAM_NAME).map -o $(OBJ_DIR)/$(EXEC_RAM_NAME).elf \
+			$(EXEC_RAM_OBJS) $(LIBS)
+	$(v)$(OBJCOPY) -O binary $(OBJ_DIR)/$(EXEC_RAM_NAME).elf $@
 
 
 $(OBJ_DIR)/%.o : $(SRC_DIR)/%.c $(OBJ_DIR_STAMP)
