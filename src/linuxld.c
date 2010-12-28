@@ -239,7 +239,7 @@ void boot_linux (void)
 	buart_print ("\n\rReading Linux ");
 	status = nf_read ((UINT8 *) LINUXLD_DOWNLOAD_START,
 			  (UINT8 *) LINUXLD_NANDFLASH_KERNEL_START,
-			  LINUX_IMAGE_SIZE);
+			  LINUXLD_NANDFLASH_KERNEL_SIZE);
 	if (status < 0)
 	{
 		buart_print (fail);
