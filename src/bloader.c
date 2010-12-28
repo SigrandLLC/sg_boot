@@ -80,7 +80,10 @@ static menu_entry_t flash_menu[] =
 
 void flash_client_menu (void)
 {
-	menu_do_all("Flash Client Menu", NULL, flash_menu);
+	if (expert_mode)
+		menu_do_all("Flash Client Menu", NULL, flash_menu);
+	else
+		buart_print("\n\n\rFlash menu: expert mode only");
 }
 //- flash menu
 
@@ -103,7 +106,7 @@ static menu_entry_t main_menu[] =
 	{ .key = 'S', .line = "Update OS    "    , .func_int  = tftpc_download, .int_data = TFTP_LOAD_LINUX },
 	{ .key = 'B', .line = "Update Bootloader", .func_int  = tftpc_download, .int_data = TFTP_LOAD_BOOTLOADER },
 //	{ .key = 'A', .line = "Update All"       , .func_void = tftpc_download_all },
-//	{ .key = 'F', .line = "Flash operations" , .func_void = flash_client_menu },
+	{ .key = 'F', .line = "Flash operations" , .func_void = flash_client_menu },
 	{ .key = 'R', .line = "Reset"            , .func_void = reset },
 	{ .key = '\0' }
 };

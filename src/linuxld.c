@@ -22,6 +22,7 @@
 #include <memlib.h>
 #include <tftp.h>
 #include <timer.h>
+#include <param.h> // expert_mode
 
 /* linux boot defined */
 #define LINUX_ENTRY_POINT		LINUXLD_KERNEL_START - 0xa0000000 + 0x800006d8
@@ -125,6 +126,11 @@ int tftpc_download (int mode)
 	switch (mode)
 	{
 		case TFTP_LOAD_BOOTLOADER:
+			if (!expert_mode)
+			{
+				buart_print("\n\n\rBootloader update: expert mode only");
+				return -1;
+			}
 			flash = (void *) LINUXLD_NANDFLASH_LOADER_START;
 			image = (char *) LINUXLD_DOWNLOAD_START;
 			image_size = LINUXLD_LOADER_SIZE + LINUXLD_RESERVE_SIZE;

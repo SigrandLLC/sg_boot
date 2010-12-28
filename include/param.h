@@ -21,3 +21,5 @@ int  bsp_GetMacBase (UINT8 *buf, int *macnum);
 int  bsp_GetTftpIp  (UINT32 *tftpip);
 int  bsp_GetGwIp (UINT32 *gwip);
 
+extern int expert_mode;
+

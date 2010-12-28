@@ -25,7 +25,7 @@ static void Set_IP  (void);
 static BOARD_CFG_T *cfg;
 static int cfg_changed;
 
-static int expert_mode;
+int expert_mode;
 extern const int bootloader_type_ram;
 
 /*****************************************************************************************/
