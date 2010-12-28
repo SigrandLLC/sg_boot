@@ -339,7 +339,7 @@ static void print_tftpc_param (void)
 {
 	if (cfg->tftpmagic == TFTPMAGIC)
 	{
-		buart_print ("\n\n\rTFTP Server IP address: ");
+		buart_print ("\n\rTFTP Server IP address: ");
 		PrintTftpIP();
 		buart_print ("\n\rTFTP Server Gateway IP address: ");
 		PrintTftpGW();
