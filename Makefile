@@ -142,9 +142,9 @@ $(MAIN_IMG) : $(EXEC_OBJS) $(OBJ_DIR_STAMP)
 	$(v)$(OBJCOPY) -O binary $(OBJ_DIR)/$(EXEC_NAME).elf $@
 
 
-ram_img_install : $(RAM_SREC) $(TFTPBOOT_STAMP)
-	@echo "> Copying $(RAM_SREC) to $(TFTPBOOT)/sg5120boot_ram.srec"
-	$(v)$(CP) $(RAM_SREC) $(TFTPBOOT)/sg5120boot_ram.srec
+ram_img_install : $(RAM_IMG) $(TFTPBOOT_STAMP)
+	@echo "> Copying $(RAM_IMG) to $(TFTPBOOT)/sg5120boot_ram.bin"
+	$(v)$(CP) $(RAM_IMG) $(TFTPBOOT)/sg5120boot_ram.bin
 
 $(RAM_IMG) : $(BOOT_RAM_IMG) $(MAIN_RAM_IMG) $(BIN_DIR_STAMP)
 	@echo "> Constructing $@"
