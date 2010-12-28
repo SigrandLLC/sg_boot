@@ -99,13 +99,14 @@ ROM_NAME = nandloader
 RAM_NAME = nandloader_ram
 
 
-     ROM_IMG = $(BIN_DIR)/$(ROM_NAME).img
-    BOOT_IMG = $(OBJ_DIR)/$(BOOT_NAME).img
-    MAIN_IMG = $(OBJ_DIR)/$(EXEC_NAME).img
+     ROM_IMG  = $(BIN_DIR)/$(ROM_NAME).img
+    BOOT_IMG  = $(OBJ_DIR)/$(BOOT_NAME).img
+    MAIN_IMG  = $(OBJ_DIR)/$(EXEC_NAME).img
 
-     RAM_IMG = $(BIN_DIR)/$(RAM_NAME).img
-BOOT_RAM_IMG = $(OBJ_DIR)/$(BOOT_NAME_RAM).img
-MAIN_RAM_IMG = $(OBJ_DIR)/$(EXEC_NAME_RAM).img
+     RAM_IMG  = $(BIN_DIR)/$(RAM_NAME).img
+     RAM_SREC = $(BIN_DIR)/$(RAM_NAME).srec
+BOOT_RAM_IMG  = $(OBJ_DIR)/$(BOOT_NAME_RAM).img
+MAIN_RAM_IMG  = $(OBJ_DIR)/$(EXEC_NAME_RAM).img
 
 
 ALL_OBJS = $(BOOT_OBJS) $(BOOT_OBJS_RAM) $(EXEC_OBJS)
@@ -141,13 +142,17 @@ $(MAIN_IMG) : $(EXEC_OBJS) $(OBJ_DIR_STAMP)
 	$(v)$(OBJCOPY) -O binary $(OBJ_DIR)/$(EXEC_NAME).elf $@
 
 
-ram_img_install : $(BOOT_RAM_IMG) $(MAIN_RAM_IMG) $(RAM_IMG) $(TFTPBOOT_STAMP)
-	@echo "> Copying $(RAM_IMG) to $(TFTPBOOT)/sg5120boot_ram.bin"
-	$(v)$(CP) $(RAM_IMG) $(TFTPBOOT)/sg5120boot_ram.bin
+ram_img_install : $(RAM_SREC) $(TFTPBOOT_STAMP)
+	@echo "> Copying $(RAM_SREC) to $(TFTPBOOT)/sg5120boot_ram.srec"
+	$(v)$(CP) $(RAM_SREC) $(TFTPBOOT)/sg5120boot_ram.srec
 
 $(RAM_IMG) : $(BOOT_RAM_IMG) $(MAIN_RAM_IMG) $(BIN_DIR_STAMP)
 	@echo "> Constructing $@"
 	$(v)cat $(BOOT_RAM_IMG) $(MAIN_RAM_IMG) > $(RAM_IMG)
+
+$(RAM_SREC) : $(RAM_IMG) $(BIN_DIR_STAMP)
+	@echo "> Converting $< to $@"
+	@$(OBJCOPY) --set-start=$(LOADER_OFFSET) -O srec -I binary $(RAM_IMG) $(RAM_SREC)
 
 $(BOOT_RAM_IMG) : $(BOOT_OBJS_RAM) $(OBJ_DIR_STAMP)
 	@echo "> Linking $@"
