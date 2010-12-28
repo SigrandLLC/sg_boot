@@ -467,7 +467,7 @@ nand_read_ecc (loff_t from, size_t len, size_t * retlen, u_char * buf,
 	/* Loop until all data read */
 	while (read < len)
 	{
-		if (!(page % NAND_PAGE_PER_BLK)) buart_put('.');
+		if (!(page % (NAND_PAGE_PER_BLK*4))) buart_put('.');
 		switch (eccmode)
 		{
 			case NAND_ECC_NONE: /* No ECC, Read in a page */
@@ -617,7 +617,7 @@ static int nand_write_ecc (loff_t to, size_t len, size_t * retlen, const u_char 
 				continue;
 			}
 		}
-		if (!(page % NAND_PAGE_PER_BLK)) buart_put('.');
+		if (!(page % (NAND_PAGE_PER_BLK*4))) buart_put('.');
 		//
 		data_poi = (u_char*) & buf[written];
 		/* We use the same function for write and writev */
@@ -678,7 +678,7 @@ int nand_erase (UINT8 *addr, UINT32 len, UINT8 wp)
 	// here, NAND_SIZE_PER_BLK=0x4000
 	for (i = 0; i < len; i += NAND_SIZE_PER_BLK, addr += NAND_SIZE_PER_BLK)
 	{
-		if (!(i % NAND_SIZE_PER_BLK)) buart_put('.');
+		if (!(i % (NAND_SIZE_PER_BLK*4))) buart_put('.');
 		row1 = ((int) addr & ADD2MASK) >> ADD2SHIFT;
 		row2 = ((int) addr & ADD3MASK) >> ADD3SHIFT;
 		//
