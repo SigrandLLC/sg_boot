@@ -92,8 +92,8 @@ exec_objs += udp.o param.o nf.o dslam.o menu.o
 EXEC_OBJS = $(addprefix $(OBJ_DIR)/,$(exec_objs))
 
 
-EXEC_ROM_OBJS = $(EXEC_OBJS)
-EXEC_RAM_OBJS = $(EXEC_OBJS)
+EXEC_ROM_OBJS = $(EXEC_OBJS) $(OBJ_DIR)/rom.o
+EXEC_RAM_OBJS = $(EXEC_OBJS) $(OBJ_DIR)/ram.o
 
 
 ROM_NAME = nandloader

@@ -25,6 +25,9 @@ static void Set_IP  (void);
 static BOARD_CFG_T *cfg;
 static int cfg_changed;
 
+static int expert_mode;
+extern const int bootloader_type_ram;
+
 /*****************************************************************************************/
 /*		Parameter Init								 */
 /*****************************************************************************************/
@@ -36,6 +39,7 @@ int boot_param_init (void)
 	if (cfg != NULL)
 		err = nf_read ((char *) cfg, (char *) LINUXLD_NANDFLASH_BOOTPARAM_START, sizeof (BOARD_CFG_T));
 	cfg_changed = 0;
+	expert_mode = bootloader_type_ram;
 	return err;
 }
 
@@ -639,7 +643,6 @@ static menu_rc_t save_exit(int dummy)
 	return menu_exit(dummy);
 }
 
-static int expert_mode;
 static void SetExpertMode(void)
 {
 	if (expert_mode)
@@ -649,7 +652,7 @@ static void SetExpertMode(void)
 	}
 	else
 	{
-		char buf[BSP_FILENAME_STR_LEN + 1];
+		char buf[BSP_STR_LEN + 1];
 
 		buf[0] = 0;
 		buart_print ("\n\rEnter expert password: ");
@@ -667,7 +670,6 @@ static void SetExpertMode(void)
 	}
 }
 
-extern int bootloader_type_ram;
 static void PrintExpertMode(void)
 {
 	buart_print( expert_mode ? "On" : "Off" );
