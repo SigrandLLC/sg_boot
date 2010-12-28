@@ -88,14 +88,6 @@ void flash_client_menu (void)
 //- flash menu
 
 
-#if 0 // too dangerous and useless
-void tftpc_download_all(void)
-{
-	tftpc_download (TFTP_LOAD_BOOTLOADER);
-	tftpc_download (TFTP_LOAD_LINUX);
-}
-#endif
-
 //+ main menu
 static menu_entry_t main_menu[] =
 {
@@ -105,7 +97,6 @@ static menu_entry_t main_menu[] =
 #endif
 	{ .key = 'S', .line = "Update OS    "    , .func_int  = tftpc_download, .int_data = TFTP_LOAD_LINUX },
 	{ .key = 'B', .line = "Update Bootloader", .func_int  = tftpc_download, .int_data = TFTP_LOAD_BOOTLOADER },
-//	{ .key = 'A', .line = "Update All"       , .func_void = tftpc_download_all },
 	{ .key = 'F', .line = "Flash operations" , .func_void = flash_client_menu },
 	{ .key = 'R', .line = "Reset"            , .func_void = reset },
 	{ .key = '\0' }
