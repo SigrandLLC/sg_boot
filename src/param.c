@@ -23,10 +23,10 @@ static void Set_IP  (void);
 /*****************************************************************************************/
 // lnitial boot parameter
 static BOARD_CFG_T *cfg;
+static int cfg_changed;
 
 /*****************************************************************************************/
-/*		Parameter Init																	 */
-
+/*		Parameter Init								 */
 /*****************************************************************************************/
 int boot_param_init (void)
 {
@@ -35,6 +35,7 @@ int boot_param_init (void)
 	cfg = (BOARD_CFG_T *) MemAlloc (sizeof (BOARD_CFG_T), TRUE);
 	if (cfg != NULL)
 		err = nf_read ((char *) cfg, (char *) LINUXLD_NANDFLASH_BOOTPARAM_START, sizeof (BOARD_CFG_T));
+	cfg_changed = 0;
 	return err;
 }
 
@@ -79,6 +80,7 @@ int set_boot_param (void)
 	if (cfg->tftploipmagic == TFTPLOIPMAGIC && cfg->macmagic == MAC_MAGIC)
 		arp_add_entry (cfg->mac, cfg->tftp_param.local_ip);
 
+	cfg_changed = 0;
 	return 0;
 	/* Wait any key */
 	//buart_print("\n\r\n\rPlease press any key to continue...");
@@ -97,12 +99,19 @@ static int bsp_SetMac (UINT8 *mac, int macnum)
 	// Allow only unicast mac address
 	if (mac[0] != 0) return -1;
 
-	cfg->macmagic = MAC_MAGIC;
+	if (cfg->macmagic == MAC_MAGIC)
+	{
+		if (memcmp(mac, cfg->mac, 6) != 0)
+			cfg_changed = 1;
+	}
+	else
+		cfg_changed = 1;
 
 	// have to use memcpy here.
 	memcpy (cfg->mac, mac, 6);
 	cfg->mac[7] = cfg->mac[8] = 0;
 	cfg->macnum = macnum;
+	cfg->macmagic = MAC_MAGIC;
 
 	// Ripple adder
 	sum = macnum - 1;
@@ -264,6 +273,14 @@ loip_again:
 			buart_print ("Invalid IP address.\n\r");
 			goto loip_again;
 		}
+
+		if (cfg->tftploipmagic == TFTPLOIPMAGIC)
+		{
+			if (cfg->tftp_param.local_ip != loip)
+				cfg_changed = 1;
+		}
+		else
+			cfg_changed = 1;
 
 		cfg->tftp_param.local_ip = loip;
 		cfg->tftploipmagic = TFTPLOIPMAGIC;
@@ -457,6 +474,15 @@ servip_again:
 			buart_print ("Invalid IP address.\n\r");
 			goto servip_again;
 		}
+
+		if (cfg->tftpmagic == TFTPMAGIC)
+		{
+			if (cfg->tftp_param.server_ip != servip)
+				cfg_changed = 1;
+		}
+		else
+			cfg_changed = 1;
+
 		cfg->tftp_param.server_ip = servip;
 		cfg->tftpmagic = TFTPMAGIC;
 	} else
@@ -488,6 +514,15 @@ gwip_again:
 				buart_print ("Invalid IP address.\n\r");
 				goto gwip_again;
 			}
+
+		if (cfg->tftpmagic == TFTPMAGIC)
+		{
+			if (cfg->tftp_param.gw_ip != gwip)
+				cfg_changed = 1;
+		}
+		else
+			cfg_changed = 1;
+
 		cfg->tftp_param.gw_ip = gwip;
 		cfg->tftpmagic = TFTPMAGIC;
 	} else
@@ -505,6 +540,15 @@ static void set_tftp_boot_name(void)
 	ReadLine (buf, sizeof(buf)-1);
 	if (buf[0] != 0)
 	{
+		if (cfg->tftpmagic == TFTPMAGIC)
+		{
+			if (strncmp(cfg->tftp_param.bootloader_name, buf,
+				    sizeof(cfg->tftp_param.bootloader_name)-1) != 0)
+				cfg_changed = 1;
+		}
+		else
+			cfg_changed = 1;
+
 		strncpy (cfg->tftp_param.bootloader_name, buf,
 			 sizeof(cfg->tftp_param.bootloader_name)-1);
 		cfg->tftpmagic = TFTPMAGIC;
@@ -522,6 +566,15 @@ static void set_tftp_linux_name(void)
 	ReadLine (buf, sizeof(buf)-1);
 	if (buf[0] != 0)
 	{
+		if (cfg->tftpmagic == TFTPMAGIC)
+		{
+			if (strncmp(cfg->tftp_param.linux_name, buf,
+				    sizeof(cfg->tftp_param.linux_name)-1) != 0)
+				cfg_changed = 1;
+		}
+		else
+			cfg_changed = 1;
+
 		strncpy (cfg->tftp_param.linux_name, buf,
 			 sizeof(cfg->tftp_param.linux_name)-1);
 		cfg->tftpmagic = TFTPMAGIC;
@@ -557,7 +610,11 @@ static int write_params(void)
 	if (rc < 0)
 		buart_print ("\n\rWrite flash error.");
 
-	if (rc >= 0) buart_print (" PASS\n\r");
+	if (rc >= 0)
+	{
+		buart_print (" PASS\n\r");
+		cfg_changed = 0;
+	}
 	return rc;
 }
 
@@ -577,7 +634,8 @@ int set_tftpc_param (void)
 
 static menu_rc_t save_exit(int dummy)
 {
-	write_params();
+	if (cfg_changed)
+		write_params();
 	return menu_exit(dummy);
 }
 
