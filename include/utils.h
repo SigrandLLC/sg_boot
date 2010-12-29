@@ -13,5 +13,6 @@ int mactostr (char *mac, char *str);
 int macscanf (char *mac, char *buf);
 int ipscanf (UINT32 *ipbuf, char *buf);
 void IpAddrToStr (UINT32 tmp_ip, char *str);
+unsigned int ap_hash(const char *str);
 
 #endif

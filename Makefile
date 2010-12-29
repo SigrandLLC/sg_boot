@@ -87,7 +87,7 @@ exec_objs  = nand_ldrinit.o bloader.o linuxld.o $(if $(NO_XMODEM),,xmodem.o)
 exec_objs += nand.o nand_ecc.o
 exec_objs += cachelib.o irqlib.o timer.o vector.o except.o utils.o
 exec_objs += if_5120.o memlib.o uartdrv.o tftp.o eth.o skbuff.o arp.o ip.o
-exec_objs += udp.o param.o nf.o dslam.o menu.o
+exec_objs += udp.o param.o nf.o dslam.o menu.o ap-hash.o
 
 EXEC_OBJS = $(addprefix $(OBJ_DIR)/,$(exec_objs))
 

@@ -659,7 +659,8 @@ static void SetExpertMode(void)
 		buf[0] = 0;
 		buart_print ("\n\rEnter expert password: ");
 		ReadLine (buf, sizeof(buf)-1);
-		if ( strcmp(buf, "adm5120") == 0 )
+
+		if (ap_hash(buf) == 0xD7AD3E6D)
 		{
 			expert_mode = 1;
 			buart_print ("Expert mode On");
