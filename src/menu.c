@@ -9,12 +9,13 @@ extern inline char toupper(char c)
 
 void menu_print_entries(const menu_entry_t *menu)
 {
-	for ( ; menu->line != NULL; ++menu)
+	for ( ; menu->key != '\0'; ++menu)
 	{
 		buart_print("\n\r [");
 		buart_put(menu->key);
 		buart_print("] ");
-		buart_print(menu->line);
+		if (menu->line != NULL)
+		    buart_print(menu->line);
 		if (menu->print_val)
 		{
 			buart_print(": ");
