@@ -678,10 +678,208 @@ static void PrintExpertMode(void)
 	buart_print( expert_mode ? "On" : "Off" );
 }
 
+
+#define DEFINE_IP(a,b,c,d)	\
+    ( ((a) << 24) | ((b) << 16) | ((c) << 8) | (d) )
+
+enum {
+    CONFIG_G,
+    CONFIG_Z, CONFIG_Y,
+    CONFIG_S, CONFIG_R,
+    CONFIG_1, CONFIG_2,
+    CONFIG_A, CONFIG_B , CONFIG_C
+};
+
+static BOARD_CFG_T configs[] =
+{
+    [CONFIG_G] =
+    {
+	.macmagic = MAC_MAGIC, .macnum = 0,
+	.mac = { 0x00,0xFF,0x0F,0x01,0x02,0x03 },
+	.tftploipmagic = TFTPLOIPMAGIC, .tftpmagic = TFTPMAGIC,
+	.tftp_param =
+	{
+	    .local_ip        = DEFINE_IP(192,168,2,100),
+	    .server_ip       = DEFINE_IP(192,168,2,  1),
+	    .gw_ip           = DEFINE_IP(  0,  0,0,  0),
+	    .linux_name      = "sg.bin",
+	    .bootloader_name = "sg5120boot_rom.bin"
+	}
+    },
+
+    [CONFIG_Z] =
+    {
+	.macmagic = MAC_MAGIC, .macnum = 0,
+	.mac = { 0x00,0xFF,0x0F,0x01,0x02,0x03 },
+	.tftploipmagic = TFTPLOIPMAGIC, .tftpmagic = TFTPMAGIC,
+	.tftp_param =
+	{
+	    .local_ip        = DEFINE_IP(192,168,0, 24),
+	    .server_ip       = DEFINE_IP(192,168,0,  1),
+	    .gw_ip           = DEFINE_IP(  0,  0,0,  0),
+	    .linux_name      = "zx.bin",
+	    .bootloader_name = "sg5120boot_rom.bin"
+	}
+    },
+
+    [CONFIG_Y] =
+    {
+	.macmagic = MAC_MAGIC, .macnum = 0,
+	.mac = { 0x00,0xFF,0x0F,0x01,0x02,0x03 },
+	.tftploipmagic = TFTPLOIPMAGIC, .tftpmagic = TFTPMAGIC,
+	.tftp_param =
+	{
+	    .local_ip        = DEFINE_IP(192,168,2,124),
+	    .server_ip       = DEFINE_IP(192,168,2,  1),
+	    .gw_ip           = DEFINE_IP(  0,  0,0,  0),
+	    .linux_name      = "zx.bin",
+	    .bootloader_name = "sg5120boot_rom.bin"
+	}
+    },
+
+    [CONFIG_S] =
+    {
+	.macmagic = MAC_MAGIC, .macnum = 0,
+	.mac = { 0x00,0xFF,0x0F,0x01,0x02,0x03 },
+	.tftploipmagic = TFTPLOIPMAGIC, .tftpmagic = TFTPMAGIC,
+	.tftp_param =
+	{
+	    .local_ip        = DEFINE_IP(192,168,1, 40),
+	    .server_ip       = DEFINE_IP(192,168,1,  1),
+	    .gw_ip           = DEFINE_IP(  0,  0,0,  0),
+	    .linux_name      = "si.bin",
+	    .bootloader_name = "sg5120boot_rom.bin"
+	}
+    },
+
+    [CONFIG_R] =
+    {
+	.macmagic = MAC_MAGIC, .macnum = 0,
+	.mac = { 0x00,0xFF,0x0F,0x01,0x02,0x03 },
+	.tftploipmagic = TFTPLOIPMAGIC, .tftpmagic = TFTPMAGIC,
+	.tftp_param =
+	{
+	    .local_ip        = DEFINE_IP(192,168,2,140),
+	    .server_ip       = DEFINE_IP(192,168,2,  1),
+	    .gw_ip           = DEFINE_IP(  0,  0,0,  0),
+	    .linux_name      = "si.bin",
+	    .bootloader_name = "sg5120boot_rom.bin"
+	}
+    },
+
+    [CONFIG_1] =
+    {
+	.macmagic = MAC_MAGIC, .macnum = 0,
+	.mac = { 0x00,0xFF,0x0F,0x01,0x02,0x03 },
+	.tftploipmagic = TFTPLOIPMAGIC, .tftpmagic = TFTPMAGIC,
+	.tftp_param =
+	{
+	    .local_ip        = DEFINE_IP(192,168,2,101),
+	    .server_ip       = DEFINE_IP(192,168,2,  4),
+	    .gw_ip           = DEFINE_IP(  0,  0,0,  0),
+	    .linux_name      = "sg.bin",
+	    .bootloader_name = "sg5120boot_rom.bin"
+	}
+    },
+
+    [CONFIG_2] =
+    {
+	.macmagic = MAC_MAGIC, .macnum = 0,
+	.mac = { 0x00,0xFF,0x0F,0x01,0x02,0x03 },
+	.tftploipmagic = TFTPLOIPMAGIC, .tftpmagic = TFTPMAGIC,
+	.tftp_param =
+	{
+	    .local_ip        = DEFINE_IP(192,168,2,102),
+            .server_ip       = DEFINE_IP(192,168,2,  4),
+	    .gw_ip           = DEFINE_IP(  0,  0,0,  0),
+	    .linux_name      = "sg.bin",
+            .bootloader_name = "sg5120boot_rom.bin"
+	}
+    },
+
+    [CONFIG_A] =
+    {
+	.macmagic = MAC_MAGIC, .macnum = 0,
+	.mac = { 0x00,0xFF,0x0F,0x01,0x02,0x03 },
+	.tftploipmagic = TFTPLOIPMAGIC, .tftpmagic = TFTPMAGIC,
+	.tftp_param =
+	{
+	    .local_ip        = DEFINE_IP(192,168,2, 91),
+            .server_ip       = DEFINE_IP(192,168,2,  1),
+	    .gw_ip           = DEFINE_IP(  0,  0,0,  0),
+	    .linux_name      = "sg.bin",
+            .bootloader_name = "sg5120boot_rom.bin"
+	}
+    },
+
+    [CONFIG_B] =
+    {
+	.macmagic = MAC_MAGIC, .macnum = 0,
+	.mac = { 0x00,0xFF,0x0F,0x01,0x02,0x03 },
+	.tftploipmagic = TFTPLOIPMAGIC, .tftpmagic = TFTPMAGIC,
+	.tftp_param =
+	{
+	    .local_ip        = DEFINE_IP(192,168,2, 92),
+            .server_ip       = DEFINE_IP(192,168,2,  1),
+	    .gw_ip           = DEFINE_IP(  0,  0,0,  0),
+	    .linux_name      = "sg.bin",
+            .bootloader_name = "sg5120boot_rom.bin"
+	}
+    },
+
+    [CONFIG_C] =
+    {
+	.macmagic = MAC_MAGIC, .macnum = 0,
+	.mac = { 0x00,0xFF,0x0F,0x01,0x02,0x03 },
+	.tftploipmagic = TFTPLOIPMAGIC, .tftpmagic = TFTPMAGIC,
+	.tftp_param =
+	{
+	    .local_ip        = DEFINE_IP(192,168,2, 93),
+            .server_ip       = DEFINE_IP(192,168,2,  1),
+	    .gw_ip           = DEFINE_IP(  0,  0,0,  0),
+	    .linux_name      = "sg.bin",
+            .bootloader_name = "sg5120boot_rom.bin"
+	}
+    },
+
+};
+
+static menu_rc_t set_default_params(int idx)
+{
+    memcpy(cfg, &configs[idx], sizeof(*cfg));
+    return MENU_DONE;
+}
+
+static void predefined_menu(void)
+{
+    static menu_entry_t menu[] =
+    {
+	{ .key = 'G', .func_int = set_default_params, .int_data = CONFIG_G, .line = "set 2.100 parameters" },
+	{ .key = 'Z', .func_int = set_default_params, .int_data = CONFIG_Z, .line = "set 0.24  parameters" },
+	{ .key = 'Y', .func_int = set_default_params, .int_data = CONFIG_Y, .line = "set 2.124 parameters" },
+	{ .key = 'S', .func_int = set_default_params, .int_data = CONFIG_S, .line = "set 1.40  parameters" },
+	{ .key = 'R', .func_int = set_default_params, .int_data = CONFIG_R, .line = "set 2.40  parameters" },
+	{ .key = '1', .func_int = set_default_params, .int_data = CONFIG_1, .line = "set 2.101 parameters" },
+	{ .key = '2', .func_int = set_default_params, .int_data = CONFIG_2, .line = "set 2.102 parameters" },
+	{ .key = 'A', .func_int = set_default_params, .int_data = CONFIG_A, .line = "set 2.91  parameters" },
+	{ .key = 'B', .func_int = set_default_params, .int_data = CONFIG_B, .line = "set 2.92  parameters" },
+	{ .key = 'C', .func_int = set_default_params, .int_data = CONFIG_C, .line = "set 2.93  parameters" },
+	{ .key = 'X', .line = "exit menu", .func_int  = menu_exit },
+	{ .key = '\0' }
+    };
+
+    menu_do_all("Pre-defined parameters Menu", PrintAllParam, menu);
+}
+
 void SetAllParam(void)
 {
     static menu_entry_t menu[] =
     {
+	{
+	    .key = 'P', .line = "Pre-defined parameters menu",
+	    .func_void = predefined_menu,
+	},
+
 	{
 	    .key = 'M', .line = "Local MAC address",
 	    .func_void = Set_Mac,
