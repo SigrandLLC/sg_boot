@@ -663,12 +663,12 @@ static void SetExpertMode(void)
 		if (ap_hash(buf) == 0xD7AD3E6D)
 		{
 			expert_mode = 1;
-			buart_print ("Expert mode On");
+			buart_print ("\n\rExpert mode On");
 		}
 		else
 		{
 			expert_mode = 0;
-			buart_print ("Wrong password, expert mode Off");
+			buart_print ("\n\rWrong password, expert mode Off");
 		}
 	}
 }
