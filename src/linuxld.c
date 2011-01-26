@@ -86,7 +86,7 @@ int update_bootloader (void)
 	int len, rc = 0;
 
 	/* download loader image to temp using xmodem */
-	buart_print ("\n\rDownloading..........");
+	buart_print ("\n\rDownloading ");
 	if ((len = xmodem (image, LINUXLD_NANDFLASH_LOADER_SIZE)) == -1)
 		goto fail;
 	else
@@ -145,7 +145,7 @@ int tftpc_download (int mode)
 			return -1;
 	}
 
-	buart_print ("\n\rStarting the TFTP download (ESC to stop)..");
+	buart_print ("\n\rStarting the TFTP download (ESC to stop) ");
 	if ((len = tftpc (image, image_size, mode)) == 0)
 	{
 		buart_print (fail);
