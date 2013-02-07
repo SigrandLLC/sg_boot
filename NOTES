@@ -1,0 +1,8 @@
+(eldk-4.0 failed)
+
+compiler:
+http://sources-redhat.mirrors.airband.net/ecos/gnutools/i386linux/ecoscentric-gnutools-mipsisa32-elf-1.4-2.i386linux.tar.bz2
+
+cd adm-my
+mkdir tftpboot
+make CROSS_TOOLS=/home/df/gnutools/mipsisa32-elf/bin/mipsisa32-elf TFTPBOOT=./tftpboot/
