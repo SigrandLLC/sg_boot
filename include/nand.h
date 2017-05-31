@@ -88,10 +88,10 @@ typedef enum
 	FL_SYNCING
 } nand_state_t;
 
-int nand_read (UINT8 *dst, UINT8 *src, UINT32 len);
-int nand_write (UINT8 *dst, UINT8 *src, UINT32 size, UINT8 wp);
+int nand_read  (UINT8 *dst, const UINT8 *src, UINT32 len);
+int nand_write (UINT8 *dst, const UINT8 *src, UINT32 size, UINT8 wp);
 int nand_erase (UINT8 *addr, UINT32 len, UINT8 wp);
-void nand_write_boot (UINT8 *dst, UINT8 *src, UINT32 len);
+void nand_write_boot (UINT8 *dst, const UINT8 *src, UINT32 len);
 void check_bad_block (void);
 void scan_bad_blocks (void);
 void bad_block       (void);

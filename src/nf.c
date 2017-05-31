@@ -16,7 +16,7 @@ int nf_erase (UINT8 *addr, UINT32 len, UINT8 wp)
 	return nand_erase (addr, len, wp);
 }
 
-int nf_write (UINT8 *dst, UINT8 *src, UINT32 len, UINT8 wp)
+int nf_write (UINT8 *dst, const UINT8 *src, UINT32 len, UINT8 wp)
 {
 	/*char buf[10] = {0};
 	buart_print ("\n\rnf_write call: dst = 0x");
@@ -29,13 +29,13 @@ int nf_write (UINT8 *dst, UINT8 *src, UINT32 len, UINT8 wp)
 	return nand_write (dst, src, len, wp);
 }
 
-int nf_write_boot (UINT8 *dst, UINT8 *src, UINT32 len)
+int nf_write_boot (UINT8 *dst, const UINT8 *src, UINT32 len)
 {
 	nand_write_boot (dst, src, len);
 	return 0;
 }
 
-int nf_read (UINT8 *dst, UINT8 *src, UINT32 len)
+int nf_read (UINT8 *dst, const UINT8 *src, UINT32 len)
 {
 	/*char buf[10] = {0};
 	buart_print ("\n\rnf_read call: src = 0x");

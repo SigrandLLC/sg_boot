@@ -75,7 +75,7 @@ int mactostr (UINT8 *mac, char *str)
 	return 0;
 }
 
-int macscanf (UINT8 *mac, char *buf)
+int macscanf (UINT8 *mac, const char *buf)
 {
 	int i;
 	UINT8 s, tmp;
@@ -108,7 +108,7 @@ int macscanf (UINT8 *mac, char *buf)
 	return i;
 }
 
-int ipscanf (UINT32 *ipbuf, char *buf)
+int ipscanf (UINT32 *ipbuf, const char *buf)
 {
 	int i, j = 0;
 	UINT32 tmp1 = 0, tmp2 = 0;

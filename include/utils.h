@@ -10,8 +10,8 @@ unsigned long  htonl (unsigned long  l);
 int ultoa (unsigned long num, char *str);
 int btoa  (char num, char *str);
 int mactostr (UINT8 *mac, char *str);
-int macscanf (UINT8 *mac, char *buf);
-int ipscanf (UINT32 *ipbuf, char *buf);
+int macscanf (UINT8 *mac, const char *buf);
+int ipscanf (UINT32 *ipbuf, const char *buf);
 void IpAddrToStr (UINT32 tmp_ip, char *str);
 unsigned int ap_hash(const char *str);
 

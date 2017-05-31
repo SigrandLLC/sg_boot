@@ -248,7 +248,7 @@ void nand_read_page_oob (UINT8 *src, UINT8 *buf, UINT8 oob)
 // for selected chip
 // writes 1 page in buffer, additionally writes OOB if oob == 1
 
-void nand_write_page_oob (UINT8 *dst, UINT8 *buf, UINT8 oob, UINT8 wp)
+void nand_write_page_oob (UINT8 *dst, const UINT8 *buf, UINT8 oob, UINT8 wp)
 {
 	UINT32 i, col, row1, row2;
 
@@ -646,7 +646,7 @@ static int nand_write_ecc (loff_t to, size_t len, size_t * retlen, const u_char 
 	return ret;
 }
 
-int nand_read (UINT8 *dst, UINT8 *src, UINT32 len)
+int nand_read (UINT8 *dst, const UINT8 *src, UINT32 len)
 {
 	size_t retlen;
 
@@ -654,7 +654,7 @@ int nand_read (UINT8 *dst, UINT8 *src, UINT32 len)
 	return rc < 0 ? rc : (int)retlen;
 }
 
-int nand_write (UINT8 *dst, UINT8 *src, UINT32 len, UINT8 wp)
+int nand_write (UINT8 *dst, const UINT8 *src, UINT32 len, UINT8 wp)
 {
 	size_t retlen;
 
@@ -714,7 +714,7 @@ void check_bad_block (void)
 
 // for writing bootloader
 
-void nand_write_boot (UINT8 *dst, UINT8 *src, UINT32 len)
+void nand_write_boot (UINT8 *dst, const UINT8 *src, UINT32 len)
 {
 	volatile UINT8 *base;
 	UINT32 i = 0;
