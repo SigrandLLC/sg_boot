@@ -111,9 +111,8 @@ static int bsp_SetMac (UINT8 *mac, int macnum)
 	else
 		cfg_changed = 1;
 
-	// have to use memcpy here.
-	memcpy (cfg->mac, mac, 6);
-	cfg->mac[7] = cfg->mac[8] = 0;
+	memset(cfg->mac, 0, sizeof(cfg->mac));
+	memcpy(cfg->mac, mac, 6);
 	cfg->macnum = macnum;
 	cfg->macmagic = MAC_MAGIC;
 
