@@ -1,5 +1,12 @@
 Дмитрий Фёдоров
 
+2.3.1
+* src/param.c: bsp_SetMac(): avoid out-of-bound indexes
+* apply const to some function parameters
+* src/menu.c: toupper -> toUpper to avoid conflict with built-in function
+* src/nf.c: nf_erase(): comment translated from russian to english.
+* TODO, changelog: koi8-r -> UTF-8
+
 2.3
 * tftp: timeout увеличен 0.5 до 2 секунд
 * linuxld: убраны многоточия из некоторых сообщений - точки выводятся
