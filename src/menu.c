@@ -2,7 +2,7 @@
 #include <uartdrv.h>
 #include <menu.h>
 
-extern inline char toupper(char c)
+extern inline char toUpper(char c)
 {
     return c >= 'a' && c <= 'z' ? c - 32 : c;
 }
@@ -28,11 +28,11 @@ menu_rc_t menu_call(const menu_entry_t *menu)
 {
 	char c = buart_getchar ();
 	buart_put (c);
-	c = toupper(c);
+	c = toUpper(c);
 
 	for ( ; menu->key != '\0'; ++menu)
 	{
-		if (toupper(menu->key) == c)
+		if (toUpper(menu->key) == c)
 		{
 			if (menu->func_void != NULL)
 				menu->func_void();
