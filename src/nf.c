@@ -2,8 +2,7 @@
 #include <nf.h>
 #include <nand.h>
 
-// флаг wp работает совсем не так, как я ожидал, он защищает всю флешку, а не
-// определённые сектора, но написанный функционал я оставлю, он никому не мешает
+// unlikely what I expected, the wp flag protects the entire flash.
 int nf_erase (UINT8 *addr, UINT32 len, UINT8 wp)
 {
 	/*char buf[10] = {0};
