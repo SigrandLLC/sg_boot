@@ -30,7 +30,7 @@ extern void DbgUartPutChar (char);
 #endif
 
 static PEthPktQueue_OBJ EthPktQueue;
-static char local_mac[6];
+static UINT8 local_mac[6];
 
 /**********************************************************************************/
 /* InitBridge:																	  */

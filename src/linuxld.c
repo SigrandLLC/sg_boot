@@ -120,7 +120,7 @@ ok:
 int tftpc_download (int mode)
 {
 	void *flash;
-	char *image/*, lenstr[9]*/;
+	UINT8 *image/*, lenstr[9]*/;
 	UINT32 len, image_size;
 
 	switch (mode)
@@ -132,12 +132,12 @@ int tftpc_download (int mode)
 				return -1;
 			}
 			flash = (void *) LINUXLD_NANDFLASH_LOADER_START;
-			image = (char *) LINUXLD_DOWNLOAD_START;
+			image = (UINT8*) LINUXLD_DOWNLOAD_START;
 			image_size = LINUXLD_LOADER_SIZE + LINUXLD_RESERVE_SIZE;
 			break;
 		case TFTP_LOAD_LINUX:
 			flash = (void *) LINUXLD_NANDFLASH_KERNEL_START;
-			image = (char *) LINUXLD_DOWNLOAD_START;
+			image = (UINT8*) LINUXLD_DOWNLOAD_START;
 			image_size = LINUX_IMAGE_SIZE;
 			break;
 		default:
@@ -340,7 +340,7 @@ int ungzip (unsigned char *zimg)
 		return err;
 	}
 
-	d_stream.next_out = (char *) LINUXLD_KERNEL_START; // address of decompress image
+	d_stream.next_out = (UINT8 *) LINUXLD_KERNEL_START; // address of decompress image
 	d_stream.avail_out = LINUXLD_KERNEL_SIZE; // size of decompress space
 	// buart_print ("Entering inflate... ");
 	if ((err = inflate (&d_stream, Z_NO_FLUSH)) != Z_STREAM_END)

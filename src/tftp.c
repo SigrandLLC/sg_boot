@@ -82,7 +82,7 @@ int tftp_send_rrq (UINT32 servip, const char *filename)
 
 int tftp_rcv_packet (struct sk_buff *skb); // forward declaration
 
-int rcv_imgpkt (char *buf, int *buf_len)
+int rcv_imgpkt (UINT8 *buf, int *buf_len)
 {
 	struct sk_buff skb;
 	int status;
@@ -137,12 +137,12 @@ int tftp_rcv_packet (struct sk_buff *skb)
 	return data_flag;
 }
 
-UINT32 tftpc (char *buf, int buf_size, int mode)
+UINT32 tftpc (UINT8 *buf, int buf_size, int mode)
 {
 	UINT32 ticks, servip, gwip, total_len;
 	char servfile[BSP_FILENAME_STR_LEN + 1];
 	int transmit_flag, pkt_len = 0, rrqcount = 0;
-	char *working = buf;
+	UINT8 *working = buf;
 	(void)buf_size;
 
 	if (get_tftp_param (&servip, &gwip, servfile, mode) != 0)

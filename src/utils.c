@@ -59,7 +59,7 @@ int btoa (char num, char *str)
 	return 0;
 }
 
-int mactostr (char *mac, char *str)
+int mactostr (UINT8 *mac, char *str)
 {
 	int i, j = 0;
 	char tmp[] = "XX";
@@ -75,7 +75,7 @@ int mactostr (char *mac, char *str)
 	return 0;
 }
 
-int macscanf (char *mac, char *buf)
+int macscanf (UINT8 *mac, char *buf)
 {
 	int i;
 	UINT8 s, tmp;

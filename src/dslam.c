@@ -300,7 +300,7 @@ static int SetupVLAN (int unit, unsigned long portmask)
 	return 0;
 }
 
-int ProgramVlanMac (int vlan, char *Mac, int clear)
+int ProgramVlanMac (int vlan, UINT8 *Mac, int clear)
 {
 	unsigned long Reg0, Reg1;
 

@@ -37,7 +37,7 @@ int boot_param_init (void)
 	// Read the Network configuration data.
 	cfg = (BOARD_CFG_T *) MemAlloc (sizeof (BOARD_CFG_T), TRUE);
 	if (cfg != NULL)
-		err = nf_read ((char *) cfg, (char *) LINUXLD_NANDFLASH_BOOTPARAM_START, sizeof (BOARD_CFG_T));
+		err = nf_read ((UINT8 *) cfg, (UINT8 *) LINUXLD_NANDFLASH_BOOTPARAM_START, sizeof (BOARD_CFG_T));
 	cfg_changed = 0;
 	expert_mode = bootloader_type_ram;
 	return err;
@@ -157,7 +157,7 @@ int bsp_GetMacBase (UINT8 *buf, int *macnum)
 static void Set_Mac (void)
 {
 	char buf[BOOT_LINE_SIZE + 1];
-	char mac[8];
+	UINT8 mac[8];
 	char mactmp[] = "00-00-00-00-00-00-";
 	int macnum, i;
 	int flags = 0;
@@ -238,8 +238,9 @@ num_again:
 			buart_print ("\n\rFailed to change MAC address.");
 		} else
 		{
-			memcpy (mactmp, cfg->mac, 6);
-			ProgramMac (0, mactmp); // Change current MAC addr.
+			UINT8 tmpmac[8];
+			memcpy (tmpmac, cfg->mac, 6);
+			ProgramMac (0, tmpmac); // Change current MAC addr.
 			eth_reinit ();
 			buart_print ("\n\rMAC address updated successfully.");
 		}
@@ -374,8 +375,8 @@ static void print_tftpc_param (void)
 static int PrintMac(void)
 {
 	int macnum;
-	unsigned char buf[BOOT_LINE_SIZE + 1];
-	unsigned char mactmp[] = "00-00-00-00-00-00-";
+	UINT8 buf[BOOT_LINE_SIZE + 1];
+	char mactmp[] = "00-00-00-00-00-00-";
 	int rc = bsp_GetMacBase (buf, &macnum);
 	if (rc == 0)
 	{
@@ -391,7 +392,7 @@ static int PrintMac(void)
 static int PrintIp(void)
 {
 	UINT32 tftpip;
-	unsigned char ipstr[] = "xxx.xxx.xxx.xxx";
+	char ipstr[] = "xxx.xxx.xxx.xxx";
 
 	int rc = bsp_GetTftpIp (&tftpip);
 	if (rc != 0)
@@ -588,13 +589,13 @@ static void set_tftp_linux_name(void)
 
 static int write_params(void)
 {
-	char *image = (char *) LINUXLD_DOWNLOAD_START;
+	UINT8 *image = (UINT8 *) LINUXLD_DOWNLOAD_START;
         int rc = 0;
 
 	buart_print (" writing parameters ");
 
 	/* Before Write back, backup original content */
-	rc = nf_read (image, (char *) LINUXLD_NANDFLASH_BOOTPARAM_START, LINUXLD_NANDFLASH_BOOTPARAM_SIZE);
+	rc = nf_read (image, (UINT8 *) LINUXLD_NANDFLASH_BOOTPARAM_START, LINUXLD_NANDFLASH_BOOTPARAM_SIZE);
 	if (rc < 0)
 	{
 		buart_print ("\n\rRead buffer error!!");
@@ -603,7 +604,7 @@ static int write_params(void)
 	memcpy (image, (char *) cfg, sizeof (BOARD_CFG_T));
 
 	/* Write back new parameter to flash */
-	rc = nf_erase ((char *) LINUXLD_NANDFLASH_BOOTPARAM_START,
+	rc = nf_erase ((UINT8*) LINUXLD_NANDFLASH_BOOTPARAM_START,
 		                LINUXLD_NANDFLASH_BOOTPARAM_SIZE, 1); // write protected
 	if (rc < 0)
 	{
@@ -611,7 +612,7 @@ static int write_params(void)
                 return rc;
 	}
 
-	rc = nf_write ((char *) LINUXLD_NANDFLASH_BOOTPARAM_START, image, LINUXLD_NANDFLASH_BOOTPARAM_SIZE, 1);
+	rc = nf_write ((UINT8 *) LINUXLD_NANDFLASH_BOOTPARAM_START, image, LINUXLD_NANDFLASH_BOOTPARAM_SIZE, 1);
 	if (rc < 0)
 		buart_print ("\n\rWrite flash error.");
 

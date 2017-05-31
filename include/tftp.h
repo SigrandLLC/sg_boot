@@ -62,7 +62,7 @@ struct tftphdr
  * Function prototypes
  */
 void   tftp_init (void);
-UINT32 tftpc (char *buf, int buf_size, int mode);
+UINT32 tftpc (UINT8 *buf, int buf_size, int mode);
 
 
 #endif /* __TFTP_H */
