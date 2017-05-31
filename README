@@ -1,3 +1,11 @@
 mailto: aiseeq@gmail.com
 mailto: dm.fedorov@gmail.com
 
+(eldk-4.0 failed)
+
+compiler:
+http://mirrorservice.org/sites/sourceware.org/pub/ecos/gnutools/i386linux/ecoscentric-gnutools-mipsisa32-elf-1.4-2.i386linux.tar.bz2
+
+cd sg5120boot
+mkdir tftpboot
+make CROSS_TOOLS=$HOME/gnutools/mipsisa32-elf/bin/mipsisa32-elf TFTPBOOT=./tftpboot/
