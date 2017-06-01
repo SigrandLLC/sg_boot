@@ -50,7 +50,7 @@ static inline void print_b (UINT8 b)
 	buart_print (ostr);
 }
 
-static inline void print_val (char *str, int val)
+static inline void print_val (const char *str, int val)
 {
 	char ostr[9] = {0};
 	buart_print ("\n\r");
@@ -60,7 +60,7 @@ static inline void print_val (char *str, int val)
 	buart_print (ostr);
 }
 
-static inline void print_val1 (char *str, int val)
+static inline void print_val1 (const char *str, int val)
 {
 	char ostr[9] = {0};
 	buart_print ("\r");
@@ -349,7 +349,7 @@ static int nand_block_bad (unsigned long page)
  *	This function will always program a full page of data
  *	If you call it with a non page aligned buffer, you're lost :)
  */
-static int nand_write_page (u_char *data_poi, int page,
+static int nand_write_page (const u_char *data_poi, int page,
 	struct nand_oobinfo *oobsel, UINT8 wp)
 {
 	int i, eccmode, *oob_config = NULL;
@@ -570,7 +570,7 @@ static int nand_write_ecc (loff_t to, size_t len, size_t * retlen, const u_char 
 	int page, ret = 0;
 	size_t written = 0;
 	// struct nand_chip *this = mtd->priv;
-	u_char *data_poi;
+	const u_char *data_poi;
 
 	/* Do not allow write past end of device */
 	if ((to + len) > NAND_FLASH_SIZE)
@@ -619,7 +619,7 @@ static int nand_write_ecc (loff_t to, size_t len, size_t * retlen, const u_char 
 		}
 		if (!(page % (NAND_PAGE_PER_BLK*4))) buart_put('.');
 		//
-		data_poi = (u_char*) & buf[written];
+		data_poi = (const u_char*) & buf[written];
 		/* We use the same function for write and writev */
 		if (nand_write_page (data_poi, page, oobsel, wp))
 		{
