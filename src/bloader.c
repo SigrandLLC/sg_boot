@@ -194,10 +194,10 @@ void c_entry (void)
 		buart_print ("\n\rDSLAM board detected.");
 		ADM5120_SW_REG (GPIO_conf0_REG) = 0;
 		ADM5120_SW_REG (GPIO_conf2_REG) = 0;
-		//ADM5120_SW_REG (Port_conf2_REG) = 0x10a;	// включим порт
+		//ADM5120_SW_REG (Port_conf2_REG) = 0x10a;	// port on
 		//store_vlan2port ();
-		store_default (0);							// включаем нулевой
-		store_default (1);							// и первый свитч
+		store_default (0);				// 0 switch on
+		store_default (1);				// 1 switch on
 	}
 
 	// Memory test
