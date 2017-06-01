@@ -200,7 +200,7 @@ void c_entry (void)
 		store_default (1);							// и первый свитч
 	}
 
-	// Тест памяти
+	// Memory test
 	/*volatile UINT32 *x;
 	buart_print ("Testing memory");
 	for (x = 0xa0000000; x < 0xa4000000; x++)
@@ -233,7 +233,7 @@ void c_entry (void)
 				buart_print ("x");
 	}*/
 
-	// Карта памяти
+	// Memory card
 	/*char buf[10] = {0};
 	buart_print ("\n\rMemory map: ");
 	buart_print ("\n\r EXCEP:     0x");
@@ -271,4 +271,3 @@ void c_entry (void)
         while (1)
 		menu_do_all("ADM5120 based router: Bootloader Menu", PrintAllParam, main_menu);
 }
-
