@@ -847,6 +847,7 @@ static BOARD_CFG_T configs[] =
 static menu_rc_t set_default_params(int idx)
 {
     memcpy(cfg, &configs[idx], sizeof(*cfg));
+    cfg_changed = 1;
     return MENU_DONE;
 }
 
