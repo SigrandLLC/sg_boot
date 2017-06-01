@@ -52,7 +52,10 @@ LIB_PATH  = -L./lib/$(EDIR)
 
 
 #=======================  Compiler Flags  ============================
-CC_FLAG 	= $(ENDIAN_FG) -Wall -W -Os
+CC_FLAG		= $(ENDIAN_FG) -Wall -W -Os -pipe
+CC_FLAG		+= -Wpointer-arith -Wcast-qual -Wcast-align -Wwrite-strings -Winline -fno-common
+CC_FLAG		+= -Wbad-function-cast -Wstrict-prototypes -Werror-implicit-function-declaration
+
 CPU_FLAG	= -mips32
 INCLUDE_DIR	= -I./include
 
