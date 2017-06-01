@@ -25,7 +25,7 @@
 #include <param.h> // expert_mode
 
 /* linux boot defined */
-#define LINUX_ENTRY_POINT		LINUXLD_KERNEL_START - 0xa0000000 + 0x800006d8
+#define LINUX_ENTRY_POINT		(LINUXLD_KERNEL_START - 0xa0000000 + 0x800006d8)
 
 #define LINUX_IMAGE_SIZE		LINUXLD_DOWNLOAD_SIZE
 
