@@ -684,10 +684,13 @@ static void PrintExpertMode(void)
 
 enum {
     CONFIG_G,
-    CONFIG_Z, CONFIG_Y,
+    CONFIG_Z,
+#if 0
+    CONFIG_Y,
     CONFIG_S, CONFIG_R,
     CONFIG_1, CONFIG_2,
     CONFIG_A, CONFIG_B , CONFIG_C
+#endif
 };
 
 static BOARD_CFG_T configs[] =
@@ -722,6 +725,7 @@ static BOARD_CFG_T configs[] =
 	}
     },
 
+#if 0
     [CONFIG_Y] =
     {
 	.macmagic = MAC_MAGIC, .macnum = 0,
@@ -841,7 +845,7 @@ static BOARD_CFG_T configs[] =
             .bootloader_name = "sg5120boot_rom.bin"
 	}
     },
-
+#endif
 };
 
 static menu_rc_t set_default_params(int idx)
@@ -857,6 +861,7 @@ static void predefined_menu(void)
     {
 	{ .key = 'G', .func_int = set_default_params, .int_data = CONFIG_G, .line = "set 2.100 parameters" },
 	{ .key = 'Z', .func_int = set_default_params, .int_data = CONFIG_Z, .line = "set 0.24  parameters" },
+#if 0
 	{ .key = 'Y', .func_int = set_default_params, .int_data = CONFIG_Y, .line = "set 2.124 parameters" },
 	{ .key = 'S', .func_int = set_default_params, .int_data = CONFIG_S, .line = "set 1.40  parameters" },
 	{ .key = 'R', .func_int = set_default_params, .int_data = CONFIG_R, .line = "set 2.40  parameters" },
@@ -865,6 +870,7 @@ static void predefined_menu(void)
 	{ .key = 'A', .func_int = set_default_params, .int_data = CONFIG_A, .line = "set 2.91  parameters" },
 	{ .key = 'B', .func_int = set_default_params, .int_data = CONFIG_B, .line = "set 2.92  parameters" },
 	{ .key = 'C', .func_int = set_default_params, .int_data = CONFIG_C, .line = "set 2.93  parameters" },
+#endif
 	{ .key = 'X', .line = "exit menu", .func_int  = menu_exit },
 	{ .key = '\0' }
     };
