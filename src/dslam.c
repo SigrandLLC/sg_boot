@@ -324,7 +324,7 @@ int ProgramVlanMac (int vlan, UINT8 *Mac, int clear)
 	return 0;
 }
 
-void store_vlan2port ()
+void store_vlan2port(void)
 {
 	UINT32 vlanGrp = 0xff;
 	UINT32 vlan_val = 0;
