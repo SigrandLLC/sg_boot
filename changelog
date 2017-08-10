@@ -1,5 +1,8 @@
 "Дмитрий Фёдоров" <dm.fedorov@gmail.com>
 
+2.4.1
+* more register writes for switch IP1826{C,D}
+
 2.4
 * detect switch IP1826{C,D} by chip id and init according with this.
 * bug fixed: settings was not saved after pre-defined menu
