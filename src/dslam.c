@@ -190,8 +190,7 @@ void store_default (UINT8 sw_num)
 {
 	UINT32 val;
 	// udelay (10000);
-	// this is need for poperly work ethernet modules
-	write_reg_ver (sw_num, 0xfa, 0x0200);
+
 	// trunk hash algorithm selection is source and dest
 	write_reg_ver (sw_num, 0x40, 0x000c);
 
@@ -202,9 +201,15 @@ void store_default (UINT8 sw_num)
 
 	val = read_reg (sw_num, 0x00);
 	if (val == 0x1826) // IP1826D chip id
+	{
 	    write_reg_ver (sw_num, 0xf9, 0x1038);
+	    write_reg_ver (sw_num, 0xfa, 0x4222);
+	}
 	else               // IP1826C chip id
+	{
 	    write_reg_ver (sw_num, 0xf9, 0x1e38);
+	    write_reg_ver (sw_num, 0xfa, 0x0200);
+	}
 
 	write_reg_ver (sw_num, 0xd8, 0xffff);
 	if (sw_num == 0)
